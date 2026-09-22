@@ -1,0 +1,31 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+Debug/
+Release/
+x64/
+x86/
+
+# NuGet
+*.nupkg
+packages/
+*.nuget.props
+*.nuget.targets
+
+# ReSharper
+_ReSharper*/
+*.DotSettings.user
+
+# SQL backups
+*.bak
+*.sql.bak
+
+# Локальные конфиги
+appsettings.local.json
