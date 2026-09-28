@@ -9,7 +9,7 @@ CREATE TABLE users (
     full_name VARCHAR(100) NOT NULL,
     login VARCHAR(32) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    role ENUM('Администратор', 'Товаровед', 'Продавец') NOT NULL,
+    role ENUM('Администратор','Товаровед','Продавец') NOT NULL,
     phone VARCHAR(20),
     registration_date DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -78,3 +78,5 @@ CREATE TABLE order_items (
         REFERENCES board_games(game_id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO statuses (status_name) VALUES
+('Новый'), ('Не готов'), ('Готов'), ('Отменён');
