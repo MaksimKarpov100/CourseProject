@@ -50,7 +50,7 @@
             // 
             this.lblSubtitle.AutoSize = true;
             this.lblSubtitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lblSubtitle.Location = new System.Drawing.Point(120, 70);
+            this.lblSubtitle.Location = new System.Drawing.Point(121, 58);
             this.lblSubtitle.Name = "lblSubtitle";
             this.lblSubtitle.Size = new System.Drawing.Size(204, 20);
             this.lblSubtitle.TabIndex = 8;
@@ -128,9 +128,9 @@
             // btnLogin
             // 
             this.btnLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
-            this.btnLogin.Location = new System.Drawing.Point(125, 343);
+            this.btnLogin.Location = new System.Drawing.Point(106, 346);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(180, 40);
+            this.btnLogin.Size = new System.Drawing.Size(218, 40);
             this.btnLogin.TabIndex = 0;
             this.btnLogin.Text = "Войти";
             this.btnLogin.UseVisualStyleBackColor = true;
@@ -138,9 +138,9 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
-            this.button1.Location = new System.Drawing.Point(124, 392);
+            this.button1.Location = new System.Drawing.Point(106, 392);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(180, 40);
+            this.button1.Size = new System.Drawing.Size(218, 40);
             this.button1.TabIndex = 11;
             this.button1.Text = "Выход";
             this.button1.UseVisualStyleBackColor = true;
@@ -149,7 +149,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(440, 444);
+            this.ClientSize = new System.Drawing.Size(454, 444);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.lblTimer);

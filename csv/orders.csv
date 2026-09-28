@@ -1,4 +1,4 @@
-﻿order_id;customer_id;user_id;status_id;order_date;completion_date;discount;total_without_discount;total_with_discount;total_amount;shipping_address
+order_id;customer_id;user_id;status_id;order_date;completion_date;discount;total_without_discount;total_with_discount;total_amount;shipping_address
 1;1;21;1;2026-09-01 10:00:00;;10.00;5980.00;5382.00;5382.00;г. Москва, ул. Ленина, д.1
 2;2;21;2;2026-09-01 15:00:00;;0.00;1890.00;1890.00;1890.00;г. Москва, ул. Гагарина, д.5
 3;3;22;3;2026-09-02 10:00:00;2026-09-03 10:00:00;10.00;6980.00;6282.00;6282.00;г. Москва, ул. Пушкина, д.10

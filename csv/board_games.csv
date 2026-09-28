@@ -1,4 +1,4 @@
-﻿game_id;category_id;title;description;price;stock_quantity;min_players;max_players;age_rating;image
+game_id;category_id;title;description;price;stock_quantity;min_players;max_players;age_rating;image
 1;1;Каркассон;Классическая стратегия;2990.00;15;2;5;8+;
 2;2;Манчкин;Юмористическая карточная;1890.00;10;3;6;12+;
 3;1;Колонизаторы;Экономическая стратегия;3490.00;5;3;4;10+;

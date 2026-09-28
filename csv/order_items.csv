@@ -1,4 +1,4 @@
-﻿order_item_id;order_id;game_id;quantity;unit_price
+order_item_id;order_id;game_id;quantity;unit_price
 1;1;1;2;2990.00
 2;2;2;1;1890.00
 3;3;3;2;3490.00

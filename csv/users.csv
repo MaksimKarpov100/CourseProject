@@ -1,4 +1,4 @@
-﻿user_id;full_name;login;password_hash;role;phone;registration_date
+user_id;full_name;login;password_hash;role;phone;registration_date
 1;Иванов Иван Иванович;admin1;hash_a1;Администратор;+7 (900) 100-00-01;2026-09-01 10:00:00
 2;Петров Пётр Петрович;admin2;hash_a2;Администратор;+7 (900) 100-00-02;2026-09-01 10:00:00
 3;Сидоров Сидор Сидорович;admin3;hash_a3;Администратор;+7 (900) 100-00-03;2026-09-01 10:00:00

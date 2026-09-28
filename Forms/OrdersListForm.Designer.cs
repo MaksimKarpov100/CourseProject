@@ -209,9 +209,9 @@
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(700, 10);
+            this.btnReset.Location = new System.Drawing.Point(707, 10);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(80, 60);
+            this.btnReset.Size = new System.Drawing.Size(80, 28);
             this.btnReset.TabIndex = 10;
             this.btnReset.Text = "Сброс";
             this.btnReset.UseVisualStyleBackColor = true;
