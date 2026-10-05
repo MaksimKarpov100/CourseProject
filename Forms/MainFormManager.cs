@@ -12,17 +12,17 @@ namespace BoardGame_Store
 
         private void btnGames_Click(object sender, EventArgs e)
         {
-            new GamesForm().ShowDialog();
+
         }
 
         private void btnOrders_Click(object sender, EventArgs e)
         {
-            new OrdersListForm().ShowDialog();
+
         }
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            this.Close();
+
         }
     }
 }

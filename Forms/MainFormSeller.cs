@@ -12,7 +12,7 @@ namespace BoardGame_Store
 
         private void btnViewGames_Click(object sender, EventArgs e)
         {
-            new GamesForm().ShowDialog();
+
         }
 
         private void btnNewOrder_Click(object sender, EventArgs e)
@@ -22,7 +22,7 @@ namespace BoardGame_Store
 
         private void btnCustomers_Click(object sender, EventArgs e)
         {
-            new CustomersForm().ShowDialog();
+
         }
 
         private void btnOrders_Click(object sender, EventArgs e)
