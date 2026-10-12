@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -12,59 +13,124 @@ namespace BoardGame_Store
     {
         private static string ConnectionString => DbConfig.BuildConnectionString();
 
-        private static readonly string[] Tables =
+        /// <summary>
+        /// Порядок важен: сначала справочники без FK, потом зависимые таблицы.
+        /// </summary>
+        private static readonly string[] TablesInOrder =
         {
-            "users", "customers", "categories",
-            "statuses", "board_games", "orders", "order_items"
+            "users", "customers", "categories", "statuses",
+            "board_games", "orders", "order_items"
         };
 
         public SpecialForm()
         {
             InitializeComponent();
+
+            clbTables.Items.Clear();
+            foreach (string t in TablesInOrder)
+                clbTables.Items.Add(t);
+
             LoadOrdersToCombo();
+            Log("Готово. Выберите таблицы и папку, затем нажмите «Экспорт» или «Импорт».");
         }
 
-        private void LoadOrdersToCombo()
+        private void Log(string message)
         {
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection(ConnectionString))
-                {
-                    conn.Open();
-                    string sql = "SELECT o.order_id, c.full_name FROM orders o " +
-                                 "JOIN customers c ON o.customer_id=c.customer_id " +
-                                 "ORDER BY o.order_id DESC";
-                    using (MySqlDataAdapter da = new MySqlDataAdapter(sql, conn))
-                    {
-                        DataTable dt = new DataTable();
-                        da.Fill(dt);
-                        cmbOrder.DataSource = dt;
-                        cmbOrder.DisplayMember = "order_id";
-                        cmbOrder.ValueMember = "order_id";
-                    }
-                }
-            }
-            catch { }
+            string line = "[" + DateTime.Now.ToString("HH:mm:ss") + "] " + message + Environment.NewLine;
+            txtLog.AppendText(line);
+            txtLog.SelectionStart = txtLog.TextLength;
+            txtLog.ScrollToCaret();
         }
 
-        // ===== ЭКСПОРТ CSV =====
-        private void btnExportCsv_Click(object sender, EventArgs e)
+        private void ClearLog()
+        {
+            txtLog.Clear();
+        }
+
+        private void btnSelectAll_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < clbTables.Items.Count; i++)
+                clbTables.SetItemChecked(i, true);
+        }
+
+        private void btnDeselectAll_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < clbTables.Items.Count; i++)
+                clbTables.SetItemChecked(i, false);
+        }
+
+        /// <summary>
+        /// Возвращает выбранные таблицы в правильном порядке (FK-safe).
+        /// </summary>
+        private List<string> GetSelectedTables()
+        {
+            var checkedSet = new HashSet<string>();
+            foreach (var item in clbTables.CheckedItems)
+                checkedSet.Add(item.ToString());
+
+            var result = new List<string>();
+            foreach (string t in TablesInOrder)
+                if (checkedSet.Contains(t))
+                    result.Add(t);
+
+            return result;
+        }
+
+        private void btnBrowse_Click(object sender, EventArgs e)
         {
             using (FolderBrowserDialog fbd = new FolderBrowserDialog())
             {
+                fbd.Description = "Выберите папку для CSV-файлов";
                 if (fbd.ShowDialog() != DialogResult.OK) return;
-                try
-                {
-                    foreach (string table in Tables)
-                        ExportTable(table, Path.Combine(fbd.SelectedPath, table + ".csv"));
-                    MessageBox.Show("Экспорт завершён успешно");
-                }
-                catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message); }
+
+                txtFolder.Text = fbd.SelectedPath;
+                Log("Папка: " + fbd.SelectedPath);
             }
         }
 
-        private void ExportTable(string table, string path)
+        private void btnExportSelected_Click(object sender, EventArgs e)
         {
+            var tables = GetSelectedTables();
+            if (tables.Count == 0)
+            {
+                MessageBox.Show("Выберите хотя бы одну таблицу");
+                return;
+            }
+
+            string folder = txtFolder.Text;
+            if (string.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder))
+            {
+                MessageBox.Show("Сначала выберите папку");
+                return;
+            }
+
+            ClearLog();
+            Log("=== ЭКСПОРТ ===");
+            Log("Папка: " + folder);
+
+            int ok = 0, errors = 0;
+            foreach (string table in tables)
+            {
+                try
+                {
+                    string path = Path.Combine(folder, table + ".csv");
+                    int rows = ExportTable(table, path);
+                    Log("  ✓ " + table + " → " + Path.GetFileName(path) +
+                        " (" + rows + " записей)");
+                    ok++;
+                }
+                catch (Exception ex)
+                {
+                    Log("  ✗ " + table + " — ОШИБКА: " + ex.Message);
+                    errors++;
+                }
+            }
+            Log("Итого: успешно " + ok + ", ошибок " + errors);
+        }
+
+        private int ExportTable(string table, string path)
+        {
+            int rows = 0;
             using (MySqlConnection conn = new MySqlConnection(ConnectionString))
             {
                 conn.Open();
@@ -84,60 +150,165 @@ namespace BoardGame_Store
                         for (int i = 0; i < reader.FieldCount; i++)
                         {
                             string val = reader.IsDBNull(i) ? "" : reader.GetValue(i).ToString();
-                            if (val.Contains(";") || val.Contains("\""))
+
+                            if (val.Contains(";") || val.Contains("\"") ||
+                                val.Contains("\n") || val.Contains("\r"))
+                            {
                                 val = "\"" + val.Replace("\"", "\"\"") + "\"";
+                            }
                             writer.Write(val);
                             if (i < reader.FieldCount - 1) writer.Write(";");
                         }
                         writer.WriteLine();
+                        rows++;
                     }
                 }
             }
+            return rows;
         }
-
-        // ===== ИМПОРТ CSV =====
-        private void btnImportCsv_Click(object sender, EventArgs e)
+        private void btnImportSelected_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog ofd = new OpenFileDialog())
+            var tables = GetSelectedTables();
+            if (tables.Count == 0)
             {
-                ofd.Filter = "CSV|*.csv";
-                if (ofd.ShowDialog() != DialogResult.OK) return;
+                MessageBox.Show("Выберите хотя бы одну таблицу");
+                return;
+            }
 
-                string table = Path.GetFileNameWithoutExtension(ofd.FileName).ToLower();
+            string folder = txtFolder.Text;
+            if (string.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder))
+            {
+                MessageBox.Show("Сначала выберите папку");
+                return;
+            }
+
+            if (MessageBox.Show(
+                "Импорт добавит данные в существующие таблицы.\n" +
+                "Продолжить?", "Подтверждение",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
+
+            ClearLog();
+            Log("=== ИМПОРТ ===");
+            Log("Папка: " + folder);
+
+            int ok = 0, errors = 0;
+            foreach (string table in tables) 
+            {
+                string path = Path.Combine(folder, table + ".csv");
+                if (!File.Exists(path))
+                {
+                    Log("  ✗ " + table + " — файл не найден: " + Path.GetFileName(path));
+                    errors++;
+                    continue;
+                }
+
                 try
                 {
-                    using (MySqlConnection conn = new MySqlConnection(ConnectionString))
-                    {
-                        conn.Open();
-                        string[] lines = File.ReadAllLines(ofd.FileName, Encoding.UTF8);
-                        if (lines.Length < 2) return;
-
-                        string[] columns = lines[0].Split(';');
-
-                        for (int i = 1; i < lines.Length; i++)
-                        {
-                            string[] values = lines[i].Split(';');
-                            if (values.Length != columns.Length) continue;
-
-                            string colList = string.Join(", ", columns);
-                            string paramList = "@p" + string.Join(", @p", Enumerable.Range(0, columns.Length));
-                            string sql = "INSERT INTO " + table + " (" + colList + ") VALUES (" + paramList + ")";
-
-                            using (MySqlCommand cmd = new MySqlCommand(sql, conn))
-                            {
-                                for (int k = 0; k < values.Length; k++)
-                                    cmd.Parameters.AddWithValue("@p" + k, values[k]);
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                    MessageBox.Show("Импорт завершён успешно");
+                    int rows = ImportTable(table, path);
+                    Log("  ✓ " + Path.GetFileName(path) + " → " + table +
+                        " (" + rows + " записей)");
+                    ok++;
                 }
-                catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message); }
+                catch (Exception ex)
+                {
+                    Log("  ✗ " + table + " — ОШИБКА: " + ex.Message);
+                    errors++;
+                }
             }
+            Log("Итого: успешно " + ok + ", ошибок " + errors);
         }
 
-        // ===== РЕЗЕРВНОЕ КОПИРОВАНИЕ =====
+        private int ImportTable(string table, string path)
+        {
+            int inserted = 0;
+
+            string[] lines = File.ReadAllLines(path, Encoding.UTF8);
+            if (lines.Length < 2) return 0;  
+
+            string[] columns = SplitCsvLine(lines[0]);
+            string colList = string.Join(", ", columns);
+            string paramList = "@p" + string.Join(", @p", Enumerable.Range(0, columns.Length));
+            string sql = "INSERT INTO " + table + " (" + colList + ") VALUES (" + paramList + ")";
+
+            using (MySqlConnection conn = new MySqlConnection(ConnectionString))
+            {
+                conn.Open();
+
+                using (MySqlCommand cmdFk = new MySqlCommand("SET FOREIGN_KEY_CHECKS=0", conn))
+                    cmdFk.ExecuteNonQuery();
+
+                try
+                {
+                    for (int i = 1; i < lines.Length; i++)
+                    {
+                        if (string.IsNullOrWhiteSpace(lines[i])) continue;
+
+                        string[] values = SplitCsvLine(lines[i]);
+                        if (values.Length != columns.Length) continue;
+
+                        using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                        {
+                            for (int k = 0; k < values.Length; k++)
+                            {
+                                string v = values[k];
+                                cmd.Parameters.AddWithValue("@p" + k,
+                                    string.IsNullOrEmpty(v) ? (object)DBNull.Value : v);
+                            }
+                            cmd.ExecuteNonQuery();
+                            inserted++;
+                        }
+                    }
+                }
+                finally
+                {
+                    using (MySqlCommand cmdFk = new MySqlCommand("SET FOREIGN_KEY_CHECKS=1", conn))
+                        cmdFk.ExecuteNonQuery();
+                }
+            }
+            return inserted;
+        }
+
+        /// <summary>
+        /// CSV-парсер: учитывает кавычки и ; внутри.
+        /// </summary>
+        private string[] SplitCsvLine(string line)
+        {
+            var result = new List<string>();
+            bool inQuotes = false;
+            var sb = new StringBuilder();
+
+            for (int i = 0; i < line.Length; i++)
+            {
+                char c = line[i];
+                if (inQuotes)
+                {
+                    if (c == '"')
+                    {
+                        if (i + 1 < line.Length && line[i + 1] == '"')
+                        {
+                            sb.Append('"');
+                            i++;
+                        }
+                        else inQuotes = false;
+                    }
+                    else sb.Append(c);
+                }
+                else
+                {
+                    if (c == '"') inQuotes = true;
+                    else if (c == ';')
+                    {
+                        result.Add(sb.ToString());
+                        sb.Clear();
+                    }
+                    else sb.Append(c);
+                }
+            }
+            result.Add(sb.ToString());
+            return result.ToArray();
+        }
+
         private void btnBackupManual_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog sfd = new SaveFileDialog())
@@ -146,12 +317,16 @@ namespace BoardGame_Store
                 sfd.FileName = "backup_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".sql";
                 if (sfd.ShowDialog() != DialogResult.OK) return;
 
+                ClearLog();
+                Log("=== РЕЗЕРВНОЕ КОПИРОВАНИЕ ===");
+                Log("Файл: " + sfd.FileName);
+
                 try
                 {
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine("USE board_game_store;");
 
-                    foreach (string table in Tables)
+                    foreach (string table in TablesInOrder)
                     {
                         using (MySqlConnection conn = new MySqlConnection(ConnectionString))
                         {
@@ -159,6 +334,7 @@ namespace BoardGame_Store
                             using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM " + table, conn))
                             using (var reader = cmd.ExecuteReader())
                             {
+                                int rows = 0;
                                 while (reader.Read())
                                 {
                                     sb.Append("INSERT INTO " + table + " VALUES (");
@@ -176,16 +352,23 @@ namespace BoardGame_Store
                                         if (i < reader.FieldCount - 1) sb.Append(", ");
                                     }
                                     sb.AppendLine(");");
+                                    rows++;
                                 }
+                                Log("  ✓ " + table + " (" + rows + " записей)");
                             }
                         }
                         sb.AppendLine();
                     }
 
                     File.WriteAllText(sfd.FileName, sb.ToString(), Encoding.UTF8);
+                    Log("Готово: " + sfd.FileName);
                     MessageBox.Show("Резервная копия создана:\n" + sfd.FileName);
                 }
-                catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message); }
+                catch (Exception ex)
+                {
+                    Log("  ✗ ОШИБКА: " + ex.Message);
+                    MessageBox.Show("Ошибка: " + ex.Message);
+                }
             }
         }
 
@@ -197,7 +380,6 @@ namespace BoardGame_Store
                 MessageBox.Show("Автоматическое резервное копирование выключено.");
         }
 
-        // ===== ЧЕК В WORD =====
         private void btnWord_Click(object sender, EventArgs e)
         {
             if (cmbOrder.SelectedValue == null) { MessageBox.Show("Выберите заказ"); return; }
@@ -286,7 +468,6 @@ namespace BoardGame_Store
             catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message); }
         }
 
-        // ===== ОТЧЁТ В EXCEL =====
         private void btnExcel_Click(object sender, EventArgs e)
         {
             try
@@ -345,6 +526,29 @@ namespace BoardGame_Store
                 MessageBox.Show("Отчёт Excel сохранён:\n" + path);
             }
             catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message); }
+        }
+
+        private void LoadOrdersToCombo()
+        {
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    string sql = "SELECT o.order_id, c.full_name FROM orders o " +
+                                 "JOIN customers c ON o.customer_id=c.customer_id " +
+                                 "ORDER BY o.order_id DESC";
+                    using (MySqlDataAdapter da = new MySqlDataAdapter(sql, conn))
+                    {
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        cmbOrder.DataSource = dt;
+                        cmbOrder.DisplayMember = "order_id";
+                        cmbOrder.ValueMember = "order_id";
+                    }
+                }
+            }
+            catch { }
         }
 
         private void btnBack_Click(object sender, EventArgs e) { this.Close(); }

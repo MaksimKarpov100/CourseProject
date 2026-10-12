@@ -35,7 +35,9 @@
         public static string BuildConnectionString()
         {
             return "Server=" + Server + ";Port=" + Port + ";Database=" + Database +
-                   ";Uid=" + User + ";Pwd=" + Password + ";CharSet=utf8mb4;";
+                   ";Uid=" + User + ";Pwd=" + Password + ";CharSet=utf8mb4;" +
+                   "Convert Zero Datetime=True;Allow User Variables=True";
+            ;
         }
 
         public static void Save()
