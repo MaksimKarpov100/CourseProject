@@ -1,0 +1,80 @@
+﻿using System;
+using System.IO;
+using System.Windows.Forms;
+using MySql.Data.MySqlClient;
+
+namespace BoardGame_Store
+{
+    public partial class SettingsForm : Form
+    {
+        public SettingsForm()
+        {
+            InitializeComponent();
+            txtServer.Text = DbConfig.Server;
+            nudPort.Value = DbConfig.Port;
+            txtDatabase.Text = DbConfig.Database;
+            txtUser.Text = DbConfig.User;
+            txtPassword.Text = DbConfig.Password;
+        }
+
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string cs = "Server=" + txtServer.Text + ";Port=" + (int)nudPort.Value + ";" +
+                            "Database=" + txtDatabase.Text + ";Uid=" + txtUser.Text + ";" +
+                            "Pwd=" + txtPassword.Text + ";CharSet=utf8mb4;";
+
+                using (MySqlConnection conn = new MySqlConnection(cs))
+                    conn.Open();
+
+                MessageBox.Show("Подключение успешно!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка подключения:\n" + ex.Message);
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            DbConfig.Server = txtServer.Text.Trim();
+            DbConfig.Port = (int)nudPort.Value;
+            DbConfig.Database = txtDatabase.Text.Trim();
+            DbConfig.User = txtUser.Text.Trim();
+            DbConfig.Password = txtPassword.Text;
+            DbConfig.Save();
+            MessageBox.Show("Настройки сохранены");
+        }
+
+        private void btnImportSql_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "SQL|*.sql|Все файлы|*.*";
+                if (ofd.ShowDialog() != DialogResult.OK) return;
+
+                try
+                {
+                    string sql = File.ReadAllText(ofd.FileName, System.Text.Encoding.UTF8);
+                    using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                    {
+                        conn.Open();
+                        using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                        {
+                            cmd.CommandTimeout = 300;
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    MessageBox.Show("Импорт БД завершён успешно");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка импорта:\n" + ex.Message);
+                }
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e) { this.Close(); }
+    }
+}

@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BoardGame_Store
@@ -15,6 +8,23 @@ namespace BoardGame_Store
         public UserProfileForm()
         {
             InitializeComponent();
+
+            txtFullName.Text = CurrentUser.FullName;
+            txtLogin.Text = CurrentUser.Role;
+            txtRole.Text = CurrentUser.Role;
+            txtPhone.Text = "+7 (900) ***-**-**";
+
+            txtFullName.ReadOnly = true;
+            txtLogin.ReadOnly = true;
+            txtRole.ReadOnly = true;
+            txtPhone.ReadOnly = true;
+        }
+
+        private void btnClose_Click(object sender, EventArgs e) { this.Close(); }
+
+        private void btnChangePassword_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Смена пароля доступна через администратора");
         }
     }
 }
