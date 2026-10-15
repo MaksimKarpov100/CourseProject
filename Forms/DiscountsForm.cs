@@ -26,6 +26,9 @@ namespace BoardGame_Store
                               "Сумма скидки: 6 000 × 0,15 = 900 ₽. Итого к оплате: 5 100 ₽.";
         }
 
-        private void btnBack_Click(object sender, EventArgs e) { this.Close(); }
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

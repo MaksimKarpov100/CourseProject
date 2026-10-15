@@ -6,75 +6,54 @@ namespace BoardGame_Store
 {
     public class CaptchaGenerator
     {
-        private static readonly Random rnd = new Random();
-        private const string Chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        private string currentCode = "";
+        private Random rnd = new Random();
 
-        public int Width { get; set; } = 180;
-        public int Height { get; set; } = 60;
-        public int Length { get; set; } = 4;
-        public string Text { get; private set; } = "";
-
-        public Bitmap Generate()
+        public Image Generate()
         {
-            Text = GenerateText();
-            return DrawCaptcha();
+            string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+            currentCode = "";
+
+            for (int i = 0; i < 4; i++)
+            {
+                currentCode += chars[rnd.Next(chars.Length)];
+            }
+
+            Bitmap bmp = new Bitmap(180, 50);
+            Graphics g = Graphics.FromImage(bmp);
+
+            g.Clear(Color.White);
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            Font font = new Font("Arial", 22, FontStyle.Bold);
+            g.DrawString(currentCode, font, Brushes.Black, 15, 8);
+
+            for (int i = 0; i < 6; i++)
+            {
+                Pen pen = new Pen(Color.LightGray, 1);
+
+                int x1 = rnd.Next(180);
+                int y1 = rnd.Next(50);
+                int x2 = rnd.Next(180);
+                int y2 = rnd.Next(50);
+
+                g.DrawLine(pen, x1, y1, x2, y2);
+            }
+
+            g.Dispose();
+
+            return bmp;
         }
 
         public bool Validate(string input)
         {
-            if (string.IsNullOrWhiteSpace(input)) return false;
-            return input.Trim().ToUpper() == Text.ToUpper();
-        }
-
-        private string GenerateText()
-        {
-            char[] r = new char[Length];
-            for (int i = 0; i < Length; i++) r[i] = Chars[rnd.Next(Chars.Length)];
-            return new string(r);
-        }
-
-        private Bitmap DrawCaptcha()
-        {
-            Bitmap bmp = new Bitmap(Width, Height);
-            using (Graphics g = Graphics.FromImage(bmp))
+            if (string.IsNullOrEmpty(input))
             {
-                g.SmoothingMode = SmoothingMode.AntiAlias;
-                g.Clear(Color.FromArgb(240, 244, 248));
-
-                for (int i = 0; i < 8; i++)
-                    g.DrawLine(new Pen(GetColor(120, 200), 1.5f),
-                        rnd.Next(Width), rnd.Next(Height), rnd.Next(Width), rnd.Next(Height));
-
-                for (int i = 0; i < 250; i++)
-                    g.FillEllipse(new SolidBrush(GetColor(150, 220)),
-                        rnd.Next(Width), rnd.Next(Height), 2, 2);
-
-                int cw = Width / (Length + 1);
-                int fs = Height - 18;
-
-                for (int i = 0; i < Text.Length; i++)
-                {
-                    float angle = rnd.Next(-30, 30);
-                    int x = 15 + i * cw + rnd.Next(-4, 4);
-                    int y = 8 + rnd.Next(-4, 4);
-
-                    using (Font font = new Font("Arial", fs, FontStyle.Bold))
-                    {
-                        GraphicsState st = g.Save();
-                        g.TranslateTransform(x + cw / 2f, y + fs / 2f);
-                        g.RotateTransform(angle);
-                        g.TranslateTransform(-(x + cw / 2f), -(y + fs / 2f));
-                        g.DrawString(Text[i].ToString(), font, new SolidBrush(GetColor(30, 100)), x, y);
-                        g.Restore(st);
-                    }
-                }
+                return false;
             }
-            return bmp;
-        }
 
-        private Color GetColor(int a, int b)
-        {
-            return Color.FromArgb(rnd.Next(a, b), rnd.Next(a, b), rnd.Next(a, b));
+            return input.Trim().ToUpper() == currentCode;
         }
     }
 }

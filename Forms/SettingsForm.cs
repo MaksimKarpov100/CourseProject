@@ -10,6 +10,7 @@ namespace BoardGame_Store
         public SettingsForm()
         {
             InitializeComponent();
+
             txtServer.Text = DbConfig.Server;
             nudPort.Value = DbConfig.Port;
             txtDatabase.Text = DbConfig.Database;
@@ -21,18 +22,23 @@ namespace BoardGame_Store
         {
             try
             {
-                string cs = "Server=" + txtServer.Text + ";Port=" + (int)nudPort.Value + ";" +
-                            "Database=" + txtDatabase.Text + ";Uid=" + txtUser.Text + ";" +
-                            "Pwd=" + txtPassword.Text + ";CharSet=utf8mb4;";
+                string cs = "Server=" + txtServer.Text + ";" +
+                            "Port=" + (int)nudPort.Value + ";" +
+                            "Database=" + txtDatabase.Text + ";" +
+                            "Uid=" + txtUser.Text + ";" +
+                            "Pwd=" + txtPassword.Text + ";" +
+                            "CharSet=utf8mb4;";
 
                 using (MySqlConnection conn = new MySqlConnection(cs))
+                {
                     conn.Open();
+                }
 
-                MessageBox.Show("Подключение успешно!");
+                MessageHelper.ShowInfo("Подключение успешно!");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка подключения:\n" + ex.Message);
+                MessageHelper.ShowError("Ошибка подключения:\n" + ex.Message);
             }
         }
 
@@ -43,38 +49,48 @@ namespace BoardGame_Store
             DbConfig.Database = txtDatabase.Text.Trim();
             DbConfig.User = txtUser.Text.Trim();
             DbConfig.Password = txtPassword.Text;
+
             DbConfig.Save();
-            MessageBox.Show("Настройки сохранены");
+
+            MessageHelper.ShowInfo("Настройки сохранены");
         }
 
         private void btnImportSql_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog ofd = new OpenFileDialog())
-            {
-                ofd.Filter = "SQL|*.sql|Все файлы|*.*";
-                if (ofd.ShowDialog() != DialogResult.OK) return;
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "SQL|*.sql|Все файлы|*.*";
 
-                try
+            if (ofd.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            try
+            {
+                string sql = File.ReadAllText(ofd.FileName, System.Text.Encoding.UTF8);
+
+                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
                 {
-                    string sql = File.ReadAllText(ofd.FileName, System.Text.Encoding.UTF8);
-                    using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                    conn.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                     {
-                        conn.Open();
-                        using (MySqlCommand cmd = new MySqlCommand(sql, conn))
-                        {
-                            cmd.CommandTimeout = 300;
-                            cmd.ExecuteNonQuery();
-                        }
+                        cmd.CommandTimeout = 300;
+                        cmd.ExecuteNonQuery();
                     }
-                    MessageBox.Show("Импорт БД завершён успешно");
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Ошибка импорта:\n" + ex.Message);
-                }
+
+                MessageHelper.ShowInfo("Импорт БД завершён успешно");
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError("Ошибка импорта:\n" + ex.Message);
             }
         }
 
-        private void btnCancel_Click(object sender, EventArgs e) { this.Close(); }
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

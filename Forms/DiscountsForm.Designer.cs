@@ -3,15 +3,21 @@
     partial class DiscountsForm
     {
         private System.ComponentModel.IContainer components = null;
+
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null)) components.Dispose();
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+
             base.Dispose(disposing);
         }
 
         private void InitializeComponent()
         {
             this.lblTitle = new System.Windows.Forms.Label();
+            this.lblRole = new System.Windows.Forms.Label();
             this.grpBySum = new System.Windows.Forms.GroupBox();
             this.lblSum1 = new System.Windows.Forms.Label();
             this.lblSum2 = new System.Windows.Forms.Label();
@@ -36,130 +42,188 @@
 
             // lblTitle
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.Location = new System.Drawing.Point(20, 15);
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Location = new System.Drawing.Point(300, 10);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(220, 26);
+            this.lblTitle.Size = new System.Drawing.Size(180, 30);
+            this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Система скидок";
 
+            // lblRole
+            this.lblRole.AutoSize = true;
+            this.lblRole.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblRole.Location = new System.Drawing.Point(640, 15);
+            this.lblRole.Name = "lblRole";
+            this.lblRole.Size = new System.Drawing.Size(100, 19);
+            this.lblRole.TabIndex = 1;
+            this.lblRole.Text = "[Роль] [ФИО]";
+
             // grpBySum
-            this.grpBySum.Anchor = ((System.Windows.Forms.AnchorStyles)
-                (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                | System.Windows.Forms.AnchorStyles.Right)));
             this.grpBySum.Controls.Add(this.lblSum1);
             this.grpBySum.Controls.Add(this.lblSum2);
             this.grpBySum.Controls.Add(this.lblSum3);
-            this.grpBySum.Location = new System.Drawing.Point(20, 60);
+            this.grpBySum.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.grpBySum.Location = new System.Drawing.Point(20, 55);
             this.grpBySum.Name = "grpBySum";
-            this.grpBySum.Size = new System.Drawing.Size(760, 110);
-            this.grpBySum.TabIndex = 1;
+            this.grpBySum.Size = new System.Drawing.Size(780, 110);
+            this.grpBySum.TabIndex = 2;
             this.grpBySum.TabStop = false;
             this.grpBySum.Text = "Скидки по сумме заказа";
 
+            // lblSum1
             this.lblSum1.AutoSize = true;
+            this.lblSum1.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblSum1.Location = new System.Drawing.Point(20, 30);
-            this.lblSum1.Size = new System.Drawing.Size(400, 17);
+            this.lblSum1.Name = "lblSum1";
+            this.lblSum1.Size = new System.Drawing.Size(400, 19);
+            this.lblSum1.TabIndex = 0;
+            this.lblSum1.Text = "• Сумма заказа от 2 000 руб. — скидка 5%";
 
+            // lblSum2
             this.lblSum2.AutoSize = true;
+            this.lblSum2.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblSum2.Location = new System.Drawing.Point(20, 55);
-            this.lblSum2.Size = new System.Drawing.Size(400, 17);
+            this.lblSum2.Name = "lblSum2";
+            this.lblSum2.Size = new System.Drawing.Size(400, 19);
+            this.lblSum2.TabIndex = 1;
+            this.lblSum2.Text = "• Сумма заказа от 5 000 руб. — скидка 10%";
 
+            // lblSum3
             this.lblSum3.AutoSize = true;
+            this.lblSum3.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblSum3.Location = new System.Drawing.Point(20, 80);
-            this.lblSum3.Size = new System.Drawing.Size(400, 17);
+            this.lblSum3.Name = "lblSum3";
+            this.lblSum3.Size = new System.Drawing.Size(400, 19);
+            this.lblSum3.TabIndex = 2;
+            this.lblSum3.Text = "• Сумма заказа от 10 000 руб. — скидка 15%";
 
             // grpSeason
-            this.grpSeason.Anchor = ((System.Windows.Forms.AnchorStyles)
-                (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                | System.Windows.Forms.AnchorStyles.Right)));
             this.grpSeason.Controls.Add(this.lblSeason1);
             this.grpSeason.Controls.Add(this.lblSeason2);
-            this.grpSeason.Location = new System.Drawing.Point(20, 180);
+            this.grpSeason.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.grpSeason.Location = new System.Drawing.Point(20, 175);
             this.grpSeason.Name = "grpSeason";
-            this.grpSeason.Size = new System.Drawing.Size(760, 90);
-            this.grpSeason.TabIndex = 2;
+            this.grpSeason.Size = new System.Drawing.Size(780, 90);
+            this.grpSeason.TabIndex = 3;
             this.grpSeason.TabStop = false;
             this.grpSeason.Text = "Сезонные скидки";
 
+            // lblSeason1
             this.lblSeason1.AutoSize = true;
+            this.lblSeason1.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblSeason1.Location = new System.Drawing.Point(20, 30);
-            this.lblSeason1.Size = new System.Drawing.Size(500, 17);
+            this.lblSeason1.Name = "lblSeason1";
+            this.lblSeason1.Size = new System.Drawing.Size(450, 19);
+            this.lblSeason1.TabIndex = 0;
+            this.lblSeason1.Text = "• Новогодняя скидка — 15% (с 20 по 31 декабря)";
 
+            // lblSeason2
             this.lblSeason2.AutoSize = true;
+            this.lblSeason2.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblSeason2.Location = new System.Drawing.Point(20, 55);
-            this.lblSeason2.Size = new System.Drawing.Size(500, 17);
+            this.lblSeason2.Name = "lblSeason2";
+            this.lblSeason2.Size = new System.Drawing.Size(400, 19);
+            this.lblSeason2.TabIndex = 1;
+            this.lblSeason2.Text = "• Скидка к 8 марта — 10% (с 7 по 9 марта)";
 
             // grpRules
-            this.grpRules.Anchor = ((System.Windows.Forms.AnchorStyles)
-                (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                | System.Windows.Forms.AnchorStyles.Right)));
             this.grpRules.Controls.Add(this.lblRule1);
             this.grpRules.Controls.Add(this.lblRule2);
             this.grpRules.Controls.Add(this.lblRule3);
             this.grpRules.Controls.Add(this.lblRule4);
-            this.grpRules.Location = new System.Drawing.Point(20, 280);
+            this.grpRules.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.grpRules.Location = new System.Drawing.Point(20, 275);
             this.grpRules.Name = "grpRules";
-            this.grpRules.Size = new System.Drawing.Size(760, 130);
-            this.grpRules.TabIndex = 3;
+            this.grpRules.Size = new System.Drawing.Size(780, 130);
+            this.grpRules.TabIndex = 4;
             this.grpRules.TabStop = false;
-            this.grpRules.Text = "Правила применения скидок";
+            this.grpRules.Text = "Правила применения";
 
+            // lblRule1
             this.lblRule1.AutoSize = true;
+            this.lblRule1.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblRule1.Location = new System.Drawing.Point(20, 25);
-            this.lblRule1.Size = new System.Drawing.Size(700, 17);
+            this.lblRule1.Name = "lblRule1";
+            this.lblRule1.Size = new System.Drawing.Size(600, 19);
+            this.lblRule1.TabIndex = 0;
+            this.lblRule1.Text = "1. Скидка рассчитывается автоматически при оформлении заказа.";
 
+            // lblRule2
             this.lblRule2.AutoSize = true;
+            this.lblRule2.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblRule2.Location = new System.Drawing.Point(20, 50);
-            this.lblRule2.Size = new System.Drawing.Size(700, 17);
+            this.lblRule2.Name = "lblRule2";
+            this.lblRule2.Size = new System.Drawing.Size(600, 19);
+            this.lblRule2.TabIndex = 1;
+            this.lblRule2.Text = "2. Если подходит несколько правил — применяется наибольшая скидка.";
 
+            // lblRule3
             this.lblRule3.AutoSize = true;
+            this.lblRule3.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblRule3.Location = new System.Drawing.Point(20, 75);
-            this.lblRule3.Size = new System.Drawing.Size(700, 17);
+            this.lblRule3.Name = "lblRule3";
+            this.lblRule3.Size = new System.Drawing.Size(550, 19);
+            this.lblRule3.TabIndex = 2;
+            this.lblRule3.Text = "3. Если ни одно правило не подходит — скидка равна 0%.";
 
+            // lblRule4
             this.lblRule4.AutoSize = true;
+            this.lblRule4.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblRule4.Location = new System.Drawing.Point(20, 100);
-            this.lblRule4.Size = new System.Drawing.Size(700, 17);
+            this.lblRule4.Name = "lblRule4";
+            this.lblRule4.Size = new System.Drawing.Size(600, 19);
+            this.lblRule4.TabIndex = 3;
+            this.lblRule4.Text = "4. Все скидки сохраняются в БД для отчётов по выручке.";
 
             // grpExample
-            this.grpExample.Anchor = ((System.Windows.Forms.AnchorStyles)
-                (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                | System.Windows.Forms.AnchorStyles.Right)));
             this.grpExample.Controls.Add(this.lblExample);
-            this.grpExample.Location = new System.Drawing.Point(20, 420);
+            this.grpExample.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.grpExample.Location = new System.Drawing.Point(20, 415);
             this.grpExample.Name = "grpExample";
-            this.grpExample.Size = new System.Drawing.Size(760, 90);
-            this.grpExample.TabIndex = 4;
+            this.grpExample.Size = new System.Drawing.Size(780, 80);
+            this.grpExample.TabIndex = 5;
             this.grpExample.TabStop = false;
             this.grpExample.Text = "Пример расчёта";
 
+            // lblExample
             this.lblExample.AutoSize = true;
+            this.lblExample.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblExample.Location = new System.Drawing.Point(20, 25);
-            this.lblExample.Size = new System.Drawing.Size(700, 50);
+            this.lblExample.Name = "lblExample";
+            this.lblExample.Size = new System.Drawing.Size(700, 19);
+            this.lblExample.TabIndex = 0;
+            this.lblExample.Text = "Пример: заказ на 6 000 руб. в декабре. Скидка 15% = 900 руб. Итого: 5 100 руб.";
 
             // btnBack
-            this.btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)
-                ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBack.Location = new System.Drawing.Point(650, 525);
+            this.btnBack.BackColor = System.Drawing.Color.Gray;
+            this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBack.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnBack.ForeColor = System.Drawing.Color.White;
+            this.btnBack.Location = new System.Drawing.Point(680, 505);
             this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(130, 40);
-            this.btnBack.Text = "Назад";
+            this.btnBack.Size = new System.Drawing.Size(110, 40);
+            this.btnBack.TabIndex = 6;
+            this.btnBack.Text = "В меню";
+            this.btnBack.UseVisualStyleBackColor = false;
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
 
             // DiscountsForm
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 580);
+            this.ClientSize = new System.Drawing.Size(820, 560);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.grpExample);
             this.Controls.Add(this.grpRules);
             this.Controls.Add(this.grpSeason);
             this.Controls.Add(this.grpBySum);
+            this.Controls.Add(this.lblRole);
             this.Controls.Add(this.lblTitle);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
-            this.MinimumSize = new System.Drawing.Size(800, 580);
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "DiscountsForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Система скидок";
 
             this.grpBySum.ResumeLayout(false);
@@ -175,6 +239,7 @@
         }
 
         private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label lblRole;
         private System.Windows.Forms.GroupBox grpBySum;
         private System.Windows.Forms.Label lblSum1;
         private System.Windows.Forms.Label lblSum2;

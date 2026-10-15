@@ -6,45 +6,82 @@ namespace BoardGame_Store
 {
     public partial class LoginForm : Form
     {
-        private static string ConnectionString => DbConfig.BuildConnectionString();
-
-        private int failedAttempts = 0;
+        private int fails = 0;
         private int secondsLeft = 0;
+        private Timer timerBlock;
         private bool passwordVisible = false;
-        private readonly Timer timerBlock;
-        private readonly CaptchaGenerator captcha = new CaptchaGenerator();
+        private CaptchaGenerator captcha = new CaptchaGenerator();
 
         public LoginForm()
         {
             InitializeComponent();
 
-            timerBlock = new Timer { Interval = 1000 };
+            timerBlock = new Timer();
+            timerBlock.Interval = 1000;
             timerBlock.Tick += timerBlock_Tick;
 
-            // Все элементы капчи изначально скрыты
             lblCaptcha.Visible = false;
             pbCaptcha.Visible = false;
             txtCaptcha.Visible = false;
             lblCaptchaHint.Visible = false;
             lblTimer.Visible = false;
             lblError.Visible = false;
+
+            CreateAdminIfEmpty();
         }
 
-        /// <summary>
-        /// Показать / скрыть пароль.
-        /// </summary>
+        private void CreateAdminIfEmpty()
+        {
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                {
+                    conn.Open();
+
+                    MySqlCommand check = new MySqlCommand("SELECT COUNT(*) FROM users", conn);
+
+                    int count = Convert.ToInt32(check.ExecuteScalar());
+
+                    if (count == 0)
+                    {
+                        string hash = PasswordHelper.GetHash("admin1234");
+
+                        MySqlCommand cmd = new MySqlCommand(
+                            "INSERT INTO users (full_name, login, password_hash, role, phone) " +
+                            "VALUES ('Администратор', 'admin', @h, 'Администратор', '+7 (900) 000-00-00')", conn);
+
+                        cmd.Parameters.AddWithValue("@h", hash);
+                        cmd.ExecuteNonQuery();
+
+                        MessageHelper.ShowInfo("Создан администратор по умолчанию.\nЛогин: admin\nПароль: admin1234");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError("Ошибка проверки БД: " + ex.Message);
+            }
+        }
+
         private void btnShowPassword_Click(object sender, EventArgs e)
         {
             passwordVisible = !passwordVisible;
-            txtPassword.PasswordChar = passwordVisible ? '\0' : '*';
-            btnShowPassword.Text = passwordVisible ? "🙈" : "👁";
+
+            if (passwordVisible)
+            {
+                txtPassword.PasswordChar = '\0';
+                btnShowPassword.Text = "🙈";
+            }
+            else
+            {
+                txtPassword.PasswordChar = '*';
+                btnShowPassword.Text = "👁";
+            }
+
             txtPassword.Focus();
             txtPassword.SelectionStart = txtPassword.Text.Length;
         }
 
-        /// <summary>
-        /// Кнопка «Войти».
-        /// </summary>
         private void btnLogin_Click(object sender, EventArgs e)
         {
             string login = txtLogin.Text.Trim();
@@ -52,75 +89,80 @@ namespace BoardGame_Store
 
             if (login.Length < 4 || login.Length > 32)
             {
-                ShowError("Логин должен содержать от 4 до 32 символов");
+                ShowError("Логин: от 4 до 32 символов");
                 return;
             }
+
             if (password.Length < 8 || password.Length > 64)
             {
-                ShowError("Пароль должен содержать от 8 до 64 символов");
+                ShowError("Пароль: от 8 до 64 символов");
                 return;
             }
 
-            if (pbCaptcha.Visible && !captcha.Validate(txtCaptcha.Text))
+            if (pbCaptcha.Visible)
             {
-                ShowError("Неверная капча. Вход заблокирован на 10 секунд");
-                RefreshCaptcha();
-                StartBlockTimer();
-                return;
+                if (!captcha.Validate(txtCaptcha.Text))
+                {
+                    ShowError("Неверная капча. Подождите 10 секунд");
+                    RefreshCaptcha();
+                    StartBlockTimer();
+                    return;
+                }
             }
 
-            if (Authenticate(login, password))
+            if (CheckLogin(login, password))
             {
-                failedAttempts = 0;
+                fails = 0;
                 OpenMainForm();
             }
             else
             {
-                HandleFailedAttempt();
+                fails++;
+
+                if (fails == 1)
+                {
+                    ShowError("Неверный логин или пароль");
+                }
+                else
+                {
+                    ShowError("Повторная ошибка. Введите капчу");
+
+                    lblCaptcha.Visible = true;
+                    pbCaptcha.Visible = true;
+                    txtCaptcha.Visible = true;
+                    lblCaptchaHint.Visible = true;
+
+                    RefreshCaptcha();
+                    StartBlockTimer();
+                }
             }
         }
 
-        /// <summary>
-        /// Клик по картинке капчи — обновить.
-        /// </summary>
-        private void pbCaptcha_Click(object sender, EventArgs e)
-        {
-            RefreshCaptcha();
-        }
-
-        private void RefreshCaptcha()
-        {
-            if (pbCaptcha.Image != null) pbCaptcha.Image.Dispose();
-            pbCaptcha.Image = captcha.Generate();
-            txtCaptcha.Clear();
-            txtCaptcha.Focus();
-        }
-
-        /// <summary>
-        /// Проверка логина и пароля в БД.
-        /// </summary>
-        private bool Authenticate(string login, string password)
+        private bool CheckLogin(string login, string password)
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(ConnectionString))
+                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
                 {
                     conn.Open();
-                    string sql = "SELECT user_id, full_name, role FROM users " +
-                                 "WHERE login=@l AND password_hash=@p LIMIT 1";
 
-                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    MySqlCommand cmd = new MySqlCommand(
+                        "SELECT user_id, full_name, role, password_hash FROM users WHERE login=@l LIMIT 1", conn);
+
+                    cmd.Parameters.AddWithValue("@l", login);
+
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        cmd.Parameters.AddWithValue("@l", login);
-                        cmd.Parameters.AddWithValue("@p", password);
-
-                        using (var r = cmd.ExecuteReader())
+                        if (reader.Read())
                         {
-                            if (r.Read())
+                            string hashFromDb = reader["password_hash"].ToString();
+
+                            if (PasswordHelper.CheckPassword(password, hashFromDb))
                             {
-                                CurrentUser.UserId = Convert.ToInt32(r["user_id"]);
-                                CurrentUser.FullName = r["full_name"].ToString();
-                                CurrentUser.Role = r["role"].ToString();
+                                CurrentUser.UserId = Convert.ToInt32(reader["user_id"]);
+                                CurrentUser.FullName = reader["full_name"].ToString();
+                                CurrentUser.Role = reader["role"].ToString();
+
                                 return true;
                             }
                         }
@@ -129,66 +171,72 @@ namespace BoardGame_Store
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка подключения к БД:\n" + ex.Message,
-                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageHelper.ShowError("Ошибка БД: " + ex.Message);
             }
+
             return false;
         }
 
-        private void HandleFailedAttempt()
+        private void RefreshCaptcha()
         {
-            failedAttempts++;
+            if (pbCaptcha.Image != null)
+            {
+                pbCaptcha.Image.Dispose();
+            }
 
-            if (failedAttempts == 1)
-            {
-                ShowError("Неверный логин или пароль");
-            }
-            else
-            {
-                ShowError("Повторная неудачная попытка. Введите капчу");
-                lblCaptcha.Visible = true;
-                pbCaptcha.Visible = true;
-                txtCaptcha.Visible = true;
-                lblCaptchaHint.Visible = true;
-                RefreshCaptcha();
-                StartBlockTimer();
-            }
+            pbCaptcha.Image = captcha.Generate();
+            txtCaptcha.Clear();
+            txtCaptcha.Focus();
         }
 
-        private void ShowError(string msg)
+        private void pbCaptcha_Click(object sender, EventArgs e)
         {
-            lblError.Text = msg;
+            RefreshCaptcha();
+        }
+
+        private void ShowError(string text)
+        {
+            lblError.Text = text;
             lblError.Visible = true;
         }
 
         private void StartBlockTimer()
         {
             secondsLeft = 10;
+
             lblTimer.Visible = true;
             lblTimer.Text = "00:10";
+
             btnLogin.Enabled = false;
             txtLogin.Enabled = false;
             txtPassword.Enabled = false;
             txtCaptcha.Enabled = false;
             btnShowPassword.Enabled = false;
+
             timerBlock.Start();
         }
 
         private void timerBlock_Tick(object sender, EventArgs e)
         {
             secondsLeft--;
+
             lblTimer.Text = "00:" + secondsLeft.ToString("D2");
 
             if (secondsLeft <= 0)
             {
                 timerBlock.Stop();
                 lblTimer.Visible = false;
+
                 btnLogin.Enabled = true;
                 txtLogin.Enabled = true;
                 txtPassword.Enabled = true;
                 txtCaptcha.Enabled = true;
                 btnShowPassword.Enabled = true;
-                if (txtCaptcha.Visible) RefreshCaptcha();
+
+                if (txtCaptcha.Visible)
+                {
+                    RefreshCaptcha();
+                }
             }
         }
 
@@ -197,11 +245,17 @@ namespace BoardGame_Store
             Hide();
 
             if (CurrentUser.Role == "Администратор")
+            {
                 new MainFormAdmin().ShowDialog();
+            }
             else if (CurrentUser.Role == "Товаровед")
+            {
                 new MainFormManager().ShowDialog();
+            }
             else if (CurrentUser.Role == "Продавец")
+            {
                 new MainFormSeller().ShowDialog();
+            }
 
             Show();
             ResetForm();
@@ -212,10 +266,13 @@ namespace BoardGame_Store
             txtLogin.Clear();
             txtPassword.Clear();
             txtCaptcha.Clear();
-            failedAttempts = 0;
+
+            fails = 0;
             passwordVisible = false;
+
             txtPassword.PasswordChar = '*';
             btnShowPassword.Text = "👁";
+
             lblCaptcha.Visible = false;
             pbCaptcha.Visible = false;
             txtCaptcha.Visible = false;
@@ -224,21 +281,14 @@ namespace BoardGame_Store
             lblError.Visible = false;
         }
 
-        /// <summary>
-        /// Открыть настройки БД.
-        /// </summary>
         private void btnSettings_Click(object sender, EventArgs e)
         {
             new SettingsForm().ShowDialog();
         }
 
-        /// <summary>
-        /// Выход из приложения.
-        /// </summary>
         private void btnExitApp_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Выйти из приложения?", "Подтверждение",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageHelper.AskConfirm("Выйти из приложения?"))
             {
                 Application.Exit();
             }

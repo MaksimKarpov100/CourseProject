@@ -1,48 +1,71 @@
-﻿namespace BoardGame_Store
+﻿using System;
+using System.IO;
+
+namespace BoardGame_Store
 {
     public static class DbConfig
     {
-        public static string Server
-        {
-            get { return Properties.Settings.Default.DbServer; }
-            set { Properties.Settings.Default.DbServer = value; }
-        }
-
-        public static int Port
-        {
-            get { return Properties.Settings.Default.DbPort; }
-            set { Properties.Settings.Default.DbPort = value; }
-        }
-
-        public static string Database
-        {
-            get { return Properties.Settings.Default.DbName; }
-            set { Properties.Settings.Default.DbName = value; }
-        }
-
-        public static string User
-        {
-            get { return Properties.Settings.Default.DbUser; }
-            set { Properties.Settings.Default.DbUser = value; }
-        }
-
-        public static string Password
-        {
-            get { return Properties.Settings.Default.DbPassword; }
-            set { Properties.Settings.Default.DbPassword = value; }
-        }
+        public static string Server = "localhost";
+        public static int Port = 3306;
+        public static string Database = "board_game_store";
+        public static string User = "root";
+        public static string Password = "";
 
         public static string BuildConnectionString()
         {
-            return "Server=" + Server + ";Port=" + Port + ";Database=" + Database +
-                   ";Uid=" + User + ";Pwd=" + Password + ";CharSet=utf8mb4;" +
-                   "Convert Zero Datetime=True;Allow User Variables=True";
-            ;
+            return "Server=" + Server + ";Port=" + Port + ";" +
+                   "Database=" + Database + ";Uid=" + User + ";" +
+                   "Pwd=" + Password + ";CharSet=utf8mb4;";
         }
 
         public static void Save()
         {
-            Properties.Settings.Default.Save();
+            try
+            {
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "db_settings.ini");
+
+                string[] lines = new string[]
+                {
+                    Server,
+                    Port.ToString(),
+                    Database,
+                    User,
+                    Password
+                };
+
+                File.WriteAllLines(path, lines);
+            }
+            catch
+            {
+            }
+        }
+
+        public static void Load()
+        {
+            try
+            {
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "db_settings.ini");
+
+                if (!File.Exists(path))
+                {
+                    return;
+                }
+
+                string[] lines = File.ReadAllLines(path);
+
+                if (lines.Length >= 5)
+                {
+                    Server = lines[0];
+                    Port = int.Parse(lines[1]);
+                    Database = lines[2];
+                    User = lines[3];
+                    Password = lines[4];
+                }
+            }
+            catch
+            {
+
+            }
         }
     }
 }

@@ -3,179 +3,155 @@
     partial class MainFormAdmin
     {
         private System.ComponentModel.IContainer components = null;
+
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null)) components.Dispose();
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+
             base.Dispose(disposing);
         }
 
         private void InitializeComponent()
         {
+            this.panelTop = new System.Windows.Forms.Panel();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.lblRole = new System.Windows.Forms.Label();
-            this.btnUsers = new System.Windows.Forms.Button();
-            this.btnGames = new System.Windows.Forms.Button();
-            this.btnOrders = new System.Windows.Forms.Button();
-            this.btnDiscounts = new System.Windows.Forms.Button();
-            this.btnSpecial = new System.Windows.Forms.Button();
-            this.btnCatalogs = new System.Windows.Forms.Button();
-            this.btnProfile = new System.Windows.Forms.Button();
+            this.lblUserInfo = new System.Windows.Forms.Label();
             this.btnExit = new System.Windows.Forms.Button();
+            this.tabMain = new System.Windows.Forms.TabControl();
+            this.tabOrders = new System.Windows.Forms.TabPage();
+            this.tabGames = new System.Windows.Forms.TabPage();
+            this.tabUsers = new System.Windows.Forms.TabPage();
+            this.tabCatalogs = new System.Windows.Forms.TabPage();
+            this.tabDiscounts = new System.Windows.Forms.TabPage();
+            this.tabSpecial = new System.Windows.Forms.TabPage();
+            this.tabProfile = new System.Windows.Forms.TabPage();
+
+            this.panelTop.SuspendLayout();
+            this.tabMain.SuspendLayout();
             this.SuspendLayout();
-            // 
+
+            // panelTop
+            this.panelTop.BackColor = System.Drawing.Color.Firebrick;
+            this.panelTop.Controls.Add(this.lblTitle);
+            this.panelTop.Controls.Add(this.lblUserInfo);
+            this.panelTop.Controls.Add(this.btnExit);
+            this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelTop.Location = new System.Drawing.Point(0, 0);
+            this.panelTop.Name = "panelTop";
+            this.panelTop.Size = new System.Drawing.Size(1200, 60);
+            this.panelTop.TabIndex = 0;
+
             // lblTitle
-            // 
-            this.lblTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.Location = new System.Drawing.Point(30, 20);
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.White;
+            this.lblTitle.Location = new System.Drawing.Point(20, 15);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(404, 26);
-            this.lblTitle.TabIndex = 9;
-            this.lblTitle.Text = "Board Game Store - Администратор";
-            // 
-            // lblRole
-            // 
-            this.lblRole.AutoSize = true;
-            this.lblRole.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lblRole.ForeColor = System.Drawing.Color.Gray;
-            this.lblRole.Location = new System.Drawing.Point(32, 55);
-            this.lblRole.Name = "lblRole";
-            this.lblRole.Size = new System.Drawing.Size(151, 17);
-            this.lblRole.TabIndex = 8;
-            this.lblRole.Text = "Роль: Администратор";
-            // 
-            // btnUsers
-            // 
-            this.btnUsers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUsers.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.btnUsers.Location = new System.Drawing.Point(30, 95);
-            this.btnUsers.Name = "btnUsers";
-            this.btnUsers.Size = new System.Drawing.Size(290, 55);
-            this.btnUsers.TabIndex = 0;
-            this.btnUsers.Text = "Пользователи";
-            this.btnUsers.Click += new System.EventHandler(this.btnUsers_Click);
-            // 
-            // btnGames
-            // 
-            this.btnGames.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGames.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.btnGames.Location = new System.Drawing.Point(340, 95);
-            this.btnGames.Name = "btnGames";
-            this.btnGames.Size = new System.Drawing.Size(290, 55);
-            this.btnGames.TabIndex = 1;
-            this.btnGames.Text = "Товары ";
-            this.btnGames.Click += new System.EventHandler(this.btnGames_Click);
-            // 
-            // btnOrders
-            // 
-            this.btnOrders.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOrders.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.btnOrders.Location = new System.Drawing.Point(30, 160);
-            this.btnOrders.Name = "btnOrders";
-            this.btnOrders.Size = new System.Drawing.Size(290, 55);
-            this.btnOrders.TabIndex = 2;
-            this.btnOrders.Text = "Учёт заказов";
-            this.btnOrders.Click += new System.EventHandler(this.btnOrders_Click);
-            // 
-            // btnDiscounts
-            // 
-            this.btnDiscounts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDiscounts.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.btnDiscounts.Location = new System.Drawing.Point(340, 160);
-            this.btnDiscounts.Name = "btnDiscounts";
-            this.btnDiscounts.Size = new System.Drawing.Size(290, 55);
-            this.btnDiscounts.TabIndex = 3;
-            this.btnDiscounts.Text = "Скидки";
-            this.btnDiscounts.Click += new System.EventHandler(this.btnDiscounts_Click);
-            // 
-            // btnSpecial
-            // 
-            this.btnSpecial.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSpecial.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.btnSpecial.Location = new System.Drawing.Point(30, 225);
-            this.btnSpecial.Name = "btnSpecial";
-            this.btnSpecial.Size = new System.Drawing.Size(290, 55);
-            this.btnSpecial.TabIndex = 4;
-            this.btnSpecial.Text = "Специальные возможности";
-            this.btnSpecial.Click += new System.EventHandler(this.btnSpecial_Click);
-            // 
-            // btnCatalogs
-            // 
-            this.btnCatalogs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCatalogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.btnCatalogs.Location = new System.Drawing.Point(340, 225);
-            this.btnCatalogs.Name = "btnCatalogs";
-            this.btnCatalogs.Size = new System.Drawing.Size(290, 55);
-            this.btnCatalogs.TabIndex = 5;
-            this.btnCatalogs.Text = "Справочники";
-            this.btnCatalogs.Click += new System.EventHandler(this.btnCatalogs_Click);
-            // 
-            // btnProfile
-            // 
-            this.btnProfile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnProfile.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.btnProfile.Location = new System.Drawing.Point(30, 290);
-            this.btnProfile.Name = "btnProfile";
-            this.btnProfile.Size = new System.Drawing.Size(290, 55);
-            this.btnProfile.TabIndex = 6;
-            this.btnProfile.Text = "Профиль";
-            this.btnProfile.Click += new System.EventHandler(this.btnProfile_Click);
-            // 
+            this.lblTitle.Size = new System.Drawing.Size(220, 25);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "Магазин настольных игр";
+
+            // lblUserInfo
+            this.lblUserInfo.AutoSize = true;
+            this.lblUserInfo.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblUserInfo.ForeColor = System.Drawing.Color.White;
+            this.lblUserInfo.Location = new System.Drawing.Point(750, 20);
+            this.lblUserInfo.Name = "lblUserInfo";
+            this.lblUserInfo.Size = new System.Drawing.Size(150, 20);
+            this.lblUserInfo.TabIndex = 1;
+            this.lblUserInfo.Text = "Пользователь";
+
             // btnExit
-            // 
-            this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.btnExit.Location = new System.Drawing.Point(340, 290);
+            this.btnExit.BackColor = System.Drawing.Color.DarkRed;
+            this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnExit.ForeColor = System.Drawing.Color.White;
+            this.btnExit.Location = new System.Drawing.Point(1080, 12);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(290, 55);
-            this.btnExit.TabIndex = 7;
+            this.btnExit.Size = new System.Drawing.Size(100, 36);
+            this.btnExit.TabIndex = 2;
             this.btnExit.Text = "Выход";
+            this.btnExit.UseVisualStyleBackColor = false;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
-            // 
+
+            // tabMain
+            this.tabMain.Controls.Add(this.tabOrders);
+            this.tabMain.Controls.Add(this.tabGames);
+            this.tabMain.Controls.Add(this.tabUsers);
+            this.tabMain.Controls.Add(this.tabCatalogs);
+            this.tabMain.Controls.Add(this.tabDiscounts);
+            this.tabMain.Controls.Add(this.tabSpecial);
+            this.tabMain.Controls.Add(this.tabProfile);
+            this.tabMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabMain.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.tabMain.Location = new System.Drawing.Point(0, 60);
+            this.tabMain.Name = "tabMain";
+            this.tabMain.SelectedIndex = 0;
+            this.tabMain.Size = new System.Drawing.Size(1200, 700);
+            this.tabMain.TabIndex = 1;
+            this.tabMain.SelectedIndexChanged += new System.EventHandler(this.tabMain_SelectedIndexChanged);
+
+            // tabOrders
+            this.tabOrders.Padding = new System.Windows.Forms.Padding(3);
+            this.tabOrders.TabIndex = 0;
+            this.tabOrders.Text = "📦 Заказы";
+
+            // tabGames
+            this.tabGames.TabIndex = 1;
+            this.tabGames.Text = "🎮 Товары";
+
+            // tabUsers
+            this.tabUsers.TabIndex = 2;
+            this.tabUsers.Text = "👥 Пользователи";
+
+            // tabCatalogs
+            this.tabCatalogs.TabIndex = 3;
+            this.tabCatalogs.Text = "🏷️ Справочники";
+
+            // tabDiscounts
+            this.tabDiscounts.TabIndex = 4;
+            this.tabDiscounts.Text = "💰 Скидки";
+
+            // tabSpecial
+            this.tabSpecial.TabIndex = 5;
+            this.tabSpecial.Text = "⚙️ Специальные возможности";
+
+            // tabProfile
+            this.tabProfile.TabIndex = 6;
+            this.tabProfile.Text = "👤 Профиль";
+
             // MainFormAdmin
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(660, 375);
-            this.Controls.Add(this.btnExit);
-            this.Controls.Add(this.btnProfile);
-            this.Controls.Add(this.btnCatalogs);
-            this.Controls.Add(this.btnSpecial);
-            this.Controls.Add(this.btnDiscounts);
-            this.Controls.Add(this.btnOrders);
-            this.Controls.Add(this.btnGames);
-            this.Controls.Add(this.btnUsers);
-            this.Controls.Add(this.lblRole);
-            this.Controls.Add(this.lblTitle);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.MinimumSize = new System.Drawing.Size(660, 375);
+            this.ClientSize = new System.Drawing.Size(1200, 760);
+            this.ControlBox = false;
+            this.Controls.Add(this.tabMain);
+            this.Controls.Add(this.panelTop);
+            this.MinimumSize = new System.Drawing.Size(1000, 700);
             this.Name = "MainFormAdmin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Главная форма (Администратор)";
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            this.Text = "Board Game Store — Администратор";
 
+            this.panelTop.ResumeLayout(false);
+            this.panelTop.PerformLayout();
+            this.tabMain.ResumeLayout(false);
+            this.ResumeLayout(false);
         }
 
+        private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Label lblRole;
-        private System.Windows.Forms.Button btnUsers;
-        private System.Windows.Forms.Button btnGames;
-        private System.Windows.Forms.Button btnOrders;
-        private System.Windows.Forms.Button btnDiscounts;
-        private System.Windows.Forms.Button btnSpecial;
-        private System.Windows.Forms.Button btnCatalogs;
-        private System.Windows.Forms.Button btnProfile;
+        private System.Windows.Forms.Label lblUserInfo;
         private System.Windows.Forms.Button btnExit;
+        private System.Windows.Forms.TabControl tabMain;
+        private System.Windows.Forms.TabPage tabOrders;
+        private System.Windows.Forms.TabPage tabGames;
+        private System.Windows.Forms.TabPage tabUsers;
+        private System.Windows.Forms.TabPage tabCatalogs;
+        private System.Windows.Forms.TabPage tabDiscounts;
+        private System.Windows.Forms.TabPage tabSpecial;
+        private System.Windows.Forms.TabPage tabProfile;
     }
 }

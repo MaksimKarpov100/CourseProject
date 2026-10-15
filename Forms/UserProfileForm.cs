@@ -20,11 +20,9 @@ namespace BoardGame_Store
             txtPhone.ReadOnly = true;
         }
 
-        private void btnClose_Click(object sender, EventArgs e) { this.Close(); }
-
-        private void btnChangePassword_Click(object sender, EventArgs e)
+        private void btnClose_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Смена пароля доступна через администратора");
+            this.Close();
         }
     }
 }
