@@ -16,8 +16,8 @@
 
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.lblRole = new System.Windows.Forms.Label();
             this.panelFilters = new System.Windows.Forms.Panel();
             this.lblOrderNumber = new System.Windows.Forms.Label();
             this.txtOrderNumber = new System.Windows.Forms.TextBox();
@@ -32,15 +32,6 @@
             this.btnReset = new System.Windows.Forms.Button();
             this.dgvOrders = new System.Windows.Forms.DataGridView();
             this.lblCount = new System.Windows.Forms.Label();
-            this.grpLegend = new System.Windows.Forms.GroupBox();
-            this.pnlNew = new System.Windows.Forms.Panel();
-            this.lblNew = new System.Windows.Forms.Label();
-            this.pnlNotReady = new System.Windows.Forms.Panel();
-            this.lblNotReady = new System.Windows.Forms.Label();
-            this.pnlReady = new System.Windows.Forms.Panel();
-            this.lblReady = new System.Windows.Forms.Label();
-            this.pnlCanceled = new System.Windows.Forms.Panel();
-            this.lblCanceled = new System.Windows.Forms.Label();
             this.panelPagination = new System.Windows.Forms.Panel();
             this.btnFirst = new System.Windows.Forms.Button();
             this.btnPrev = new System.Windows.Forms.Button();
@@ -67,10 +58,9 @@
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnReport = new System.Windows.Forms.Button();
             this.lblHint = new System.Windows.Forms.Label();
-            this.btnBack = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panelFilters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrders)).BeginInit();
-            this.grpLegend.SuspendLayout();
             this.panelPagination.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvContent)).BeginInit();
             this.panelCalc.SuspendLayout();
@@ -82,21 +72,11 @@
             // 
             this.lblTitle.AutoSize = true;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.Location = new System.Drawing.Point(300, 10);
+            this.lblTitle.Location = new System.Drawing.Point(368, 9);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(152, 30);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Учёт заказов";
-            // 
-            // lblRole
-            // 
-            this.lblRole.AutoSize = true;
-            this.lblRole.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblRole.Location = new System.Drawing.Point(620, 15);
-            this.lblRole.Name = "lblRole";
-            this.lblRole.Size = new System.Drawing.Size(90, 19);
-            this.lblRole.TabIndex = 1;
-            this.lblRole.Text = "[Роль] [ФИО]";
             // 
             // panelFilters
             // 
@@ -114,7 +94,7 @@
             this.panelFilters.Controls.Add(this.btnReset);
             this.panelFilters.Location = new System.Drawing.Point(15, 45);
             this.panelFilters.Name = "panelFilters";
-            this.panelFilters.Size = new System.Drawing.Size(770, 75);
+            this.panelFilters.Size = new System.Drawing.Size(873, 75);
             this.panelFilters.TabIndex = 2;
             // 
             // lblOrderNumber
@@ -220,9 +200,9 @@
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(681, 26);
+            this.btnReset.Location = new System.Drawing.Point(787, 20);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(80, 29);
+            this.btnReset.Size = new System.Drawing.Size(80, 47);
             this.btnReset.TabIndex = 10;
             this.btnReset.Text = "Сброс";
             this.btnReset.UseVisualStyleBackColor = true;
@@ -232,13 +212,16 @@
             // 
             this.dgvOrders.AllowUserToAddRows = false;
             this.dgvOrders.AllowUserToDeleteRows = false;
+            this.dgvOrders.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvOrders.BackgroundColor = System.Drawing.Color.White;
+            this.dgvOrders.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvOrders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvOrders.Location = new System.Drawing.Point(15, 130);
             this.dgvOrders.Name = "dgvOrders";
             this.dgvOrders.ReadOnly = true;
             this.dgvOrders.RowHeadersVisible = false;
             this.dgvOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvOrders.Size = new System.Drawing.Size(770, 170);
+            this.dgvOrders.Size = new System.Drawing.Size(873, 267);
             this.dgvOrders.TabIndex = 3;
             this.dgvOrders.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrders_CellDoubleClick);
             this.dgvOrders.SelectionChanged += new System.EventHandler(this.dgvOrders_SelectionChanged);
@@ -246,105 +229,11 @@
             // lblCount
             // 
             this.lblCount.AutoSize = true;
-            this.lblCount.Location = new System.Drawing.Point(15, 305);
+            this.lblCount.Location = new System.Drawing.Point(15, 400);
             this.lblCount.Name = "lblCount";
             this.lblCount.Size = new System.Drawing.Size(151, 19);
             this.lblCount.TabIndex = 4;
             this.lblCount.Text = "Количество записей: 0";
-            // 
-            // grpLegend
-            // 
-            this.grpLegend.Controls.Add(this.pnlNew);
-            this.grpLegend.Controls.Add(this.lblNew);
-            this.grpLegend.Controls.Add(this.pnlNotReady);
-            this.grpLegend.Controls.Add(this.lblNotReady);
-            this.grpLegend.Controls.Add(this.pnlReady);
-            this.grpLegend.Controls.Add(this.lblReady);
-            this.grpLegend.Controls.Add(this.pnlCanceled);
-            this.grpLegend.Controls.Add(this.lblCanceled);
-            this.grpLegend.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.grpLegend.Location = new System.Drawing.Point(560, 300);
-            this.grpLegend.Name = "grpLegend";
-            this.grpLegend.Size = new System.Drawing.Size(225, 72);
-            this.grpLegend.TabIndex = 5;
-            this.grpLegend.TabStop = false;
-            this.grpLegend.Text = "Легенда статусов";
-            // 
-            // pnlNew
-            // 
-            this.pnlNew.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(243)))), ((int)(((byte)(205)))));
-            this.pnlNew.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlNew.Location = new System.Drawing.Point(12, 25);
-            this.pnlNew.Name = "pnlNew";
-            this.pnlNew.Size = new System.Drawing.Size(15, 15);
-            this.pnlNew.TabIndex = 0;
-            // 
-            // lblNew
-            // 
-            this.lblNew.AutoSize = true;
-            this.lblNew.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lblNew.Location = new System.Drawing.Point(32, 25);
-            this.lblNew.Name = "lblNew";
-            this.lblNew.Size = new System.Drawing.Size(43, 13);
-            this.lblNew.TabIndex = 1;
-            this.lblNew.Text = "Новый";
-            // 
-            // pnlNotReady
-            // 
-            this.pnlNotReady.BackColor = System.Drawing.Color.White;
-            this.pnlNotReady.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlNotReady.Location = new System.Drawing.Point(110, 25);
-            this.pnlNotReady.Name = "pnlNotReady";
-            this.pnlNotReady.Size = new System.Drawing.Size(15, 15);
-            this.pnlNotReady.TabIndex = 2;
-            // 
-            // lblNotReady
-            // 
-            this.lblNotReady.AutoSize = true;
-            this.lblNotReady.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lblNotReady.Location = new System.Drawing.Point(130, 25);
-            this.lblNotReady.Name = "lblNotReady";
-            this.lblNotReady.Size = new System.Drawing.Size(54, 13);
-            this.lblNotReady.TabIndex = 3;
-            this.lblNotReady.Text = "Не готов";
-            // 
-            // pnlReady
-            // 
-            this.pnlReady.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(237)))), ((int)(((byte)(218)))));
-            this.pnlReady.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlReady.Location = new System.Drawing.Point(12, 48);
-            this.pnlReady.Name = "pnlReady";
-            this.pnlReady.Size = new System.Drawing.Size(15, 15);
-            this.pnlReady.TabIndex = 4;
-            // 
-            // lblReady
-            // 
-            this.lblReady.AutoSize = true;
-            this.lblReady.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lblReady.Location = new System.Drawing.Point(32, 48);
-            this.lblReady.Name = "lblReady";
-            this.lblReady.Size = new System.Drawing.Size(37, 13);
-            this.lblReady.TabIndex = 5;
-            this.lblReady.Text = "Готов";
-            // 
-            // pnlCanceled
-            // 
-            this.pnlCanceled.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(215)))), ((int)(((byte)(218)))));
-            this.pnlCanceled.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlCanceled.Location = new System.Drawing.Point(110, 48);
-            this.pnlCanceled.Name = "pnlCanceled";
-            this.pnlCanceled.Size = new System.Drawing.Size(15, 15);
-            this.pnlCanceled.TabIndex = 6;
-            // 
-            // lblCanceled
-            // 
-            this.lblCanceled.AutoSize = true;
-            this.lblCanceled.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lblCanceled.Location = new System.Drawing.Point(130, 48);
-            this.lblCanceled.Name = "lblCanceled";
-            this.lblCanceled.Size = new System.Drawing.Size(55, 13);
-            this.lblCanceled.TabIndex = 7;
-            this.lblCanceled.Text = "Отменён";
             // 
             // panelPagination
             // 
@@ -355,10 +244,10 @@
             this.panelPagination.Controls.Add(this.btnLast);
             this.panelPagination.Controls.Add(this.lblPageSize);
             this.panelPagination.Controls.Add(this.cmbPageSize);
-            this.panelPagination.Location = new System.Drawing.Point(15, 375);
+            this.panelPagination.Location = new System.Drawing.Point(15, 420);
             this.panelPagination.Name = "panelPagination";
             this.panelPagination.Size = new System.Drawing.Size(770, 40);
-            this.panelPagination.TabIndex = 6;
+            this.panelPagination.TabIndex = 5;
             // 
             // btnFirst
             // 
@@ -412,7 +301,7 @@
             // lblPageSize
             // 
             this.lblPageSize.AutoSize = true;
-            this.lblPageSize.Location = new System.Drawing.Point(631, 12);
+            this.lblPageSize.Location = new System.Drawing.Point(400, 12);
             this.lblPageSize.Name = "lblPageSize";
             this.lblPageSize.Size = new System.Drawing.Size(64, 19);
             this.lblPageSize.TabIndex = 5;
@@ -426,7 +315,7 @@
             "25",
             "50",
             "100"});
-            this.cmbPageSize.Location = new System.Drawing.Point(701, 8);
+            this.cmbPageSize.Location = new System.Drawing.Point(470, 8);
             this.cmbPageSize.Name = "cmbPageSize";
             this.cmbPageSize.Size = new System.Drawing.Size(60, 25);
             this.cmbPageSize.TabIndex = 6;
@@ -436,24 +325,27 @@
             // 
             this.lblComposition.AutoSize = true;
             this.lblComposition.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblComposition.Location = new System.Drawing.Point(15, 425);
+            this.lblComposition.Location = new System.Drawing.Point(15, 470);
             this.lblComposition.Name = "lblComposition";
             this.lblComposition.Size = new System.Drawing.Size(108, 20);
-            this.lblComposition.TabIndex = 7;
+            this.lblComposition.TabIndex = 6;
             this.lblComposition.Text = "Состав заказа";
             // 
             // dgvContent
             // 
             this.dgvContent.AllowUserToAddRows = false;
             this.dgvContent.AllowUserToDeleteRows = false;
+            this.dgvContent.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvContent.BackgroundColor = System.Drawing.Color.White;
+            this.dgvContent.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvContent.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvContent.Location = new System.Drawing.Point(15, 450);
+            this.dgvContent.Location = new System.Drawing.Point(15, 495);
             this.dgvContent.Name = "dgvContent";
             this.dgvContent.ReadOnly = true;
             this.dgvContent.RowHeadersVisible = false;
             this.dgvContent.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvContent.Size = new System.Drawing.Size(500, 120);
-            this.dgvContent.TabIndex = 8;
+            this.dgvContent.Size = new System.Drawing.Size(612, 170);
+            this.dgvContent.TabIndex = 7;
             // 
             // panelCalc
             // 
@@ -468,15 +360,15 @@
             this.panelCalc.Controls.Add(this.txtSumWith);
             this.panelCalc.Controls.Add(this.lblTotal);
             this.panelCalc.Controls.Add(this.txtTotal);
-            this.panelCalc.Location = new System.Drawing.Point(530, 450);
+            this.panelCalc.Location = new System.Drawing.Point(633, 499);
             this.panelCalc.Name = "panelCalc";
-            this.panelCalc.Size = new System.Drawing.Size(255, 120);
-            this.panelCalc.TabIndex = 9;
+            this.panelCalc.Size = new System.Drawing.Size(255, 170);
+            this.panelCalc.TabIndex = 8;
             // 
             // lblDiscount
             // 
             this.lblDiscount.AutoSize = true;
-            this.lblDiscount.Location = new System.Drawing.Point(10, 8);
+            this.lblDiscount.Location = new System.Drawing.Point(10, 15);
             this.lblDiscount.Name = "lblDiscount";
             this.lblDiscount.Size = new System.Drawing.Size(73, 19);
             this.lblDiscount.TabIndex = 0;
@@ -484,7 +376,7 @@
             // 
             // nudDiscount
             // 
-            this.nudDiscount.Location = new System.Drawing.Point(160, 5);
+            this.nudDiscount.Location = new System.Drawing.Point(150, 12);
             this.nudDiscount.Name = "nudDiscount";
             this.nudDiscount.Size = new System.Drawing.Size(80, 25);
             this.nudDiscount.TabIndex = 1;
@@ -493,7 +385,7 @@
             // lblSumWithout
             // 
             this.lblSumWithout.AutoSize = true;
-            this.lblSumWithout.Location = new System.Drawing.Point(10, 35);
+            this.lblSumWithout.Location = new System.Drawing.Point(10, 50);
             this.lblSumWithout.Name = "lblSumWithout";
             this.lblSumWithout.Size = new System.Drawing.Size(78, 19);
             this.lblSumWithout.TabIndex = 2;
@@ -501,16 +393,16 @@
             // 
             // txtSumWithout
             // 
-            this.txtSumWithout.Location = new System.Drawing.Point(120, 32);
+            this.txtSumWithout.Location = new System.Drawing.Point(130, 47);
             this.txtSumWithout.Name = "txtSumWithout";
             this.txtSumWithout.ReadOnly = true;
-            this.txtSumWithout.Size = new System.Drawing.Size(120, 25);
+            this.txtSumWithout.Size = new System.Drawing.Size(100, 25);
             this.txtSumWithout.TabIndex = 3;
             // 
             // lblDiscountAmount
             // 
             this.lblDiscountAmount.AutoSize = true;
-            this.lblDiscountAmount.Location = new System.Drawing.Point(10, 62);
+            this.lblDiscountAmount.Location = new System.Drawing.Point(10, 80);
             this.lblDiscountAmount.Name = "lblDiscountAmount";
             this.lblDiscountAmount.Size = new System.Drawing.Size(88, 19);
             this.lblDiscountAmount.TabIndex = 4;
@@ -518,16 +410,16 @@
             // 
             // txtDiscountAmount
             // 
-            this.txtDiscountAmount.Location = new System.Drawing.Point(120, 59);
+            this.txtDiscountAmount.Location = new System.Drawing.Point(130, 77);
             this.txtDiscountAmount.Name = "txtDiscountAmount";
             this.txtDiscountAmount.ReadOnly = true;
-            this.txtDiscountAmount.Size = new System.Drawing.Size(120, 25);
+            this.txtDiscountAmount.Size = new System.Drawing.Size(100, 25);
             this.txtDiscountAmount.TabIndex = 5;
             // 
             // lblSumWith
             // 
             this.lblSumWith.AutoSize = true;
-            this.lblSumWith.Location = new System.Drawing.Point(10, 89);
+            this.lblSumWith.Location = new System.Drawing.Point(10, 110);
             this.lblSumWith.Name = "lblSumWith";
             this.lblSumWith.Size = new System.Drawing.Size(82, 19);
             this.lblSumWith.TabIndex = 6;
@@ -535,17 +427,17 @@
             // 
             // txtSumWith
             // 
-            this.txtSumWith.Location = new System.Drawing.Point(120, 86);
+            this.txtSumWith.Location = new System.Drawing.Point(130, 107);
             this.txtSumWith.Name = "txtSumWith";
             this.txtSumWith.ReadOnly = true;
-            this.txtSumWith.Size = new System.Drawing.Size(120, 25);
+            this.txtSumWith.Size = new System.Drawing.Size(100, 25);
             this.txtSumWith.TabIndex = 7;
             // 
             // lblTotal
             // 
             this.lblTotal.AutoSize = true;
             this.lblTotal.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblTotal.Location = new System.Drawing.Point(10, 130);
+            this.lblTotal.Location = new System.Drawing.Point(10, 140);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(50, 19);
             this.lblTotal.TabIndex = 8;
@@ -554,10 +446,10 @@
             // txtTotal
             // 
             this.txtTotal.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.txtTotal.Location = new System.Drawing.Point(120, 127);
+            this.txtTotal.Location = new System.Drawing.Point(130, 137);
             this.txtTotal.Name = "txtTotal";
             this.txtTotal.ReadOnly = true;
-            this.txtTotal.Size = new System.Drawing.Size(120, 25);
+            this.txtTotal.Size = new System.Drawing.Size(100, 25);
             this.txtTotal.TabIndex = 9;
             // 
             // panelButtons
@@ -566,15 +458,14 @@
             this.panelButtons.Controls.Add(this.btnEdit);
             this.panelButtons.Controls.Add(this.btnReport);
             this.panelButtons.Controls.Add(this.lblHint);
-            this.panelButtons.Controls.Add(this.btnBack);
-            this.panelButtons.Location = new System.Drawing.Point(15, 580);
+            this.panelButtons.Location = new System.Drawing.Point(15, 675);
             this.panelButtons.Name = "panelButtons";
-            this.panelButtons.Size = new System.Drawing.Size(770, 45);
-            this.panelButtons.TabIndex = 10;
+            this.panelButtons.Size = new System.Drawing.Size(873, 45);
+            this.panelButtons.TabIndex = 9;
             // 
             // btnAdd
             // 
-            this.btnAdd.BackColor = System.Drawing.Color.SeaGreen;
+            this.btnAdd.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnAdd.ForeColor = System.Drawing.Color.White;
@@ -588,7 +479,7 @@
             // 
             // btnEdit
             // 
-            this.btnEdit.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnEdit.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnEdit.ForeColor = System.Drawing.Color.White;
@@ -602,13 +493,13 @@
             // 
             // btnReport
             // 
-            this.btnReport.BackColor = System.Drawing.Color.DarkOrange;
+            this.btnReport.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReport.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnReport.ForeColor = System.Drawing.Color.White;
             this.btnReport.Location = new System.Drawing.Point(300, 5);
             this.btnReport.Name = "btnReport";
-            this.btnReport.Size = new System.Drawing.Size(160, 35);
+            this.btnReport.Size = new System.Drawing.Size(172, 35);
             this.btnReport.TabIndex = 2;
             this.btnReport.Text = "Сформировать отчёт";
             this.btnReport.UseVisualStyleBackColor = false;
@@ -619,41 +510,25 @@
             this.lblHint.AutoSize = true;
             this.lblHint.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
             this.lblHint.ForeColor = System.Drawing.Color.Gray;
-            this.lblHint.Location = new System.Drawing.Point(475, 16);
+            this.lblHint.Location = new System.Drawing.Point(526, 17);
             this.lblHint.Name = "lblHint";
-            this.lblHint.Size = new System.Drawing.Size(160, 13);
+            this.lblHint.Size = new System.Drawing.Size(130, 13);
             this.lblHint.TabIndex = 3;
-            this.lblHint.Text = "Двойной клик - удалить заказ";
-            // 
-            // btnBack
-            // 
-            this.btnBack.BackColor = System.Drawing.Color.Gray;
-            this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBack.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnBack.ForeColor = System.Drawing.Color.White;
-            this.btnBack.Location = new System.Drawing.Point(660, 5);
-            this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(110, 35);
-            this.btnBack.TabIndex = 4;
-            this.btnBack.Text = "В меню";
-            this.btnBack.UseVisualStyleBackColor = false;
-            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            this.lblHint.Text = "Двойной клик - удалить";
             // 
             // OrdersListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 640);
+            this.ClientSize = new System.Drawing.Size(894, 721);
             this.Controls.Add(this.panelButtons);
             this.Controls.Add(this.panelCalc);
             this.Controls.Add(this.dgvContent);
             this.Controls.Add(this.lblComposition);
             this.Controls.Add(this.panelPagination);
-            this.Controls.Add(this.grpLegend);
             this.Controls.Add(this.lblCount);
             this.Controls.Add(this.dgvOrders);
             this.Controls.Add(this.panelFilters);
-            this.Controls.Add(this.lblRole);
             this.Controls.Add(this.lblTitle);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -665,8 +540,6 @@
             this.panelFilters.ResumeLayout(false);
             this.panelFilters.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrders)).EndInit();
-            this.grpLegend.ResumeLayout(false);
-            this.grpLegend.PerformLayout();
             this.panelPagination.ResumeLayout(false);
             this.panelPagination.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvContent)).EndInit();
@@ -681,7 +554,6 @@
         }
 
         private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Label lblRole;
         private System.Windows.Forms.Panel panelFilters;
         private System.Windows.Forms.Label lblOrderNumber;
         private System.Windows.Forms.TextBox txtOrderNumber;
@@ -696,15 +568,6 @@
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.DataGridView dgvOrders;
         private System.Windows.Forms.Label lblCount;
-        private System.Windows.Forms.GroupBox grpLegend;
-        private System.Windows.Forms.Panel pnlNew;
-        private System.Windows.Forms.Label lblNew;
-        private System.Windows.Forms.Panel pnlNotReady;
-        private System.Windows.Forms.Label lblNotReady;
-        private System.Windows.Forms.Panel pnlReady;
-        private System.Windows.Forms.Label lblReady;
-        private System.Windows.Forms.Panel pnlCanceled;
-        private System.Windows.Forms.Label lblCanceled;
         private System.Windows.Forms.Panel panelPagination;
         private System.Windows.Forms.Button btnFirst;
         private System.Windows.Forms.Button btnPrev;
@@ -731,6 +594,6 @@
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnReport;
         private System.Windows.Forms.Label lblHint;
-        private System.Windows.Forms.Button btnBack;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

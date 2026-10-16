@@ -84,7 +84,7 @@
             this.txtLogin.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.txtLogin.Location = new System.Drawing.Point(60, 165);
             this.txtLogin.Name = "txtLogin";
-            this.txtLogin.Size = new System.Drawing.Size(320, 29);
+            this.txtLogin.Size = new System.Drawing.Size(389, 29);
             this.txtLogin.TabIndex = 4;
             // 
             // lblPassword
@@ -103,13 +103,13 @@
             this.txtPassword.Location = new System.Drawing.Point(60, 235);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(280, 29);
+            this.txtPassword.Size = new System.Drawing.Size(389, 29);
             this.txtPassword.TabIndex = 6;
             // 
             // btnShowPassword
             // 
             this.btnShowPassword.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnShowPassword.Location = new System.Drawing.Point(345, 234);
+            this.btnShowPassword.Location = new System.Drawing.Point(455, 235);
             this.btnShowPassword.Name = "btnShowPassword";
             this.btnShowPassword.Size = new System.Drawing.Size(35, 31);
             this.btnShowPassword.TabIndex = 7;
@@ -122,7 +122,7 @@
             this.lblCaptcha.AutoSize = true;
             this.lblCaptcha.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblCaptcha.ForeColor = System.Drawing.Color.DarkRed;
-            this.lblCaptcha.Location = new System.Drawing.Point(60, 285);
+            this.lblCaptcha.Location = new System.Drawing.Point(59, 267);
             this.lblCaptcha.Name = "lblCaptcha";
             this.lblCaptcha.Size = new System.Drawing.Size(163, 19);
             this.lblCaptcha.TabIndex = 8;
@@ -132,9 +132,9 @@
             // pbCaptcha
             // 
             this.pbCaptcha.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbCaptcha.Location = new System.Drawing.Point(216, 314);
+            this.pbCaptcha.Location = new System.Drawing.Point(261, 313);
             this.pbCaptcha.Name = "pbCaptcha";
-            this.pbCaptcha.Size = new System.Drawing.Size(150, 50);
+            this.pbCaptcha.Size = new System.Drawing.Size(169, 78);
             this.pbCaptcha.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbCaptcha.TabIndex = 9;
             this.pbCaptcha.TabStop = false;
@@ -144,7 +144,7 @@
             // txtCaptcha
             // 
             this.txtCaptcha.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.txtCaptcha.Location = new System.Drawing.Point(60, 335);
+            this.txtCaptcha.Location = new System.Drawing.Point(109, 362);
             this.txtCaptcha.Name = "txtCaptcha";
             this.txtCaptcha.Size = new System.Drawing.Size(150, 29);
             this.txtCaptcha.TabIndex = 10;
@@ -155,7 +155,7 @@
             this.lblCaptchaHint.AutoSize = true;
             this.lblCaptchaHint.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
             this.lblCaptchaHint.ForeColor = System.Drawing.Color.Gray;
-            this.lblCaptchaHint.Location = new System.Drawing.Point(216, 374);
+            this.lblCaptchaHint.Location = new System.Drawing.Point(267, 402);
             this.lblCaptchaHint.Name = "lblCaptchaHint";
             this.lblCaptchaHint.Size = new System.Drawing.Size(158, 13);
             this.lblCaptchaHint.TabIndex = 11;
@@ -167,7 +167,7 @@
             this.lblTimer.AutoSize = true;
             this.lblTimer.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblTimer.ForeColor = System.Drawing.Color.Red;
-            this.lblTimer.Location = new System.Drawing.Point(316, 285);
+            this.lblTimer.Location = new System.Drawing.Point(107, 338);
             this.lblTimer.Name = "lblTimer";
             this.lblTimer.Size = new System.Drawing.Size(50, 21);
             this.lblTimer.TabIndex = 12;
@@ -179,7 +179,7 @@
             this.lblError.AutoSize = true;
             this.lblError.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(60, 380);
+            this.lblError.Location = new System.Drawing.Point(105, 376);
             this.lblError.Name = "lblError";
             this.lblError.Size = new System.Drawing.Size(0, 15);
             this.lblError.TabIndex = 13;
@@ -191,9 +191,9 @@
             this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogin.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnLogin.ForeColor = System.Drawing.Color.White;
-            this.btnLogin.Location = new System.Drawing.Point(60, 410);
+            this.btnLogin.Location = new System.Drawing.Point(100, 446);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(320, 45);
+            this.btnLogin.Size = new System.Drawing.Size(330, 57);
             this.btnLogin.TabIndex = 14;
             this.btnLogin.Text = "Войти";
             this.btnLogin.UseVisualStyleBackColor = false;
@@ -205,9 +205,9 @@
             this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSettings.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnSettings.ForeColor = System.Drawing.Color.White;
-            this.btnSettings.Location = new System.Drawing.Point(60, 470);
+            this.btnSettings.Location = new System.Drawing.Point(100, 506);
             this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(150, 35);
+            this.btnSettings.Size = new System.Drawing.Size(160, 47);
             this.btnSettings.TabIndex = 15;
             this.btnSettings.Text = "Настройки БД";
             this.btnSettings.UseVisualStyleBackColor = false;
@@ -219,9 +219,9 @@
             this.btnExitApp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExitApp.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnExitApp.ForeColor = System.Drawing.Color.White;
-            this.btnExitApp.Location = new System.Drawing.Point(230, 470);
+            this.btnExitApp.Location = new System.Drawing.Point(270, 506);
             this.btnExitApp.Name = "btnExitApp";
-            this.btnExitApp.Size = new System.Drawing.Size(150, 35);
+            this.btnExitApp.Size = new System.Drawing.Size(160, 47);
             this.btnExitApp.TabIndex = 16;
             this.btnExitApp.Text = "Выход";
             this.btnExitApp.UseVisualStyleBackColor = false;
@@ -232,7 +232,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(440, 530);
+            this.ClientSize = new System.Drawing.Size(511, 618);
             this.Controls.Add(this.btnExitApp);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.btnLogin);

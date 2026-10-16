@@ -22,19 +22,19 @@ namespace BoardGame_Store
         {
             try
             {
-                string cs = "Server=" + txtServer.Text + ";" +
+                string cs = "Server=" + txtServer.Text.Trim() + ";" +
                             "Port=" + (int)nudPort.Value + ";" +
-                            "Database=" + txtDatabase.Text + ";" +
-                            "Uid=" + txtUser.Text + ";" +
+                            "Uid=" + txtUser.Text.Trim() + ";" +
                             "Pwd=" + txtPassword.Text + ";" +
-                            "CharSet=utf8mb4;";
+                            "CharSet=utf8mb4;" +
+                            "AllowPublicKeyRetrieval=True;";
 
                 using (MySqlConnection conn = new MySqlConnection(cs))
                 {
                     conn.Open();
                 }
 
-                MessageHelper.ShowInfo("Подключение успешно!");
+                MessageHelper.ShowInfo("Подключение к серверу MySQL успешно!");
             }
             catch (Exception ex)
             {
@@ -52,7 +52,10 @@ namespace BoardGame_Store
 
             DbConfig.Save();
 
-            MessageHelper.ShowInfo("Настройки сохранены");
+            MessageHelper.ShowInfo("Настройки сохранены\n" +
+                "Сервер: " + DbConfig.Server + "\n" +
+                "База: " + DbConfig.Database + "\n" +
+                "Пользователь: " + DbConfig.User);
         }
 
         private void btnImportSql_Click(object sender, EventArgs e)
@@ -69,7 +72,14 @@ namespace BoardGame_Store
             {
                 string sql = File.ReadAllText(ofd.FileName, System.Text.Encoding.UTF8);
 
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                string cs = "Server=" + txtServer.Text.Trim() + ";" +
+                            "Port=" + (int)nudPort.Value + ";" +
+                            "Uid=" + txtUser.Text.Trim() + ";" +
+                            "Pwd=" + txtPassword.Text + ";" +
+                            "CharSet=utf8mb4;" +
+                            "AllowPublicKeyRetrieval=True;";
+
+                using (MySqlConnection conn = new MySqlConnection(cs))
                 {
                     conn.Open();
 
@@ -80,7 +90,14 @@ namespace BoardGame_Store
                     }
                 }
 
-                MessageHelper.ShowInfo("Импорт БД завершён успешно");
+                DbConfig.Server = txtServer.Text.Trim();
+                DbConfig.Port = (int)nudPort.Value;
+                DbConfig.Database = txtDatabase.Text.Trim();
+                DbConfig.User = txtUser.Text.Trim();
+                DbConfig.Password = txtPassword.Text;
+                DbConfig.Save();
+
+                MessageHelper.ShowInfo("Импорт БД завершён успешно\nБаза: " + DbConfig.Database);
             }
             catch (Exception ex)
             {

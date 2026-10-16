@@ -142,20 +142,9 @@ namespace BoardGame_Store
 
                     totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
 
-                    if (totalPages < 1)
-                    {
-                        totalPages = 1;
-                    }
-
-                    if (currentPage > totalPages)
-                    {
-                        currentPage = totalPages;
-                    }
-
-                    if (currentPage < 1)
-                    {
-                        currentPage = 1;
-                    }
+                    if (totalPages < 1) totalPages = 1;
+                    if (currentPage > totalPages) currentPage = totalPages;
+                    if (currentPage < 1) currentPage = 1;
 
                     string sql = "SELECT g.game_id AS `ID`, g.image_data AS `img`, " +
                                  "g.title AS `Название`, c.category_name AS `Категория`, " +
@@ -185,6 +174,8 @@ namespace BoardGame_Store
                     da.Fill(dt);
 
                     dgvGames.DataSource = dt;
+
+                    dgvGames.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
                     if (dgvGames.Columns["ID"] != null)
                     {

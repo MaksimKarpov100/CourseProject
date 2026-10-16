@@ -392,11 +392,32 @@ namespace BoardGame_Store
                 return 0;
             }
 
-            string[] columns = SplitCsvLine(lines[0]);
-            string colList = string.Join(", ", columns);
-            string paramList = "@p" + string.Join(", @p", Enumerable.Range(0, columns.Length));
+            string[] csvColumns = SplitCsvLine(lines[0]);
 
-            string sql = "INSERT INTO " + table + " (" + colList + ") VALUES (" + paramList + ")";
+            List<string> realColumns = GetTableColumns(table);
+
+            List<string> validColumns = new List<string>();
+            List<int> validIndexes = new List<int>();
+
+            for (int i = 0; i < csvColumns.Length; i++)
+            {
+                if (realColumns.Contains(csvColumns[i]))
+                {
+                    validColumns.Add(csvColumns[i]);
+                    validIndexes.Add(i);
+                }
+            }
+
+            if (validColumns.Count == 0)
+            {
+                return 0;
+            }
+
+            string colList = string.Join(", ", validColumns);
+            string paramList = "@p" + string.Join(", @p", Enumerable.Range(0, validColumns.Count));
+
+            string sql = "INSERT IGNORE INTO " + table +
+                         " (" + colList + ") VALUES (" + paramList + ")";
 
             using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
             {
@@ -416,16 +437,17 @@ namespace BoardGame_Store
 
                         string[] values = SplitCsvLine(lines[i]);
 
-                        if (values.Length != columns.Length)
+                        if (values.Length != csvColumns.Length)
                         {
                             continue;
                         }
 
                         using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                         {
-                            for (int k = 0; k < values.Length; k++)
+                            for (int k = 0; k < validColumns.Count; k++)
                             {
-                                string v = values[k];
+                                int csvIndex = validIndexes[k];
+                                string v = values[csvIndex];
 
                                 if (string.IsNullOrEmpty(v))
                                 {
@@ -437,8 +459,7 @@ namespace BoardGame_Store
                                 }
                             }
 
-                            cmd.ExecuteNonQuery();
-                            inserted++;
+                            inserted += cmd.ExecuteNonQuery();
                         }
                     }
                 }
@@ -450,6 +471,34 @@ namespace BoardGame_Store
             }
 
             return inserted;
+        }
+
+        private List<string> GetTableColumns(string table)
+        {
+            List<string> columns = new List<string>();
+
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                {
+                    conn.Open();
+
+                    MySqlCommand cmd = new MySqlCommand("SHOW COLUMNS FROM " + table, conn);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            columns.Add(reader["Field"].ToString());
+                        }
+                    }
+                }
+            }
+            catch
+            {
+            }
+
+            return columns;
         }
 
         private string[] SplitCsvLine(string line)

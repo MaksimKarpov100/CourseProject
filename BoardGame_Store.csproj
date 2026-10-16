@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CaptchaGenerator.cs" />
+    <Compile Include="DbInitializer.cs" />
     <Compile Include="Forms\CatalogsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -154,6 +155,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ChangePasswordForm.resx">
       <DependentUpon>ChangePasswordForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DiscountsForm.resx">
+      <DependentUpon>DiscountsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\GamesForm.resx">
       <DependentUpon>GamesForm.cs</DependentUpon>

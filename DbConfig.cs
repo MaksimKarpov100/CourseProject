@@ -9,21 +9,41 @@ namespace BoardGame_Store
         public static int Port = 3306;
         public static string Database = "board_game_store";
         public static string User = "root";
-        public static string Password = "";
+        public static string Password = "";  
+
+        private static string SettingsPath
+        {
+            get
+            {
+                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "db_settings.ini");
+            }
+        }
 
         public static string BuildConnectionString()
         {
-            return "Server=" + Server + ";Port=" + Port + ";" +
-                   "Database=" + Database + ";Uid=" + User + ";" +
-                   "Pwd=" + Password + ";CharSet=utf8mb4;";
+            return "Server=" + Server + ";" +
+                   "Port=" + Port + ";" +
+                   "Database=" + Database + ";" +
+                   "Uid=" + User + ";" +
+                   "Pwd=" + Password + ";" +
+                   "CharSet=utf8mb4;" +
+                   "AllowPublicKeyRetrieval=True;";
+        }
+
+        public static string BuildServerOnlyConnectionString()
+        {
+            return "Server=" + Server + ";" +
+                   "Port=" + Port + ";" +
+                   "Uid=" + User + ";" +
+                   "Pwd=" + Password + ";" +
+                   "CharSet=utf8mb4;" +
+                   "AllowPublicKeyRetrieval=True;";
         }
 
         public static void Save()
         {
             try
             {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "db_settings.ini");
-
                 string[] lines = new string[]
                 {
                     Server,
@@ -33,7 +53,7 @@ namespace BoardGame_Store
                     Password
                 };
 
-                File.WriteAllLines(path, lines);
+                File.WriteAllLines(SettingsPath, lines);
             }
             catch
             {
@@ -44,14 +64,12 @@ namespace BoardGame_Store
         {
             try
             {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "db_settings.ini");
-
-                if (!File.Exists(path))
+                if (!File.Exists(SettingsPath))
                 {
                     return;
                 }
 
-                string[] lines = File.ReadAllLines(path);
+                string[] lines = File.ReadAllLines(SettingsPath);
 
                 if (lines.Length >= 5)
                 {
@@ -64,7 +82,6 @@ namespace BoardGame_Store
             }
             catch
             {
-
             }
         }
     }

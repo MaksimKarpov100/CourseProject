@@ -1,23 +1,17 @@
+-- =====================================================
+-- Структура БД «Магазин настольных игр»
+-- Только таблицы. Данные — отдельно.
+-- =====================================================
+
 DROP DATABASE IF EXISTS board_game_store;
 CREATE DATABASE board_game_store
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci;
 USE board_game_store;
 
-CREATE TABLE users (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
-    full_name VARCHAR(100) NOT NULL,
-    login VARCHAR(32) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
-    role ENUM('Администратор','Товаровед','Продавец') NOT NULL,
-    phone VARCHAR(20),
-    registration_date DATETIME DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE customers (
-    customer_id INT AUTO_INCREMENT PRIMARY KEY,
-    full_name VARCHAR(100) NOT NULL,
-    phone VARCHAR(20) NOT NULL
+CREATE TABLE statuses (
+    status_id INT AUTO_INCREMENT PRIMARY KEY,
+    status_name VARCHAR(50) NOT NULL UNIQUE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE categories (
@@ -26,9 +20,20 @@ CREATE TABLE categories (
     description TEXT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE statuses (
-    status_id INT AUTO_INCREMENT PRIMARY KEY,
-    status_name VARCHAR(50) NOT NULL UNIQUE
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    login VARCHAR(32) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    role ENUM('Администратор', 'Товаровед', 'Продавец') NOT NULL,
+    phone VARCHAR(20),
+    registration_date DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE customers (
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    phone VARCHAR(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE board_games (
@@ -41,7 +46,7 @@ CREATE TABLE board_games (
     min_players INT,
     max_players INT,
     age_rating VARCHAR(10),
-    image VARCHAR(255),
+    image_data LONGBLOB,
     CONSTRAINT fk_game_category FOREIGN KEY (category_id)
         REFERENCES categories(category_id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -78,5 +83,9 @@ CREATE TABLE order_items (
         REFERENCES board_games(game_id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Фиксированные статусы (4 штуки, обязательны)
 INSERT INTO statuses (status_name) VALUES
-('Новый'), ('Не готов'), ('Готов'), ('Отменён');
+('Новый'),
+('Не готов'),
+('Готов'),
+('Отменён');

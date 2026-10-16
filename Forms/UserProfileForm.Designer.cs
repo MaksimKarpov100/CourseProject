@@ -25,7 +25,6 @@
             this.txtRole = new System.Windows.Forms.TextBox();
             this.lblPhone = new System.Windows.Forms.Label();
             this.txtPhone = new System.Windows.Forms.TextBox();
-            this.btnClose = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblTitle
@@ -118,26 +117,11 @@
             this.txtPhone.Size = new System.Drawing.Size(300, 25);
             this.txtPhone.TabIndex = 8;
             // 
-            // btnClose
-            // 
-            this.btnClose.BackColor = System.Drawing.Color.Gray;
-            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnClose.ForeColor = System.Drawing.Color.White;
-            this.btnClose.Location = new System.Drawing.Point(170, 285);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(150, 40);
-            this.btnClose.TabIndex = 10;
-            this.btnClose.Text = "Закрыть";
-            this.btnClose.UseVisualStyleBackColor = false;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
             // UserProfileForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(520, 360);
-            this.Controls.Add(this.btnClose);
+            this.ClientSize = new System.Drawing.Size(894, 721);
             this.Controls.Add(this.txtPhone);
             this.Controls.Add(this.lblPhone);
             this.Controls.Add(this.txtRole);
@@ -168,6 +152,5 @@
         private System.Windows.Forms.TextBox txtRole;
         private System.Windows.Forms.Label lblPhone;
         private System.Windows.Forms.TextBox txtPhone;
-        private System.Windows.Forms.Button btnClose;
     }
 }

@@ -26,41 +26,6 @@ namespace BoardGame_Store
             lblCaptchaHint.Visible = false;
             lblTimer.Visible = false;
             lblError.Visible = false;
-
-            CreateAdminIfEmpty();
-        }
-
-        private void CreateAdminIfEmpty()
-        {
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                {
-                    conn.Open();
-
-                    MySqlCommand check = new MySqlCommand("SELECT COUNT(*) FROM users", conn);
-
-                    int count = Convert.ToInt32(check.ExecuteScalar());
-
-                    if (count == 0)
-                    {
-                        string hash = PasswordHelper.GetHash("admin1234");
-
-                        MySqlCommand cmd = new MySqlCommand(
-                            "INSERT INTO users (full_name, login, password_hash, role, phone) " +
-                            "VALUES ('Администратор', 'admin', @h, 'Администратор', '+7 (900) 000-00-00')", conn);
-
-                        cmd.Parameters.AddWithValue("@h", hash);
-                        cmd.ExecuteNonQuery();
-
-                        MessageHelper.ShowInfo("Создан администратор по умолчанию.\nЛогин: admin\nПароль: admin1234");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.ShowError("Ошибка проверки БД: " + ex.Message);
-            }
         }
 
         private void btnShowPassword_Click(object sender, EventArgs e)
@@ -147,21 +112,42 @@ namespace BoardGame_Store
                     conn.Open();
 
                     MySqlCommand cmd = new MySqlCommand(
-                        "SELECT user_id, full_name, role, password_hash FROM users WHERE login=@l LIMIT 1", conn);
-
+                        "SELECT user_id, full_name, role, password_hash " +
+                        "FROM users WHERE login=@l LIMIT 1", conn);
                     cmd.Parameters.AddWithValue("@l", login);
 
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            string hashFromDb = reader["password_hash"].ToString();
+                            string stored = reader["password_hash"].ToString();
+                            int userId = Convert.ToInt32(reader["user_id"]);
+                            string fullName = reader["full_name"].ToString();
+                            string role = reader["role"].ToString();
 
-                            if (PasswordHelper.CheckPassword(password, hashFromDb))
+                            bool ok;
+
+                            if (stored.Length == 64 && IsHex(stored))
                             {
-                                CurrentUser.UserId = Convert.ToInt32(reader["user_id"]);
-                                CurrentUser.FullName = reader["full_name"].ToString();
-                                CurrentUser.Role = reader["role"].ToString();
+                                ok = PasswordHelper.CheckPassword(password, stored);
+                            }
+                            else
+                            {
+                                ok = (stored == password);
+                            }
+
+                            if (ok)
+                            {
+                                CurrentUser.UserId = userId;
+                                CurrentUser.FullName = fullName;
+                                CurrentUser.Role = role;
+
+                                reader.Close();
+
+                                if (!(stored.Length == 64 && IsHex(stored)))
+                                {
+                                    UpdatePasswordHash(userId, password);
+                                }
 
                                 return true;
                             }
@@ -175,6 +161,45 @@ namespace BoardGame_Store
             }
 
             return false;
+        }
+
+        private bool IsHex(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return false;
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                char c = s[i];
+                bool ok = (c >= '0' && c <= '9') ||
+                          (c >= 'a' && c <= 'f') ||
+                          (c >= 'A' && c <= 'F');
+
+                if (!ok) return false;
+            }
+
+            return true;
+        }
+
+        private void UpdatePasswordHash(int userId, string password)
+        {
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                {
+                    conn.Open();
+
+                    string hash = PasswordHelper.GetHash(password);
+
+                    MySqlCommand cmd = new MySqlCommand(
+                        "UPDATE users SET password_hash=@h WHERE user_id=@id", conn);
+                    cmd.Parameters.AddWithValue("@h", hash);
+                    cmd.Parameters.AddWithValue("@id", userId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+            }
         }
 
         private void RefreshCaptcha()

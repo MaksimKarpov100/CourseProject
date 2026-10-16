@@ -38,6 +38,34 @@ namespace BoardGame_Store
             }
         }
 
+        public void SwitchToTab(string tabKey)
+        {
+            switch (tabKey)
+            {
+                case "orders":
+                    tabMain.SelectedTab = tabOrders;
+                    break;
+                case "games":
+                    tabMain.SelectedTab = tabGames;
+                    break;
+                case "users":
+                    tabMain.SelectedTab = tabUsers;
+                    break;
+                case "catalogs":
+                    tabMain.SelectedTab = tabCatalogs;
+                    break;
+                case "discounts":
+                    tabMain.SelectedTab = tabDiscounts;
+                    break;
+                case "special":
+                    tabMain.SelectedTab = tabSpecial;
+                    break;
+                case "profile":
+                    tabMain.SelectedTab = tabProfile;
+                    break;
+            }
+        }
+
         private void tabMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             try

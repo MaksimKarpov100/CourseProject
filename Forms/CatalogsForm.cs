@@ -40,6 +40,13 @@ namespace BoardGame_Store
                     da.Fill(dt);
 
                     dgvCategories.DataSource = dt;
+
+                    dgvCategories.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                    if (dgvCategories.Columns["ID"] != null)
+                    {
+                        dgvCategories.Columns["ID"].Visible = false;
+                    }
                 }
             }
             catch (Exception ex)
@@ -194,6 +201,13 @@ namespace BoardGame_Store
                     da.Fill(dt);
 
                     dgvCustomers.DataSource = dt;
+
+                    dgvCustomers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                    if (dgvCustomers.Columns["ID"] != null)
+                    {
+                        dgvCustomers.Columns["ID"].Visible = false;
+                    }
                 }
 
                 foreach (DataGridViewRow row in dgvCustomers.Rows)
@@ -381,17 +395,19 @@ namespace BoardGame_Store
                     da.Fill(dt);
 
                     dgvStatuses.DataSource = dt;
+
+                    dgvStatuses.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                    if (dgvStatuses.Columns["ID"] != null)
+                    {
+                        dgvStatuses.Columns["ID"].Visible = false;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 MessageHelper.ShowError("Ошибка статусов: " + ex.Message);
             }
-        }
-
-        private void btnBack_Click(object sender, EventArgs e)
-        {
-            this.Close();
         }
     }
 }

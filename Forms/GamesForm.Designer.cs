@@ -17,7 +17,6 @@
         private void InitializeComponent()
         {
             this.lblTitle = new System.Windows.Forms.Label();
-            this.lblRole = new System.Windows.Forms.Label();
             this.panelFilters = new System.Windows.Forms.Panel();
             this.lblSearch = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
@@ -52,7 +51,6 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.lblHint = new System.Windows.Forms.Label();
-            this.btnBack = new System.Windows.Forms.Button();
             this.panelFilters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGames)).BeginInit();
             this.panelPagination.SuspendLayout();
@@ -72,16 +70,6 @@
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Управление товарами";
             // 
-            // lblRole
-            // 
-            this.lblRole.AutoSize = true;
-            this.lblRole.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblRole.Location = new System.Drawing.Point(640, 15);
-            this.lblRole.Name = "lblRole";
-            this.lblRole.Size = new System.Drawing.Size(90, 19);
-            this.lblRole.TabIndex = 1;
-            this.lblRole.Text = "[Роль] [ФИО]";
-            // 
             // panelFilters
             // 
             this.panelFilters.BackColor = System.Drawing.SystemColors.ControlLight;
@@ -93,7 +81,7 @@
             this.panelFilters.Controls.Add(this.cmbSort);
             this.panelFilters.Location = new System.Drawing.Point(15, 45);
             this.panelFilters.Name = "panelFilters";
-            this.panelFilters.Size = new System.Drawing.Size(770, 50);
+            this.panelFilters.Size = new System.Drawing.Size(875, 50);
             this.panelFilters.TabIndex = 2;
             // 
             // lblSearch
@@ -137,9 +125,9 @@
             this.lblSort.AutoSize = true;
             this.lblSort.Location = new System.Drawing.Point(570, 15);
             this.lblSort.Name = "lblSort";
-            this.lblSort.Size = new System.Drawing.Size(46, 19);
+            this.lblSort.Size = new System.Drawing.Size(88, 19);
             this.lblSort.TabIndex = 4;
-            this.lblSort.Text = "Сорт.:";
+            this.lblSort.Text = "Сортировка:";
             // 
             // cmbSort
             // 
@@ -148,7 +136,7 @@
             "По названию",
             "По цене",
             "По остатку"});
-            this.cmbSort.Location = new System.Drawing.Point(635, 12);
+            this.cmbSort.Location = new System.Drawing.Point(664, 12);
             this.cmbSort.Name = "cmbSort";
             this.cmbSort.Size = new System.Drawing.Size(125, 25);
             this.cmbSort.TabIndex = 5;
@@ -158,13 +146,16 @@
             // 
             this.dgvGames.AllowUserToAddRows = false;
             this.dgvGames.AllowUserToDeleteRows = false;
+            this.dgvGames.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvGames.BackgroundColor = System.Drawing.Color.White;
+            this.dgvGames.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvGames.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvGames.Location = new System.Drawing.Point(15, 105);
             this.dgvGames.Name = "dgvGames";
             this.dgvGames.ReadOnly = true;
             this.dgvGames.RowHeadersVisible = false;
             this.dgvGames.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvGames.Size = new System.Drawing.Size(770, 200);
+            this.dgvGames.Size = new System.Drawing.Size(875, 311);
             this.dgvGames.TabIndex = 3;
             this.dgvGames.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGames_CellDoubleClick);
             this.dgvGames.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvGames_CellFormatting);
@@ -173,7 +164,7 @@
             // lblCount
             // 
             this.lblCount.AutoSize = true;
-            this.lblCount.Location = new System.Drawing.Point(15, 315);
+            this.lblCount.Location = new System.Drawing.Point(8, 419);
             this.lblCount.Name = "lblCount";
             this.lblCount.Size = new System.Drawing.Size(151, 19);
             this.lblCount.TabIndex = 4;
@@ -188,9 +179,9 @@
             this.panelPagination.Controls.Add(this.btnLast);
             this.panelPagination.Controls.Add(this.lblPageSize);
             this.panelPagination.Controls.Add(this.cmbPageSize);
-            this.panelPagination.Location = new System.Drawing.Point(15, 335);
+            this.panelPagination.Location = new System.Drawing.Point(12, 441);
             this.panelPagination.Name = "panelPagination";
-            this.panelPagination.Size = new System.Drawing.Size(770, 40);
+            this.panelPagination.Size = new System.Drawing.Size(878, 40);
             this.panelPagination.TabIndex = 5;
             // 
             // btnFirst
@@ -278,9 +269,9 @@
             this.panelEdit.Controls.Add(this.txtPrice);
             this.panelEdit.Controls.Add(this.lblStock);
             this.panelEdit.Controls.Add(this.nudStock);
-            this.panelEdit.Location = new System.Drawing.Point(15, 385);
+            this.panelEdit.Location = new System.Drawing.Point(12, 487);
             this.panelEdit.Name = "panelEdit";
-            this.panelEdit.Size = new System.Drawing.Size(570, 173);
+            this.panelEdit.Size = new System.Drawing.Size(687, 171);
             this.panelEdit.TabIndex = 6;
             // 
             // lblGameTitle
@@ -373,7 +364,7 @@
             // pbPreview
             // 
             this.pbPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbPreview.Location = new System.Drawing.Point(600, 385);
+            this.pbPreview.Location = new System.Drawing.Point(705, 487);
             this.pbPreview.Name = "pbPreview";
             this.pbPreview.Size = new System.Drawing.Size(185, 130);
             this.pbPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -382,13 +373,13 @@
             // 
             // btnImageAdd
             // 
-            this.btnImageAdd.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.btnImageAdd.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnImageAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnImageAdd.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnImageAdd.ForeColor = System.Drawing.Color.White;
-            this.btnImageAdd.Location = new System.Drawing.Point(600, 521);
+            this.btnImageAdd.Location = new System.Drawing.Point(705, 623);
             this.btnImageAdd.Name = "btnImageAdd";
-            this.btnImageAdd.Size = new System.Drawing.Size(185, 37);
+            this.btnImageAdd.Size = new System.Drawing.Size(185, 35);
             this.btnImageAdd.TabIndex = 8;
             this.btnImageAdd.Text = "Загрузить картинку";
             this.btnImageAdd.UseVisualStyleBackColor = false;
@@ -399,15 +390,14 @@
             this.panelButtons.Controls.Add(this.btnAdd);
             this.panelButtons.Controls.Add(this.btnEdit);
             this.panelButtons.Controls.Add(this.lblHint);
-            this.panelButtons.Controls.Add(this.btnBack);
-            this.panelButtons.Location = new System.Drawing.Point(15, 564);
+            this.panelButtons.Location = new System.Drawing.Point(15, 664);
             this.panelButtons.Name = "panelButtons";
-            this.panelButtons.Size = new System.Drawing.Size(770, 45);
+            this.panelButtons.Size = new System.Drawing.Size(875, 45);
             this.panelButtons.TabIndex = 9;
             // 
             // btnAdd
             // 
-            this.btnAdd.BackColor = System.Drawing.Color.SeaGreen;
+            this.btnAdd.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnAdd.ForeColor = System.Drawing.Color.White;
@@ -421,7 +411,7 @@
             // 
             // btnEdit
             // 
-            this.btnEdit.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnEdit.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnEdit.ForeColor = System.Drawing.Color.White;
@@ -444,25 +434,11 @@
             this.lblHint.TabIndex = 2;
             this.lblHint.Text = "Двойной клик - удалить";
             // 
-            // btnBack
-            // 
-            this.btnBack.BackColor = System.Drawing.Color.Gray;
-            this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBack.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnBack.ForeColor = System.Drawing.Color.White;
-            this.btnBack.Location = new System.Drawing.Point(660, 5);
-            this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(110, 35);
-            this.btnBack.TabIndex = 3;
-            this.btnBack.Text = "В меню";
-            this.btnBack.UseVisualStyleBackColor = false;
-            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
-            // 
             // GamesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 621);
+            this.ClientSize = new System.Drawing.Size(905, 721);
             this.Controls.Add(this.panelButtons);
             this.Controls.Add(this.btnImageAdd);
             this.Controls.Add(this.pbPreview);
@@ -471,7 +447,6 @@
             this.Controls.Add(this.lblCount);
             this.Controls.Add(this.dgvGames);
             this.Controls.Add(this.panelFilters);
-            this.Controls.Add(this.lblRole);
             this.Controls.Add(this.lblTitle);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -497,7 +472,6 @@
         }
 
         private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Label lblRole;
         private System.Windows.Forms.Panel panelFilters;
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.TextBox txtSearch;
@@ -532,6 +506,5 @@
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Label lblHint;
-        private System.Windows.Forms.Button btnBack;
     }
 }

@@ -33,6 +33,21 @@ namespace BoardGame_Store
                 }
             }
         }
+        public void SwitchToTab(string tabKey)
+        {
+            switch (tabKey)
+            {
+                case "games":
+                    tabMain.SelectedTab = tabGames;
+                    break;
+                case "orders":
+                    tabMain.SelectedTab = tabOrders;
+                    break;
+                case "profile":
+                    tabMain.SelectedTab = tabProfile;
+                    break;
+            }
+        }
 
         private void tabMain_SelectedIndexChanged(object sender, EventArgs e)
         {

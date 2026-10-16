@@ -74,20 +74,9 @@ namespace BoardGame_Store
 
                     totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
 
-                    if (totalPages < 1)
-                    {
-                        totalPages = 1;
-                    }
-
-                    if (currentPage > totalPages)
-                    {
-                        currentPage = totalPages;
-                    }
-
-                    if (currentPage < 1)
-                    {
-                        currentPage = 1;
-                    }
+                    if (totalPages < 1) totalPages = 1;
+                    if (currentPage > totalPages) currentPage = totalPages;
+                    if (currentPage < 1) currentPage = 1;
 
                     string sql = "SELECT user_id AS `ID`, full_name AS `ФИО`, login AS `Логин`, " +
                                  "role AS `Роль`, phone AS `Телефон` FROM users " +
@@ -113,6 +102,13 @@ namespace BoardGame_Store
                     da.Fill(dt);
 
                     dgvUsers.DataSource = dt;
+
+                    dgvUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                    if (dgvUsers.Columns["ID"] != null)
+                    {
+                        dgvUsers.Columns["ID"].Visible = false;
+                    }
                 }
 
                 ApplyRowFormatting();

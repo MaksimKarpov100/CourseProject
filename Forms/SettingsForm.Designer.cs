@@ -147,13 +147,13 @@
             // 
             // btnTest
             // 
-            this.btnTest.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnTest.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnTest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTest.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnTest.ForeColor = System.Drawing.Color.White;
-            this.btnTest.Location = new System.Drawing.Point(40, 290);
+            this.btnTest.Location = new System.Drawing.Point(12, 281);
             this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(200, 40);
+            this.btnTest.Size = new System.Drawing.Size(201, 40);
             this.btnTest.TabIndex = 11;
             this.btnTest.Text = "Проверить подключение";
             this.btnTest.UseVisualStyleBackColor = false;
@@ -161,11 +161,11 @@
             // 
             // btnSave
             // 
-            this.btnSave.BackColor = System.Drawing.Color.SeaGreen;
+            this.btnSave.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(340, 299);
+            this.btnSave.Location = new System.Drawing.Point(12, 327);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(100, 40);
             this.btnSave.TabIndex = 12;
@@ -175,11 +175,11 @@
             // 
             // btnImportSql
             // 
-            this.btnImportSql.BackColor = System.Drawing.Color.DarkOrange;
+            this.btnImportSql.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnImportSql.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnImportSql.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnImportSql.ForeColor = System.Drawing.Color.White;
-            this.btnImportSql.Location = new System.Drawing.Point(40, 345);
+            this.btnImportSql.Location = new System.Drawing.Point(219, 281);
             this.btnImportSql.Name = "btnImportSql";
             this.btnImportSql.Size = new System.Drawing.Size(200, 40);
             this.btnImportSql.TabIndex = 13;
@@ -189,11 +189,11 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.BackColor = System.Drawing.Color.Gray;
+            this.btnCancel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(340, 345);
+            this.btnCancel.Location = new System.Drawing.Point(118, 327);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 40);
             this.btnCancel.TabIndex = 14;
@@ -205,7 +205,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(480, 420);
+            this.ClientSize = new System.Drawing.Size(480, 377);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnImportSql);
             this.Controls.Add(this.btnSave);

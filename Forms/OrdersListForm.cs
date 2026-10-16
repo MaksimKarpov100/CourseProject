@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
@@ -84,24 +85,18 @@ namespace BoardGame_Store
 
                     totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
 
-                    if (totalPages < 1)
-                    {
-                        totalPages = 1;
-                    }
+                    if (totalPages < 1) totalPages = 1;
+                    if (currentPage > totalPages) currentPage = totalPages;
+                    if (currentPage < 1) currentPage = 1;
 
-                    if (currentPage > totalPages)
-                    {
-                        currentPage = totalPages;
-                    }
-
-                    if (currentPage < 1)
-                    {
-                        currentPage = 1;
-                    }
-
-                    string sql = "SELECT o.order_id AS `Номер`, c.full_name AS `Клиент`, " +
-                                 "o.order_date AS `Дата`, s.status_name AS `Статус`, " +
-                                 "o.discount AS `Скидка`, o.total_amount AS `Сумма` " +
+                    string sql = "SELECT o.order_id AS `Номер`, " +
+                                 "c.full_name AS `Клиент`, " +
+                                 "c.phone AS `Телефон`, " +
+                                 "o.shipping_address AS `Адрес`, " +
+                                 "o.order_date AS `Дата`, " +
+                                 "s.status_name AS `Статус`, " +
+                                 "o.discount AS `Скидка`, " +
+                                 "o.total_amount AS `Сумма` " +
                                  "FROM orders o " +
                                  "JOIN customers c ON o.customer_id=c.customer_id " +
                                  "JOIN statuses s ON o.status_id=s.status_id " +
@@ -129,6 +124,8 @@ namespace BoardGame_Store
                     da.Fill(dt);
 
                     dgvOrders.DataSource = dt;
+
+                    MaskPersonalDataInGrid();
                 }
 
                 ApplyRowColors();
@@ -140,6 +137,70 @@ namespace BoardGame_Store
             {
                 MessageHelper.ShowError("Ошибка загрузки заказов: " + ex.Message);
             }
+        }
+
+        private void MaskPersonalDataInGrid()
+        {
+            foreach (DataGridViewRow row in dgvOrders.Rows)
+            {
+                if (row.Cells["Клиент"].Value != null)
+                {
+                    row.Cells["Клиент"].Value = MaskFullName(row.Cells["Клиент"].Value.ToString());
+                }
+
+                if (row.Cells["Телефон"].Value != null)
+                {
+                    row.Cells["Телефон"].Value = MaskPhone(row.Cells["Телефон"].Value.ToString());
+                }
+
+                if (row.Cells["Адрес"].Value != null)
+                {
+                    row.Cells["Адрес"].Value = MaskAddress(row.Cells["Адрес"].Value.ToString());
+                }
+            }
+        }
+
+        private string MaskFullName(string fullName)
+        {
+            if (string.IsNullOrWhiteSpace(fullName)) return "";
+
+            string[] parts = fullName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (parts.Length < 2) return fullName;
+
+            string result = parts[0];
+
+            for (int i = 1; i < parts.Length; i++)
+            {
+                result += " " + parts[i][0] + ".";
+            }
+
+            return result;
+        }
+
+        private string MaskPhone(string phone)
+        {
+            if (string.IsNullOrWhiteSpace(phone)) return "";
+
+            string digits = Regex.Replace(phone, @"\D", "");
+
+            if (digits.Length < 10) return phone;
+
+            return digits.Substring(digits.Length - 10, 3) + "****" + digits.Substring(digits.Length - 2);
+        }
+
+        private string MaskAddress(string address)
+        {
+            if (string.IsNullOrWhiteSpace(address)) return "";
+
+            string[] parts = address.Split(',');
+
+            if (parts.Length >= 1)
+            {
+                return parts[0] + ", ул. ***, д. **";
+            }
+
+            return "***";
         }
 
         private void ApplyRowColors()
@@ -219,6 +280,46 @@ namespace BoardGame_Store
             catch (Exception ex)
             {
                 MessageHelper.ShowError("Ошибка состава: " + ex.Message);
+            }
+        }
+
+        private void LoadFullPersonalData(int orderId)
+        {
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                {
+                    conn.Open();
+
+                    string sql = "SELECT c.full_name, c.phone, o.shipping_address " +
+                                 "FROM orders o " +
+                                 "JOIN customers c ON o.customer_id=c.customer_id " +
+                                 "WHERE o.order_id=@id";
+
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@id", orderId);
+
+                    using (var r = cmd.ExecuteReader())
+                    {
+                        if (r.Read())
+                        {
+                            string fullName = r["full_name"].ToString();
+                            string phone = r["phone"].ToString();
+                            string address = r["shipping_address"].ToString();
+
+                            string info = "ПОЛНЫЕ ДАННЫЕ КЛИЕНТА:\n\n" +
+                                          "ФИО: " + fullName + "\n" +
+                                          "Телефон: " + phone + "\n" +
+                                          "Адрес: " + address;
+
+                            toolTip1.Show(info, dgvOrders, 5000);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError("Ошибка загрузки ПД: " + ex.Message);
             }
         }
 
@@ -312,6 +413,8 @@ namespace BoardGame_Store
 
             selectedOrderId = Convert.ToInt32(dgvOrders.CurrentRow.Cells["Номер"].Value);
             LoadOrderContent(selectedOrderId);
+
+            LoadFullPersonalData(selectedOrderId);
         }
 
         private void dgvOrders_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -323,39 +426,10 @@ namespace BoardGame_Store
 
             int id = Convert.ToInt32(dgvOrders.Rows[e.RowIndex].Cells["Номер"].Value);
 
-            if (!MessageHelper.AskConfirm("Удалить заказ №" + id + "?"))
-            {
-                return;
-            }
+            OrderEditForm editForm = new OrderEditForm(id);
+            editForm.ShowDialog();
 
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                {
-                    conn.Open();
-
-                    string sqlReturn = "UPDATE board_games bg " +
-                                       "JOIN order_items oi ON bg.game_id = oi.game_id " +
-                                       "SET bg.stock_quantity = bg.stock_quantity + oi.quantity " +
-                                       "WHERE oi.order_id = @id";
-
-                    MySqlCommand cmdReturn = new MySqlCommand(sqlReturn, conn);
-                    cmdReturn.Parameters.AddWithValue("@id", id);
-                    cmdReturn.ExecuteNonQuery();
-
-                    MySqlCommand cmd = new MySqlCommand(
-                        "DELETE FROM orders WHERE order_id=@id", conn);
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.ExecuteNonQuery();
-                }
-
-                MessageHelper.ShowInfo("Заказ удалён");
-                LoadOrders();
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.ShowError("Ошибка удаления: " + ex.Message);
-            }
+            LoadOrders();
         }
 
         private void nudDiscount_ValueChanged(object sender, EventArgs e)
@@ -375,7 +449,9 @@ namespace BoardGame_Store
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            new OrderAddForm().ShowDialog();
+            OrderAddForm addForm = new OrderAddForm();
+            addForm.ShowDialog();
+
             LoadOrders();
         }
 
@@ -387,12 +463,28 @@ namespace BoardGame_Store
                 return;
             }
 
-            new OrderEditForm(selectedOrderId).ShowDialog();
+            OrderEditForm editForm = new OrderEditForm(selectedOrderId);
+            editForm.ShowDialog();
+
             LoadOrders();
         }
 
         private void btnReport_Click(object sender, EventArgs e)
         {
+            Form parent = this.ParentForm;
+
+            if (parent is MainFormAdmin admin)
+            {
+                admin.SwitchToTab("special");
+                return;
+            }
+
+            if (parent is MainFormManager manager)
+            {
+                new SpecialForm().ShowDialog();
+                return;
+            }
+
             new SpecialForm().ShowDialog();
         }
 
