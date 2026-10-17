@@ -14,6 +14,9 @@ namespace BoardGame_Store
         private int totalPages = 1;
         private int selectedUserId = 0;
 
+        // Блокирует обработчик выбора на время загрузки данных
+        private bool isLoading = true;
+
         public UsersForm()
         {
             InitializeComponent();
@@ -28,6 +31,8 @@ namespace BoardGame_Store
 
         private void LoadUsers()
         {
+            isLoading = true;
+
             try
             {
                 using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
@@ -37,38 +42,26 @@ namespace BoardGame_Store
                     string where = " WHERE 1=1 ";
 
                     if (!string.IsNullOrWhiteSpace(txtSearch.Text) && txtSearch.Text != "Поиск...")
-                    {
                         where += " AND full_name LIKE @search ";
-                    }
 
                     if (cmbRoleFilter.SelectedIndex > 0)
-                    {
                         where += " AND role = @role ";
-                    }
 
                     string orderBy = " ORDER BY user_id ASC ";
 
                     if (cmbSort.SelectedIndex == 1)
-                    {
                         orderBy = " ORDER BY login ASC ";
-                    }
                     else if (cmbSort.SelectedIndex == 2)
-                    {
                         orderBy = " ORDER BY role ASC ";
-                    }
 
                     MySqlCommand cmdCount = new MySqlCommand(
                         "SELECT COUNT(*) FROM users " + where, conn);
 
                     if (!string.IsNullOrWhiteSpace(txtSearch.Text) && txtSearch.Text != "Поиск...")
-                    {
                         cmdCount.Parameters.AddWithValue("@search", "%" + txtSearch.Text + "%");
-                    }
 
                     if (cmbRoleFilter.SelectedIndex > 0)
-                    {
                         cmdCount.Parameters.AddWithValue("@role", cmbRoleFilter.SelectedItem.ToString());
-                    }
 
                     totalRecords = Convert.ToInt32(cmdCount.ExecuteScalar());
 
@@ -85,14 +78,10 @@ namespace BoardGame_Store
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
 
                     if (!string.IsNullOrWhiteSpace(txtSearch.Text) && txtSearch.Text != "Поиск...")
-                    {
                         cmd.Parameters.AddWithValue("@search", "%" + txtSearch.Text + "%");
-                    }
 
                     if (cmbRoleFilter.SelectedIndex > 0)
-                    {
                         cmd.Parameters.AddWithValue("@role", cmbRoleFilter.SelectedItem.ToString());
-                    }
 
                     cmd.Parameters.AddWithValue("@offset", (currentPage - 1) * pageSize);
                     cmd.Parameters.AddWithValue("@pageSize", pageSize);
@@ -101,23 +90,63 @@ namespace BoardGame_Store
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
-                    dgvUsers.DataSource = dt;
+                    // Скрытые колонки для полных значений
+                    dt.Columns.Add("FullNameOriginal", typeof(string));
+                    dt.Columns.Add("PhoneOriginal", typeof(string));
 
-                    dgvUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-                    if (dgvUsers.Columns["ID"] != null)
+                    // В отображаемые колонки кладём маску, оригиналы — в скрытые
+                    foreach (DataRow dr in dt.Rows)
                     {
-                        dgvUsers.Columns["ID"].Visible = false;
+                        string fullName = dr["ФИО"] == DBNull.Value ? "" : dr["ФИО"].ToString();
+                        string phone = dr["Телефон"] == DBNull.Value ? "" : dr["Телефон"].ToString();
+
+                        dr["FullNameOriginal"] = fullName;
+                        dr["PhoneOriginal"] = phone;
+
+                        dr["ФИО"] = Validator.MaskFullName(fullName);
+                        dr["Телефон"] = Validator.MaskPhone(phone);
                     }
+
+                    if (dt.Columns.Contains("ID"))
+                        dt.Columns["ID"].ColumnMapping = MappingType.Hidden;
+                    dt.Columns["FullNameOriginal"].ColumnMapping = MappingType.Hidden;
+                    dt.Columns["PhoneOriginal"].ColumnMapping = MappingType.Hidden;
+
+                    dgvUsers.DataSource = dt;
+                    dgvUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                }
+
+                // Подсказки при наведении: полные ФИО и телефон
+                foreach (DataGridViewRow row in dgvUsers.Rows)
+                {
+                    if (row.IsNewRow) continue;
+
+                    DataRowView drv = row.DataBoundItem as DataRowView;
+                    if (drv == null) continue;
+
+                    string fullName = drv["FullNameOriginal"]?.ToString() ?? "";
+                    string phone = drv["PhoneOriginal"]?.ToString() ?? "";
+
+                    if (dgvUsers.Columns.Contains("ФИО"))
+                        row.Cells["ФИО"].ToolTipText = "Полное ФИО: " + fullName;
+                    if (dgvUsers.Columns.Contains("Телефон"))
+                        row.Cells["Телефон"].ToolTipText = "Телефон: " + phone;
                 }
 
                 ApplyRowFormatting();
 
                 lblCount.Text = "Записей: " + totalRecords;
                 lblPageInfo.Text = "Страница " + currentPage + " из " + totalPages;
+
+                isLoading = false;
+
+                // После загрузки вручную заполняем поля формы по выделенной строке
+                if (dgvUsers.CurrentRow != null)
+                    dgvUsers_SelectionChanged(dgvUsers, EventArgs.Empty);
             }
             catch (Exception ex)
             {
+                isLoading = false;
                 MessageHelper.ShowError("Ошибка загрузки: " + ex.Message);
             }
         }
@@ -126,18 +155,10 @@ namespace BoardGame_Store
         {
             foreach (DataGridViewRow row in dgvUsers.Rows)
             {
-                string phone = row.Cells["Телефон"].Value == null
-                    ? ""
-                    : row.Cells["Телефон"].Value.ToString();
+                DataRowView drv = row.DataBoundItem as DataRowView;
+                if (drv == null) continue;
 
-                if (!string.IsNullOrEmpty(phone))
-                {
-                    row.Cells["Телефон"].Value = Validator.MaskPhone(phone);
-                }
-
-                string role = row.Cells["Роль"].Value == null
-                    ? ""
-                    : row.Cells["Роль"].Value.ToString();
+                string role = drv["Роль"]?.ToString() ?? "";
 
                 if (role == "Администратор")
                 {
@@ -188,9 +209,7 @@ namespace BoardGame_Store
         private void btnPrev_Click(object sender, EventArgs e)
         {
             if (currentPage > 1)
-            {
                 currentPage--;
-            }
 
             LoadUsers();
         }
@@ -198,9 +217,7 @@ namespace BoardGame_Store
         private void btnNext_Click(object sender, EventArgs e)
         {
             if (currentPage < totalPages)
-            {
                 currentPage++;
-            }
 
             LoadUsers();
         }
@@ -223,58 +240,37 @@ namespace BoardGame_Store
 
         private void dgvUsers_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvUsers.CurrentRow == null)
-            {
-                return;
-            }
+            if (isLoading) return;
+            if (dgvUsers.CurrentRow == null) return;
 
-            selectedUserId = Convert.ToInt32(dgvUsers.CurrentRow.Cells["ID"].Value);
+            DataRowView drv = dgvUsers.CurrentRow.DataBoundItem as DataRowView;
+            if (drv == null) return;
 
-            txtFullName.Text = dgvUsers.CurrentRow.Cells["ФИО"].Value == null
-                ? ""
-                : dgvUsers.CurrentRow.Cells["ФИО"].Value.ToString();
+            object idValue = drv["ID"];
+            if (idValue == null || idValue == DBNull.Value) return;
 
-            txtLogin.Text = dgvUsers.CurrentRow.Cells["Логин"].Value == null
-                ? ""
-                : dgvUsers.CurrentRow.Cells["Логин"].Value.ToString();
+            selectedUserId = Convert.ToInt32(idValue);
 
-            cmbRoleEdit.Text = dgvUsers.CurrentRow.Cells["Роль"].Value == null
-                ? ""
-                : dgvUsers.CurrentRow.Cells["Роль"].Value.ToString();
-
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                {
-                    conn.Open();
-
-                    MySqlCommand cmd = new MySqlCommand(
-                        "SELECT phone FROM users WHERE user_id=@id", conn);
-                    cmd.Parameters.AddWithValue("@id", selectedUserId);
-
-                    object phone = cmd.ExecuteScalar();
-
-                    mtxtPhone.Text = phone == null ? "" : phone.ToString();
-                }
-            }
-            catch
-            {
-            }
+            // «Раскрываем» полные ФИО и телефон в форме
+            txtFullName.Text = drv["FullNameOriginal"]?.ToString() ?? "";
+            txtLogin.Text = drv["Логин"]?.ToString() ?? "";
+            cmbRoleEdit.Text = drv["Роль"]?.ToString() ?? "";
+            mtxtPhone.Text = drv["PhoneOriginal"]?.ToString() ?? "";
         }
 
         private void dgvUsers_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0)
-            {
-                return;
-            }
+            if (e.RowIndex < 0) return;
 
-            int id = Convert.ToInt32(dgvUsers.Rows[e.RowIndex].Cells["ID"].Value);
+            DataRowView drv = dgvUsers.Rows[e.RowIndex].DataBoundItem as DataRowView;
+            if (drv == null) return;
+
+            object idValue = drv["ID"];
+            if (idValue == null || idValue == DBNull.Value) return;
+            int id = Convert.ToInt32(idValue);
 
             if (!MessageHelper.AskConfirm("Удалить пользователя?"))
-            {
                 return;
-            }
 
             try
             {
@@ -443,9 +439,11 @@ namespace BoardGame_Store
                 return;
             }
 
-            string login = dgvUsers.CurrentRow.Cells["Логин"].Value == null
+            string login = dgvUsers.CurrentRow == null
                 ? ""
-                : dgvUsers.CurrentRow.Cells["Логин"].Value.ToString();
+                : (dgvUsers.CurrentRow.Cells["Логин"].Value == null
+                    ? ""
+                    : dgvUsers.CurrentRow.Cells["Логин"].Value.ToString());
 
             ChangePasswordForm form = new ChangePasswordForm(selectedUserId, login);
             form.ShowDialog();

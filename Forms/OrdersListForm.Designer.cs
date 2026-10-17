@@ -10,7 +10,6 @@
             {
                 components.Dispose();
             }
-
             base.Dispose(disposing);
         }
 
@@ -57,6 +56,7 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnReport = new System.Windows.Forms.Button();
+            this.btnBack = new System.Windows.Forms.Button();
             this.lblHint = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panelFilters.SuspendLayout();
@@ -70,13 +70,14 @@
             // 
             // lblTitle
             // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.Location = new System.Drawing.Point(368, 9);
+            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(152, 30);
+            this.lblTitle.Size = new System.Drawing.Size(900, 40);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Учёт заказов";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panelFilters
             // 
@@ -92,10 +93,10 @@
             this.panelFilters.Controls.Add(this.lblSort);
             this.panelFilters.Controls.Add(this.cmbSort);
             this.panelFilters.Controls.Add(this.btnReset);
-            this.panelFilters.Location = new System.Drawing.Point(15, 45);
+            this.panelFilters.Location = new System.Drawing.Point(12, 45);
             this.panelFilters.Name = "panelFilters";
-            this.panelFilters.Size = new System.Drawing.Size(873, 75);
-            this.panelFilters.TabIndex = 2;
+            this.panelFilters.Size = new System.Drawing.Size(876, 75);
+            this.panelFilters.TabIndex = 1;
             // 
             // lblOrderNumber
             // 
@@ -200,9 +201,9 @@
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(787, 20);
+            this.btnReset.Location = new System.Drawing.Point(786, 20);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(80, 47);
+            this.btnReset.Size = new System.Drawing.Size(80, 40);
             this.btnReset.TabIndex = 10;
             this.btnReset.Text = "Сброс";
             this.btnReset.UseVisualStyleBackColor = true;
@@ -216,23 +217,23 @@
             this.dgvOrders.BackgroundColor = System.Drawing.Color.White;
             this.dgvOrders.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvOrders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvOrders.Location = new System.Drawing.Point(15, 130);
+            this.dgvOrders.Location = new System.Drawing.Point(12, 130);
             this.dgvOrders.Name = "dgvOrders";
             this.dgvOrders.ReadOnly = true;
             this.dgvOrders.RowHeadersVisible = false;
             this.dgvOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvOrders.Size = new System.Drawing.Size(873, 267);
-            this.dgvOrders.TabIndex = 3;
+            this.dgvOrders.Size = new System.Drawing.Size(876, 260);
+            this.dgvOrders.TabIndex = 2;
             this.dgvOrders.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrders_CellDoubleClick);
             this.dgvOrders.SelectionChanged += new System.EventHandler(this.dgvOrders_SelectionChanged);
             // 
             // lblCount
             // 
             this.lblCount.AutoSize = true;
-            this.lblCount.Location = new System.Drawing.Point(15, 400);
+            this.lblCount.Location = new System.Drawing.Point(12, 400);
             this.lblCount.Name = "lblCount";
             this.lblCount.Size = new System.Drawing.Size(151, 19);
-            this.lblCount.TabIndex = 4;
+            this.lblCount.TabIndex = 3;
             this.lblCount.Text = "Количество записей: 0";
             // 
             // panelPagination
@@ -244,10 +245,10 @@
             this.panelPagination.Controls.Add(this.btnLast);
             this.panelPagination.Controls.Add(this.lblPageSize);
             this.panelPagination.Controls.Add(this.cmbPageSize);
-            this.panelPagination.Location = new System.Drawing.Point(15, 420);
+            this.panelPagination.Location = new System.Drawing.Point(12, 425);
             this.panelPagination.Name = "panelPagination";
-            this.panelPagination.Size = new System.Drawing.Size(770, 40);
-            this.panelPagination.TabIndex = 5;
+            this.panelPagination.Size = new System.Drawing.Size(700, 40);
+            this.panelPagination.TabIndex = 4;
             // 
             // btnFirst
             // 
@@ -272,7 +273,7 @@
             // lblPageInfo
             // 
             this.lblPageInfo.AutoSize = true;
-            this.lblPageInfo.Location = new System.Drawing.Point(130, 12);
+            this.lblPageInfo.Location = new System.Drawing.Point(130, 10);
             this.lblPageInfo.Name = "lblPageInfo";
             this.lblPageInfo.Size = new System.Drawing.Size(112, 19);
             this.lblPageInfo.TabIndex = 2;
@@ -301,7 +302,7 @@
             // lblPageSize
             // 
             this.lblPageSize.AutoSize = true;
-            this.lblPageSize.Location = new System.Drawing.Point(400, 12);
+            this.lblPageSize.Location = new System.Drawing.Point(400, 10);
             this.lblPageSize.Name = "lblPageSize";
             this.lblPageSize.Size = new System.Drawing.Size(64, 19);
             this.lblPageSize.TabIndex = 5;
@@ -315,7 +316,7 @@
             "25",
             "50",
             "100"});
-            this.cmbPageSize.Location = new System.Drawing.Point(470, 8);
+            this.cmbPageSize.Location = new System.Drawing.Point(470, 7);
             this.cmbPageSize.Name = "cmbPageSize";
             this.cmbPageSize.Size = new System.Drawing.Size(60, 25);
             this.cmbPageSize.TabIndex = 6;
@@ -325,10 +326,10 @@
             // 
             this.lblComposition.AutoSize = true;
             this.lblComposition.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblComposition.Location = new System.Drawing.Point(15, 470);
+            this.lblComposition.Location = new System.Drawing.Point(12, 475);
             this.lblComposition.Name = "lblComposition";
             this.lblComposition.Size = new System.Drawing.Size(108, 20);
-            this.lblComposition.TabIndex = 6;
+            this.lblComposition.TabIndex = 5;
             this.lblComposition.Text = "Состав заказа";
             // 
             // dgvContent
@@ -339,13 +340,13 @@
             this.dgvContent.BackgroundColor = System.Drawing.Color.White;
             this.dgvContent.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvContent.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvContent.Location = new System.Drawing.Point(15, 495);
+            this.dgvContent.Location = new System.Drawing.Point(12, 500);
             this.dgvContent.Name = "dgvContent";
             this.dgvContent.ReadOnly = true;
             this.dgvContent.RowHeadersVisible = false;
             this.dgvContent.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvContent.Size = new System.Drawing.Size(612, 170);
-            this.dgvContent.TabIndex = 7;
+            this.dgvContent.Size = new System.Drawing.Size(600, 150);
+            this.dgvContent.TabIndex = 6;
             // 
             // panelCalc
             // 
@@ -360,15 +361,15 @@
             this.panelCalc.Controls.Add(this.txtSumWith);
             this.panelCalc.Controls.Add(this.lblTotal);
             this.panelCalc.Controls.Add(this.txtTotal);
-            this.panelCalc.Location = new System.Drawing.Point(633, 499);
+            this.panelCalc.Location = new System.Drawing.Point(633, 500);
             this.panelCalc.Name = "panelCalc";
-            this.panelCalc.Size = new System.Drawing.Size(255, 170);
-            this.panelCalc.TabIndex = 8;
+            this.panelCalc.Size = new System.Drawing.Size(255, 150);
+            this.panelCalc.TabIndex = 7;
             // 
             // lblDiscount
             // 
             this.lblDiscount.AutoSize = true;
-            this.lblDiscount.Location = new System.Drawing.Point(10, 15);
+            this.lblDiscount.Location = new System.Drawing.Point(10, 10);
             this.lblDiscount.Name = "lblDiscount";
             this.lblDiscount.Size = new System.Drawing.Size(73, 19);
             this.lblDiscount.TabIndex = 0;
@@ -376,7 +377,7 @@
             // 
             // nudDiscount
             // 
-            this.nudDiscount.Location = new System.Drawing.Point(150, 12);
+            this.nudDiscount.Location = new System.Drawing.Point(150, 7);
             this.nudDiscount.Name = "nudDiscount";
             this.nudDiscount.Size = new System.Drawing.Size(80, 25);
             this.nudDiscount.TabIndex = 1;
@@ -385,7 +386,7 @@
             // lblSumWithout
             // 
             this.lblSumWithout.AutoSize = true;
-            this.lblSumWithout.Location = new System.Drawing.Point(10, 50);
+            this.lblSumWithout.Location = new System.Drawing.Point(10, 40);
             this.lblSumWithout.Name = "lblSumWithout";
             this.lblSumWithout.Size = new System.Drawing.Size(78, 19);
             this.lblSumWithout.TabIndex = 2;
@@ -393,7 +394,7 @@
             // 
             // txtSumWithout
             // 
-            this.txtSumWithout.Location = new System.Drawing.Point(130, 47);
+            this.txtSumWithout.Location = new System.Drawing.Point(130, 37);
             this.txtSumWithout.Name = "txtSumWithout";
             this.txtSumWithout.ReadOnly = true;
             this.txtSumWithout.Size = new System.Drawing.Size(100, 25);
@@ -402,7 +403,7 @@
             // lblDiscountAmount
             // 
             this.lblDiscountAmount.AutoSize = true;
-            this.lblDiscountAmount.Location = new System.Drawing.Point(10, 80);
+            this.lblDiscountAmount.Location = new System.Drawing.Point(10, 70);
             this.lblDiscountAmount.Name = "lblDiscountAmount";
             this.lblDiscountAmount.Size = new System.Drawing.Size(88, 19);
             this.lblDiscountAmount.TabIndex = 4;
@@ -410,7 +411,7 @@
             // 
             // txtDiscountAmount
             // 
-            this.txtDiscountAmount.Location = new System.Drawing.Point(130, 77);
+            this.txtDiscountAmount.Location = new System.Drawing.Point(130, 67);
             this.txtDiscountAmount.Name = "txtDiscountAmount";
             this.txtDiscountAmount.ReadOnly = true;
             this.txtDiscountAmount.Size = new System.Drawing.Size(100, 25);
@@ -419,7 +420,7 @@
             // lblSumWith
             // 
             this.lblSumWith.AutoSize = true;
-            this.lblSumWith.Location = new System.Drawing.Point(10, 110);
+            this.lblSumWith.Location = new System.Drawing.Point(10, 100);
             this.lblSumWith.Name = "lblSumWith";
             this.lblSumWith.Size = new System.Drawing.Size(82, 19);
             this.lblSumWith.TabIndex = 6;
@@ -427,7 +428,7 @@
             // 
             // txtSumWith
             // 
-            this.txtSumWith.Location = new System.Drawing.Point(130, 107);
+            this.txtSumWith.Location = new System.Drawing.Point(130, 97);
             this.txtSumWith.Name = "txtSumWith";
             this.txtSumWith.ReadOnly = true;
             this.txtSumWith.Size = new System.Drawing.Size(100, 25);
@@ -437,7 +438,7 @@
             // 
             this.lblTotal.AutoSize = true;
             this.lblTotal.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblTotal.Location = new System.Drawing.Point(10, 140);
+            this.lblTotal.Location = new System.Drawing.Point(10, 125);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(50, 19);
             this.lblTotal.TabIndex = 8;
@@ -446,7 +447,7 @@
             // txtTotal
             // 
             this.txtTotal.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.txtTotal.Location = new System.Drawing.Point(130, 137);
+            this.txtTotal.Location = new System.Drawing.Point(130, 122);
             this.txtTotal.Name = "txtTotal";
             this.txtTotal.ReadOnly = true;
             this.txtTotal.Size = new System.Drawing.Size(100, 25);
@@ -457,11 +458,12 @@
             this.panelButtons.Controls.Add(this.btnAdd);
             this.panelButtons.Controls.Add(this.btnEdit);
             this.panelButtons.Controls.Add(this.btnReport);
+            this.panelButtons.Controls.Add(this.btnBack);
             this.panelButtons.Controls.Add(this.lblHint);
-            this.panelButtons.Location = new System.Drawing.Point(15, 675);
+            this.panelButtons.Location = new System.Drawing.Point(12, 660);
             this.panelButtons.Name = "panelButtons";
-            this.panelButtons.Size = new System.Drawing.Size(873, 45);
-            this.panelButtons.TabIndex = 9;
+            this.panelButtons.Size = new System.Drawing.Size(876, 45);
+            this.panelButtons.TabIndex = 8;
             // 
             // btnAdd
             // 
@@ -505,12 +507,26 @@
             this.btnReport.UseVisualStyleBackColor = false;
             this.btnReport.Click += new System.EventHandler(this.btnReport_Click);
             // 
+            // btnBack
+            // 
+            this.btnBack.BackColor = System.Drawing.Color.DimGray;
+            this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBack.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnBack.ForeColor = System.Drawing.Color.White;
+            this.btnBack.Location = new System.Drawing.Point(720, 5);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(150, 35);
+            this.btnBack.TabIndex = 4;
+            this.btnBack.Text = "В меню";
+            this.btnBack.UseVisualStyleBackColor = false;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            // 
             // lblHint
             // 
             this.lblHint.AutoSize = true;
             this.lblHint.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
             this.lblHint.ForeColor = System.Drawing.Color.Gray;
-            this.lblHint.Location = new System.Drawing.Point(526, 17);
+            this.lblHint.Location = new System.Drawing.Point(490, 15);
             this.lblHint.Name = "lblHint";
             this.lblHint.Size = new System.Drawing.Size(130, 13);
             this.lblHint.TabIndex = 3;
@@ -520,7 +536,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(894, 721);
+            this.ClientSize = new System.Drawing.Size(900, 720);
             this.Controls.Add(this.panelButtons);
             this.Controls.Add(this.panelCalc);
             this.Controls.Add(this.dgvContent);
@@ -593,6 +609,7 @@
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnReport;
+        private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.Label lblHint;
         private System.Windows.Forms.ToolTip toolTip1;
     }

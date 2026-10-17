@@ -56,7 +56,7 @@
             this.lblUserInfo.AutoSize = true;
             this.lblUserInfo.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.lblUserInfo.ForeColor = System.Drawing.Color.White;
-            this.lblUserInfo.Location = new System.Drawing.Point(735, 20);
+            this.lblUserInfo.Location = new System.Drawing.Point(738, 20);
             this.lblUserInfo.Name = "lblUserInfo";
             this.lblUserInfo.Size = new System.Drawing.Size(107, 20);
             this.lblUserInfo.TabIndex = 1;
@@ -86,7 +86,7 @@
             this.tabMain.Location = new System.Drawing.Point(0, 60);
             this.tabMain.Name = "tabMain";
             this.tabMain.SelectedIndex = 0;
-            this.tabMain.Size = new System.Drawing.Size(984, 671);
+            this.tabMain.Size = new System.Drawing.Size(984, 700);
             this.tabMain.TabIndex = 1;
             this.tabMain.SelectedIndexChanged += new System.EventHandler(this.tabMain_SelectedIndexChanged);
             // 
@@ -95,7 +95,7 @@
             this.tabOrders.Location = new System.Drawing.Point(4, 26);
             this.tabOrders.Name = "tabOrders";
             this.tabOrders.Padding = new System.Windows.Forms.Padding(3);
-            this.tabOrders.Size = new System.Drawing.Size(976, 641);
+            this.tabOrders.Size = new System.Drawing.Size(976, 670);
             this.tabOrders.TabIndex = 0;
             this.tabOrders.Text = "📦 Заказы";
             // 
@@ -119,7 +119,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 731);
+            this.ClientSize = new System.Drawing.Size(984, 760);
             this.ControlBox = false;
             this.Controls.Add(this.tabMain);
             this.Controls.Add(this.panelTop);

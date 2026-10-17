@@ -10,7 +10,6 @@
             {
                 components.Dispose();
             }
-
             base.Dispose(disposing);
         }
 
@@ -53,25 +52,27 @@
             // 
             // lblTitle
             // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.Location = new System.Drawing.Point(356, 9);
+            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(158, 30);
+            this.lblTitle.Size = new System.Drawing.Size(1000, 40);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Справочники";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tabCatalogs
             // 
             this.tabCatalogs.Controls.Add(this.tabCategories);
             this.tabCatalogs.Controls.Add(this.tabCustomers);
             this.tabCatalogs.Controls.Add(this.tabStatuses);
+            this.tabCatalogs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabCatalogs.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.tabCatalogs.Location = new System.Drawing.Point(0, 35);
+            this.tabCatalogs.Location = new System.Drawing.Point(0, 40);
             this.tabCatalogs.Name = "tabCatalogs";
             this.tabCatalogs.SelectedIndex = 0;
-            this.tabCatalogs.Size = new System.Drawing.Size(893, 687);
-            this.tabCatalogs.TabIndex = 2;
+            this.tabCatalogs.Size = new System.Drawing.Size(1000, 760);
+            this.tabCatalogs.TabIndex = 1;
             // 
             // tabCategories
             // 
@@ -80,7 +81,7 @@
             this.tabCategories.Location = new System.Drawing.Point(4, 26);
             this.tabCategories.Name = "tabCategories";
             this.tabCategories.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCategories.Size = new System.Drawing.Size(885, 657);
+            this.tabCategories.Size = new System.Drawing.Size(992, 730);
             this.tabCategories.TabIndex = 0;
             this.tabCategories.Text = "Категории";
             // 
@@ -88,6 +89,9 @@
             // 
             this.dgvCategories.AllowUserToAddRows = false;
             this.dgvCategories.AllowUserToDeleteRows = false;
+            this.dgvCategories.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvCategories.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvCategories.BackgroundColor = System.Drawing.Color.White;
             this.dgvCategories.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -97,13 +101,15 @@
             this.dgvCategories.ReadOnly = true;
             this.dgvCategories.RowHeadersVisible = false;
             this.dgvCategories.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCategories.Size = new System.Drawing.Size(868, 508);
+            this.dgvCategories.Size = new System.Drawing.Size(972, 540);
             this.dgvCategories.TabIndex = 0;
             this.dgvCategories.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCategories_CellDoubleClick);
             this.dgvCategories.SelectionChanged += new System.EventHandler(this.dgvCategories_SelectionChanged);
             // 
             // panelCatEdit
             // 
+            this.panelCatEdit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelCatEdit.BackColor = System.Drawing.SystemColors.ControlLight;
             this.panelCatEdit.Controls.Add(this.lblCatName);
             this.panelCatEdit.Controls.Add(this.txtCatName);
@@ -112,9 +118,9 @@
             this.panelCatEdit.Controls.Add(this.btnCatAdd);
             this.panelCatEdit.Controls.Add(this.btnCatEdit);
             this.panelCatEdit.Controls.Add(this.lblCatHint);
-            this.panelCatEdit.Location = new System.Drawing.Point(10, 524);
+            this.panelCatEdit.Location = new System.Drawing.Point(10, 560);
             this.panelCatEdit.Name = "panelCatEdit";
-            this.panelCatEdit.Size = new System.Drawing.Size(868, 130);
+            this.panelCatEdit.Size = new System.Drawing.Size(972, 150);
             this.panelCatEdit.TabIndex = 1;
             // 
             // lblCatName
@@ -155,9 +161,9 @@
             this.btnCatAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCatAdd.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCatAdd.ForeColor = System.Drawing.Color.White;
-            this.btnCatAdd.Location = new System.Drawing.Point(659, 95);
+            this.btnCatAdd.Location = new System.Drawing.Point(593, 78);
             this.btnCatAdd.Name = "btnCatAdd";
-            this.btnCatAdd.Size = new System.Drawing.Size(100, 30);
+            this.btnCatAdd.Size = new System.Drawing.Size(127, 45);
             this.btnCatAdd.TabIndex = 4;
             this.btnCatAdd.Text = "Добавить";
             this.btnCatAdd.UseVisualStyleBackColor = false;
@@ -169,9 +175,9 @@
             this.btnCatEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCatEdit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCatEdit.ForeColor = System.Drawing.Color.White;
-            this.btnCatEdit.Location = new System.Drawing.Point(765, 95);
+            this.btnCatEdit.Location = new System.Drawing.Point(726, 78);
             this.btnCatEdit.Name = "btnCatEdit";
-            this.btnCatEdit.Size = new System.Drawing.Size(100, 30);
+            this.btnCatEdit.Size = new System.Drawing.Size(127, 45);
             this.btnCatEdit.TabIndex = 5;
             this.btnCatEdit.Text = "Изменить";
             this.btnCatEdit.UseVisualStyleBackColor = false;
@@ -182,7 +188,7 @@
             this.lblCatHint.AutoSize = true;
             this.lblCatHint.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
             this.lblCatHint.ForeColor = System.Drawing.Color.Gray;
-            this.lblCatHint.Location = new System.Drawing.Point(15, 95);
+            this.lblCatHint.Location = new System.Drawing.Point(15, 100);
             this.lblCatHint.Name = "lblCatHint";
             this.lblCatHint.Size = new System.Drawing.Size(226, 13);
             this.lblCatHint.TabIndex = 6;
@@ -195,7 +201,7 @@
             this.tabCustomers.Location = new System.Drawing.Point(4, 26);
             this.tabCustomers.Name = "tabCustomers";
             this.tabCustomers.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCustomers.Size = new System.Drawing.Size(885, 657);
+            this.tabCustomers.Size = new System.Drawing.Size(992, 730);
             this.tabCustomers.TabIndex = 1;
             this.tabCustomers.Text = "Клиенты";
             // 
@@ -203,6 +209,9 @@
             // 
             this.dgvCustomers.AllowUserToAddRows = false;
             this.dgvCustomers.AllowUserToDeleteRows = false;
+            this.dgvCustomers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvCustomers.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvCustomers.BackgroundColor = System.Drawing.Color.White;
             this.dgvCustomers.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -212,13 +221,15 @@
             this.dgvCustomers.ReadOnly = true;
             this.dgvCustomers.RowHeadersVisible = false;
             this.dgvCustomers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCustomers.Size = new System.Drawing.Size(868, 502);
+            this.dgvCustomers.Size = new System.Drawing.Size(972, 540);
             this.dgvCustomers.TabIndex = 0;
             this.dgvCustomers.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCustomers_CellDoubleClick);
             this.dgvCustomers.SelectionChanged += new System.EventHandler(this.dgvCustomers_SelectionChanged);
             // 
             // panelCustEdit
             // 
+            this.panelCustEdit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelCustEdit.BackColor = System.Drawing.SystemColors.ControlLight;
             this.panelCustEdit.Controls.Add(this.lblCustName);
             this.panelCustEdit.Controls.Add(this.txtCustName);
@@ -227,9 +238,9 @@
             this.panelCustEdit.Controls.Add(this.btnCustAdd);
             this.panelCustEdit.Controls.Add(this.btnCustEdit);
             this.panelCustEdit.Controls.Add(this.lblCustHint);
-            this.panelCustEdit.Location = new System.Drawing.Point(10, 518);
+            this.panelCustEdit.Location = new System.Drawing.Point(10, 560);
             this.panelCustEdit.Name = "panelCustEdit";
-            this.panelCustEdit.Size = new System.Drawing.Size(868, 130);
+            this.panelCustEdit.Size = new System.Drawing.Size(972, 150);
             this.panelCustEdit.TabIndex = 1;
             // 
             // lblCustName
@@ -247,6 +258,7 @@
             this.txtCustName.Name = "txtCustName";
             this.txtCustName.Size = new System.Drawing.Size(300, 25);
             this.txtCustName.TabIndex = 1;
+            this.txtCustName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCustName_KeyPress);
             // 
             // lblCustPhone
             // 
@@ -271,9 +283,9 @@
             this.btnCustAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCustAdd.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCustAdd.ForeColor = System.Drawing.Color.White;
-            this.btnCustAdd.Location = new System.Drawing.Point(495, 95);
+            this.btnCustAdd.Location = new System.Drawing.Point(523, 88);
             this.btnCustAdd.Name = "btnCustAdd";
-            this.btnCustAdd.Size = new System.Drawing.Size(182, 30);
+            this.btnCustAdd.Size = new System.Drawing.Size(186, 47);
             this.btnCustAdd.TabIndex = 4;
             this.btnCustAdd.Text = "Добавить";
             this.btnCustAdd.UseVisualStyleBackColor = false;
@@ -285,9 +297,9 @@
             this.btnCustEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCustEdit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCustEdit.ForeColor = System.Drawing.Color.White;
-            this.btnCustEdit.Location = new System.Drawing.Point(683, 95);
+            this.btnCustEdit.Location = new System.Drawing.Point(713, 88);
             this.btnCustEdit.Name = "btnCustEdit";
-            this.btnCustEdit.Size = new System.Drawing.Size(182, 30);
+            this.btnCustEdit.Size = new System.Drawing.Size(186, 47);
             this.btnCustEdit.TabIndex = 5;
             this.btnCustEdit.Text = "Изменить";
             this.btnCustEdit.UseVisualStyleBackColor = false;
@@ -298,7 +310,7 @@
             this.lblCustHint.AutoSize = true;
             this.lblCustHint.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
             this.lblCustHint.ForeColor = System.Drawing.Color.Gray;
-            this.lblCustHint.Location = new System.Drawing.Point(15, 95);
+            this.lblCustHint.Location = new System.Drawing.Point(15, 100);
             this.lblCustHint.Name = "lblCustHint";
             this.lblCustHint.Size = new System.Drawing.Size(226, 13);
             this.lblCustHint.TabIndex = 6;
@@ -310,7 +322,7 @@
             this.tabStatuses.Location = new System.Drawing.Point(4, 26);
             this.tabStatuses.Name = "tabStatuses";
             this.tabStatuses.Padding = new System.Windows.Forms.Padding(3);
-            this.tabStatuses.Size = new System.Drawing.Size(885, 657);
+            this.tabStatuses.Size = new System.Drawing.Size(992, 730);
             this.tabStatuses.TabIndex = 2;
             this.tabStatuses.Text = "Статусы";
             // 
@@ -322,19 +334,20 @@
             this.dgvStatuses.BackgroundColor = System.Drawing.Color.White;
             this.dgvStatuses.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvStatuses.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvStatuses.Location = new System.Drawing.Point(6, 6);
+            this.dgvStatuses.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvStatuses.Location = new System.Drawing.Point(3, 3);
             this.dgvStatuses.Name = "dgvStatuses";
             this.dgvStatuses.ReadOnly = true;
             this.dgvStatuses.RowHeadersVisible = false;
             this.dgvStatuses.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvStatuses.Size = new System.Drawing.Size(872, 642);
+            this.dgvStatuses.Size = new System.Drawing.Size(986, 724);
             this.dgvStatuses.TabIndex = 0;
             // 
             // CatalogsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(894, 721);
+            this.ClientSize = new System.Drawing.Size(1000, 800);
             this.Controls.Add(this.tabCatalogs);
             this.Controls.Add(this.lblTitle);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
@@ -356,7 +369,6 @@
             this.tabStatuses.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvStatuses)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

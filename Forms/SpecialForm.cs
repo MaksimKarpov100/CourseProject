@@ -661,14 +661,25 @@ namespace BoardGame_Store
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     "Чек_Заказ_" + orderId + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".doc");
 
+                string line = new string('=', 62);
+                string thin = new string('-', 62);
+                const int nameWidth = 25;
+
                 StringBuilder sb = new StringBuilder();
 
-                sb.AppendLine("==========================================");
-                sb.AppendLine("        МАГАЗИН НАСТОЛЬНЫХ ИГР");
-                sb.AppendLine("==========================================");
-                sb.AppendLine("Чек № " + orderId);
-                sb.AppendLine("Дата: " + DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
-                sb.AppendLine("------------------------------------------");
+                sb.AppendLine(line);
+                sb.AppendLine("                    МАГАЗИН НАСТОЛЬНЫХ ИГР");
+                sb.AppendLine(line);
+                sb.AppendLine("                         КАССОВЫЙ ЧЕК");
+                sb.AppendLine("                          Чек № " + orderId);
+                sb.AppendLine(thin);
+
+                string fullName = "";
+                DateTime orderDate = DateTime.Now;
+                decimal discountPercent = 0;
+                decimal totalWithout = 0;
+                decimal totalWith = 0;
+                string status = "";
 
                 using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
                 {
@@ -676,68 +687,107 @@ namespace BoardGame_Store
 
                     string sqlOrder =
                         "SELECT c.full_name, o.order_date, o.discount, " +
-                        "o.total_without_discount, o.total_with_discount, o.total_amount, " +
+                        "o.total_without_discount, o.total_with_discount, " +
                         "s.status_name FROM orders o " +
                         "JOIN customers c ON o.customer_id=c.customer_id " +
                         "JOIN statuses s ON o.status_id=s.status_id " +
                         "WHERE o.order_id=@id";
 
-                    MySqlCommand cmd = new MySqlCommand(sqlOrder, conn);
-                    cmd.Parameters.AddWithValue("@id", orderId);
-
-                    using (var r = cmd.ExecuteReader())
+                    using (MySqlCommand cmd = new MySqlCommand(sqlOrder, conn))
                     {
-                        if (r.Read())
+                        cmd.Parameters.AddWithValue("@id", orderId);
+                        using (var r = cmd.ExecuteReader())
                         {
-                            sb.AppendLine("Клиент: " + r["full_name"]);
-                            sb.AppendLine("Дата: " + Convert.ToDateTime(r["order_date"]).ToString("dd.MM.yyyy HH:mm"));
-                            sb.AppendLine("Статус: " + r["status_name"]);
-                            sb.AppendLine("------------------------------------------");
-                            sb.AppendLine("Состав заказа:");
+                            if (r.Read())
+                            {
+                                fullName = r["full_name"].ToString();
+                                orderDate = Convert.ToDateTime(r["order_date"]);
+                                discountPercent = Convert.ToDecimal(r["discount"]);
+                                totalWithout = Convert.ToDecimal(r["total_without_discount"]);
+                                totalWith = Convert.ToDecimal(r["total_with_discount"]);
+                                status = r["status_name"].ToString();
+                            }
                         }
                     }
 
-                    MySqlCommand cmdItems = new MySqlCommand(
+                    sb.AppendLine("Дата чека:     " + DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
+                    sb.AppendLine("Дата заказа:   " + orderDate.ToString("dd.MM.yyyy HH:mm"));
+                    sb.AppendLine("Клиент:        " + fullName);
+                    sb.AppendLine("Статус:        " + status);
+                    sb.AppendLine(thin);
+                    sb.AppendLine("Состав заказа:");
+                    sb.AppendLine(thin);
+
+                    sb.AppendLine(
+                        PadLeft2("№", 3) + "  " +
+                        PadRight2("Наименование", nameWidth) + "  " +
+                        PadLeft2("Кол-во", 6) + "  " +
+                        PadLeft2("Цена", 10) + "  " +
+                        PadLeft2("Сумма", 10));
+                    sb.AppendLine(thin);
+
+                    string sqlItems =
                         "SELECT g.title, oi.quantity, oi.unit_price, " +
                         "(oi.quantity*oi.unit_price) AS total " +
                         "FROM order_items oi " +
                         "JOIN board_games g ON oi.game_id=g.game_id " +
-                        "WHERE oi.order_id=@id", conn);
-                    cmdItems.Parameters.AddWithValue("@id", orderId);
+                        "WHERE oi.order_id=@id ORDER BY oi.order_item_id";
 
-                    using (var r = cmdItems.ExecuteReader())
+                    int n = 1;
+
+                    using (MySqlCommand cmd = new MySqlCommand(sqlItems, conn))
                     {
-                        while (r.Read())
+                        cmd.Parameters.AddWithValue("@id", orderId);
+                        using (var r = cmd.ExecuteReader())
                         {
-                            sb.AppendLine("  " + r["title"] + " x" + r["quantity"] +
-                                          " = " + Convert.ToDecimal(r["total"]).ToString("0.00") + " руб.");
+                            while (r.Read())
+                            {
+                                string title = r["title"].ToString();
+                                if (title.Length > nameWidth - 1)
+                                    title = title.Substring(0, nameWidth - 2) + "…";
+
+                                int qty = Convert.ToInt32(r["quantity"]);
+                                decimal price = Convert.ToDecimal(r["unit_price"]);
+                                decimal sum = Convert.ToDecimal(r["total"]);
+
+                                sb.AppendLine(
+                                    PadLeft2(n.ToString(), 3) + "  " +
+                                    PadRight2(title, nameWidth) + "  " +
+                                    PadLeft2(qty.ToString(), 6) + "  " +
+                                    PadLeft2(price.ToString("0.00"), 10) + "  " +
+                                    PadLeft2(sum.ToString("0.00"), 10));
+
+                                n++;
+                            }
                         }
                     }
 
-                    sb.AppendLine("------------------------------------------");
+                    sb.AppendLine(thin);
 
-                    MySqlCommand cmdTotal = new MySqlCommand(sqlOrder, conn);
-                    cmdTotal.Parameters.AddWithValue("@id", orderId);
+                    decimal discountAmount = totalWithout - totalWith;
 
-                    using (var r = cmdTotal.ExecuteReader())
+                    sb.AppendLine(
+                        PadLeft2("Подытог:", 45) + "  " +
+                        PadLeft2(totalWithout.ToString("0.00"), 10) + " руб.");
+
+                    if (discountPercent > 0)
                     {
-                        if (r.Read())
-                        {
-                            decimal sw = Convert.ToDecimal(r["total_without_discount"]);
-                            decimal sww = Convert.ToDecimal(r["total_with_discount"]);
-                            decimal disc = Convert.ToDecimal(r["discount"]);
-
-                            sb.AppendLine("Без скидки: " + sw.ToString("0.00") + " руб.");
-                            sb.AppendLine("Скидка (" + disc + "%): -" + (sw - sww).ToString("0.00") + " руб.");
-                            sb.AppendLine("ИТОГО К ОПЛАТЕ: " + sww.ToString("0.00") + " руб.");
-                        }
+                        string discLabel = "Скидка (" + discountPercent.ToString("0.##") + "%):";
+                        sb.AppendLine(
+                            PadLeft2(discLabel, 45) + "  " +
+                            PadLeft2("-" + discountAmount.ToString("0.00"), 10) + " руб.");
                     }
+
+                    sb.AppendLine(line);
+                    sb.AppendLine(
+                        PadLeft2("ИТОГО К ОПЛАТЕ:", 45) + "  " +
+                        PadLeft2(totalWith.ToString("0.00"), 10) + " руб.");
+                    sb.AppendLine(line);
+                    sb.AppendLine("                    Спасибо за покупку!");
+                    sb.AppendLine(line);
                 }
 
-                sb.AppendLine("==========================================");
-                sb.AppendLine("Спасибо за покупку!");
-
-                File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
+                File.WriteAllText(path, sb.ToString(), new UTF8Encoding(true));
 
                 MessageHelper.ShowInfo("Чек сохранён:\n" + path);
             }
@@ -745,6 +795,20 @@ namespace BoardGame_Store
             {
                 MessageHelper.ShowError("Ошибка: " + ex.Message);
             }
+        }
+
+        private static string PadRight2(string s, int width)
+        {
+            if (string.IsNullOrEmpty(s)) return new string(' ', width);
+            if (s.Length > width) return s.Substring(0, width);
+            return s.PadRight(width);
+        }
+
+        private static string PadLeft2(string s, int width)
+        {
+            if (string.IsNullOrEmpty(s)) return new string(' ', width);
+            if (s.Length > width) return s;
+            return s.PadLeft(width);
         }
 
         private void btnExcel_Click(object sender, EventArgs e)
