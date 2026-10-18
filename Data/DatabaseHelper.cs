@@ -2,28 +2,23 @@
 using System.Collections.Generic;
 using System.Data;
 using MySql.Data.MySqlClient;
-using BoardGame_Store.Properties;
 
 namespace BoardGame_Store
 {
     public static class DatabaseHelper
     {
-        private static string GetConnectionString()
+        public static MySqlConnection GetConnection()
         {
-            return $"server={Settings.Default.DbServer};" +
-                   $"port={Settings.Default.DbPort};" +
-                   $"database={Settings.Default.DbName};" +
-                   $"user={Settings.Default.DbUser};" +
-                   $"password={Settings.Default.DbPassword};" +
-                   $"charset=utf8;";
+            MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString());
+            conn.Open();
+            return conn;
         }
 
         public static DataTable ExecuteQuery(string query, Dictionary<string, object> parameters = null)
         {
             DataTable dt = new DataTable();
-            using (MySqlConnection conn = new MySqlConnection(GetConnectionString()))
+            using (MySqlConnection conn = GetConnection())
             {
-                conn.Open();
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
                     if (parameters != null)
@@ -42,9 +37,8 @@ namespace BoardGame_Store
 
         public static int ExecuteNonQuery(string query, Dictionary<string, object> parameters = null)
         {
-            using (MySqlConnection conn = new MySqlConnection(GetConnectionString()))
+            using (MySqlConnection conn = GetConnection())
             {
-                conn.Open();
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
                     if (parameters != null)
@@ -53,6 +47,22 @@ namespace BoardGame_Store
                             cmd.Parameters.AddWithValue(p.Key, p.Value);
                     }
                     return cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static object ExecuteScalar(string query, Dictionary<string, object> parameters = null)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    if (parameters != null)
+                    {
+                        foreach (var p in parameters)
+                            cmd.Parameters.AddWithValue(p.Key, p.Value);
+                    }
+                    return cmd.ExecuteScalar();
                 }
             }
         }

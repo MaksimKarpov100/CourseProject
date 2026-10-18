@@ -15,155 +15,41 @@ namespace BoardGame_Store
         private int totalRecords = 0;
         private int totalPages = 1;
         private int selectedOrderId = 0;
-
         private bool isLoadingContent = false;
 
         public OrdersListForm()
         {
             InitializeComponent();
+
             cmbPageSize.SelectedIndex = 0;
             cmbStatus.SelectedIndex = 0;
             cmbSort.SelectedIndex = 0;
-
             dtpDateFrom.Value = DateTime.Today.AddMonths(-3);
             dtpDateTo.Value = DateTime.Today;
+
+            dgvOrders.DataBindingComplete += dgvOrders_DataBindingComplete;
+
+            btnWord.Visible = false;
+            btnReport.Visible = false;
+
+            if (CurrentUser.Role == "Продавец")
+            {
+                btnWord.Visible = true;
+                btnWord.Location = new Point(300, 5);
+            }
+            else if (CurrentUser.Role == "Товаровед")
+            {
+                btnReport.Visible = true;
+                btnReport.Location = new Point(300, 5);
+            }
 
             LoadOrderNumbers();
             LoadOrders();
         }
 
-        private void LoadOrderNumbers()
+        private void dgvOrders_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            try
-            {
-                DataTable dt = new DataTable();
-                dt.Columns.Add("order_id", typeof(int));
-                dt.Columns.Add("display_name", typeof(string));
-                dt.Rows.Add(0, "Все");
-
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT order_id FROM orders ORDER BY order_id DESC", conn);
-
-                    using (var r = cmd.ExecuteReader())
-                    {
-                        while (r.Read())
-                        {
-                            int id = Convert.ToInt32(r["order_id"]);
-                            dt.Rows.Add(id, id.ToString());
-                        }
-                    }
-                }
-
-                cmbOrderNumber.SelectedIndexChanged -= cmbOrderNumber_SelectedIndexChanged;
-
-                cmbOrderNumber.DataSource = dt;
-                cmbOrderNumber.DisplayMember = "display_name";
-                cmbOrderNumber.ValueMember = "order_id";
-
-                cmbOrderNumber.SelectedIndexChanged += cmbOrderNumber_SelectedIndexChanged;
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.ShowError("Ошибка загрузки номеров заказов: " + ex.Message);
-            }
-        }
-
-        private void LoadOrders()
-        {
-            try
-            {
-                int selectedOrderNum = 0;
-                if (cmbOrderNumber.SelectedItem is DataRowView drv)
-                {
-                    selectedOrderNum = Convert.ToInt32(drv["order_id"]);
-                }
-
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                {
-                    conn.Open();
-
-                    string where = " WHERE o.order_date >= @df AND o.order_date < @dt ";
-
-                    if (selectedOrderNum > 0)
-                    {
-                        where += " AND o.order_id = @num ";
-                    }
-
-                    if (cmbStatus.SelectedIndex > 0)
-                    {
-                        where += " AND s.status_name = @status ";
-                    }
-
-                    string orderBy = " ORDER BY o.order_id DESC ";
-
-                    if (cmbSort.SelectedIndex == 1) orderBy = " ORDER BY o.order_date DESC ";
-                    else if (cmbSort.SelectedIndex == 2) orderBy = " ORDER BY s.status_name ASC ";
-                    else if (cmbSort.SelectedIndex == 3) orderBy = " ORDER BY o.total_amount DESC ";
-
-                    MySqlCommand cmdCount = new MySqlCommand(
-                        "SELECT COUNT(*) FROM orders o " +
-                        "JOIN statuses s ON o.status_id=s.status_id " + where, conn);
-
-                    if (selectedOrderNum > 0)
-                        cmdCount.Parameters.AddWithValue("@num", selectedOrderNum);
-
-                    if (cmbStatus.SelectedIndex > 0)
-                        cmdCount.Parameters.AddWithValue("@status", cmbStatus.SelectedItem.ToString());
-
-                    cmdCount.Parameters.AddWithValue("@df", dtpDateFrom.Value.Date);
-                    cmdCount.Parameters.AddWithValue("@dt", dtpDateTo.Value.Date.AddDays(1));
-
-                    totalRecords = Convert.ToInt32(cmdCount.ExecuteScalar());
-
-                    totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
-
-                    if (totalPages < 1) totalPages = 1;
-                    if (currentPage > totalPages) currentPage = totalPages;
-                    if (currentPage < 1) currentPage = 1;
-
-                    string sql = "SELECT o.order_id AS `Номер`, " +
-                                 "c.full_name AS `Клиент`, " +
-                                 "o.order_date AS `Дата`, " +
-                                 "s.status_name AS `Статус`, " +
-                                 "o.discount AS `Скидка`, " +
-                                 "o.total_amount AS `Сумма` " +
-                                 "FROM orders o " +
-                                 "JOIN customers c ON o.customer_id=c.customer_id " +
-                                 "JOIN statuses s ON o.status_id=s.status_id " +
-                                 where + orderBy + " LIMIT @offset, @pageSize";
-
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
-
-                    if (selectedOrderNum > 0)
-                        cmd.Parameters.AddWithValue("@num", selectedOrderNum);
-
-                    if (cmbStatus.SelectedIndex > 0)
-                        cmd.Parameters.AddWithValue("@status", cmbStatus.SelectedItem.ToString());
-
-                    cmd.Parameters.AddWithValue("@df", dtpDateFrom.Value.Date);
-                    cmd.Parameters.AddWithValue("@dt", dtpDateTo.Value.Date.AddDays(1));
-                    cmd.Parameters.AddWithValue("@offset", (currentPage - 1) * pageSize);
-                    cmd.Parameters.AddWithValue("@pageSize", pageSize);
-
-                    MySqlDataAdapter da = new MySqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-
-                    dgvOrders.DataSource = dt;
-                    dgvOrders.ClearSelection();
-                }
-
-                ApplyRowColors();
-
-                lblCount.Text = "Записей: " + totalRecords;
-                lblPageInfo.Text = "Страница " + currentPage + " из " + totalPages;
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.ShowError("Ошибка загрузки заказов: " + ex.Message);
-            }
+            ApplyRowColors();
         }
 
         private void ApplyRowColors()
@@ -181,6 +67,107 @@ namespace BoardGame_Store
             }
         }
 
+        private void LoadOrders()
+        {
+            try
+            {
+                int selectedOrderNum = 0;
+                if (cmbOrderNumber.SelectedItem is DataRowView drv)
+                {
+                    selectedOrderNum = Convert.ToInt32(drv["order_id"]);
+                }
+
+                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                {
+                    conn.Open();
+                    string where = " WHERE o.order_date >= @df AND o.order_date < @dt ";
+
+                    if (selectedOrderNum > 0) where += " AND o.order_id = @num ";
+                    if (cmbStatus.SelectedIndex > 0) where += " AND s.status_name = @status ";
+
+                    string orderBy = " ORDER BY o.order_id DESC ";
+                    if (cmbSort.SelectedIndex == 1) orderBy = " ORDER BY o.order_date DESC ";
+                    else if (cmbSort.SelectedIndex == 2) orderBy = " ORDER BY s.status_name ASC ";
+                    else if (cmbSort.SelectedIndex == 3) orderBy = " ORDER BY o.total_amount DESC ";
+
+                    MySqlCommand cmdCount = new MySqlCommand(
+                        "SELECT COUNT(*) FROM orders o " +
+                        "JOIN statuses s ON o.status_id=s.status_id " + where, conn);
+
+                    if (selectedOrderNum > 0) cmdCount.Parameters.AddWithValue("@num", selectedOrderNum);
+                    if (cmbStatus.SelectedIndex > 0) cmdCount.Parameters.AddWithValue("@status", cmbStatus.SelectedItem.ToString());
+
+                    cmdCount.Parameters.AddWithValue("@df", dtpDateFrom.Value.Date);
+                    cmdCount.Parameters.AddWithValue("@dt", dtpDateTo.Value.Date.AddDays(1));
+
+                    totalRecords = Convert.ToInt32(cmdCount.ExecuteScalar());
+                    totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+
+                    if (totalPages < 1) totalPages = 1;
+                    if (currentPage > totalPages) currentPage = totalPages;
+                    if (currentPage < 1) currentPage = 1;
+
+                    string sql = "SELECT o.order_id AS `Номер`, c.full_name AS `Клиент`, o.order_date AS `Дата`, " +
+                                 "s.status_name AS `Статус`, o.discount AS `Скидка`, o.total_amount AS `Сумма` " +
+                                 "FROM orders o " +
+                                 "JOIN customers c ON o.customer_id=c.customer_id " +
+                                 "JOIN statuses s ON o.status_id=s.status_id " +
+                                 where + orderBy + " LIMIT @offset, @pageSize";
+
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    if (selectedOrderNum > 0) cmd.Parameters.AddWithValue("@num", selectedOrderNum);
+                    if (cmbStatus.SelectedIndex > 0) cmd.Parameters.AddWithValue("@status", cmbStatus.SelectedItem.ToString());
+
+                    cmd.Parameters.AddWithValue("@df", dtpDateFrom.Value.Date);
+                    cmd.Parameters.AddWithValue("@dt", dtpDateTo.Value.Date.AddDays(1));
+                    cmd.Parameters.AddWithValue("@offset", (currentPage - 1) * pageSize);
+                    cmd.Parameters.AddWithValue("@pageSize", pageSize);
+
+                    MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    dgvOrders.DataSource = dt;
+                    dgvOrders.ClearSelection();
+                }
+
+                lblCount.Text = "Записей: " + totalRecords;
+                lblPageInfo.Text = "Страница " + currentPage + " из " + totalPages;
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError("Ошибка загрузки заказов: " + ex.Message);
+            }
+        }
+
+        private void LoadOrderNumbers()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                dt.Columns.Add("order_id", typeof(int));
+                dt.Columns.Add("display_name", typeof(string));
+                dt.Rows.Add(0, "Все");
+
+                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT order_id FROM orders ORDER BY order_id DESC", conn);
+                    using (var r = cmd.ExecuteReader())
+                    {
+                        while (r.Read()) dt.Rows.Add(Convert.ToInt32(r["order_id"]), r["order_id"].ToString());
+                    }
+                }
+
+                cmbOrderNumber.SelectedIndexChanged -= cmbOrderNumber_SelectedIndexChanged;
+                cmbOrderNumber.DataSource = dt;
+                cmbOrderNumber.DisplayMember = "display_name";
+                cmbOrderNumber.ValueMember = "order_id";
+                cmbOrderNumber.SelectedIndexChanged += cmbOrderNumber_SelectedIndexChanged;
+            }
+            catch (Exception ex) { MessageHelper.ShowError("Ошибка загрузки номеров: " + ex.Message); }
+        }
+
         private void LoadOrderContent(int orderId)
         {
             isLoadingContent = true;
@@ -189,12 +176,8 @@ namespace BoardGame_Store
                 using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
                 {
                     conn.Open();
-
-                    string sql = "SELECT g.title AS `Товар`, oi.quantity AS `Кол-во`, " +
-                                 "oi.unit_price AS `Цена`, (oi.quantity*oi.unit_price) AS `Сумма` " +
-                                 "FROM order_items oi " +
-                                 "JOIN board_games g ON oi.game_id=g.game_id " +
-                                 "WHERE oi.order_id=@id";
+                    string sql = "SELECT g.title AS `Товар`, oi.quantity AS `Кол-во`, oi.unit_price AS `Цена`, (oi.quantity*oi.unit_price) AS `Сумма` " +
+                                 "FROM order_items oi JOIN board_games g ON oi.game_id=g.game_id WHERE oi.order_id=@id";
 
                     MySqlDataAdapter da = new MySqlDataAdapter(sql, conn);
                     da.SelectCommand.Parameters.AddWithValue("@id", orderId);
@@ -205,9 +188,7 @@ namespace BoardGame_Store
                     dgvContent.DataSource = dt;
                     dgvContent.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-                    MySqlCommand cmd = new MySqlCommand(
-                        "SELECT discount, total_without_discount, total_with_discount, total_amount " +
-                        "FROM orders WHERE order_id=@id", conn);
+                    MySqlCommand cmd = new MySqlCommand("SELECT discount, total_without_discount, total_with_discount, total_amount FROM orders WHERE order_id=@id", conn);
                     cmd.Parameters.AddWithValue("@id", orderId);
 
                     using (var r = cmd.ExecuteReader())
@@ -230,14 +211,8 @@ namespace BoardGame_Store
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                MessageHelper.ShowError("Ошибка состава: " + ex.Message);
-            }
-            finally
-            {
-                isLoadingContent = false;
-            }
+            catch (Exception ex) { MessageHelper.ShowError("Ошибка состава: " + ex.Message); }
+            finally { isLoadingContent = false; }
         }
 
         private void cmbOrderNumber_SelectedIndexChanged(object sender, EventArgs e) { currentPage = 1; LoadOrders(); }
@@ -266,12 +241,10 @@ namespace BoardGame_Store
         private void dgvOrders_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvOrders.CurrentRow == null || dgvOrders.SelectedRows.Count == 0) return;
-
             object cellValue = dgvOrders.CurrentRow.Cells["Номер"].Value;
             if (cellValue == null || cellValue == DBNull.Value) return;
 
             int newId = Convert.ToInt32(cellValue);
-
             if (newId != selectedOrderId)
             {
                 selectedOrderId = newId;
@@ -282,14 +255,12 @@ namespace BoardGame_Store
         private void dgvOrders_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
-
             object cellValue = dgvOrders.Rows[e.RowIndex].Cells["Номер"].Value;
             if (cellValue == null || cellValue == DBNull.Value) return;
 
             int id = Convert.ToInt32(cellValue);
             OrderEditForm editForm = new OrderEditForm(id);
             editForm.ShowDialog();
-
             LoadOrderNumbers();
             LoadOrders();
         }
@@ -297,7 +268,6 @@ namespace BoardGame_Store
         private void nudDiscount_ValueChanged(object sender, EventArgs e)
         {
             if (isLoadingContent) return;
-
             decimal sw;
             if (decimal.TryParse(txtSumWithout.Text, out sw))
             {
@@ -309,12 +279,7 @@ namespace BoardGame_Store
             }
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-            new OrderAddForm().ShowDialog();
-            LoadOrderNumbers();
-            LoadOrders();
-        }
+        private void btnAdd_Click(object sender, EventArgs e) { new OrderAddForm().ShowDialog(); LoadOrderNumbers(); LoadOrders(); }
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
@@ -361,14 +326,8 @@ namespace BoardGame_Store
                 using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
                 {
                     conn.Open();
-
-                    string sqlOrder =
-                        "SELECT c.full_name, o.order_date, o.discount, " +
-                        "o.total_without_discount, o.total_with_discount, " +
-                        "s.status_name FROM orders o " +
-                        "JOIN customers c ON o.customer_id=c.customer_id " +
-                        "JOIN statuses s ON o.status_id=s.status_id " +
-                        "WHERE o.order_id=@id";
+                    string sqlOrder = "SELECT c.full_name, o.order_date, o.discount, o.total_without_discount, o.total_with_discount, s.status_name FROM orders o " +
+                                      "JOIN customers c ON o.customer_id=c.customer_id JOIN statuses s ON o.status_id=s.status_id WHERE o.order_id=@id";
 
                     using (MySqlCommand cmd = new MySqlCommand(sqlOrder, conn))
                     {
@@ -394,16 +353,11 @@ namespace BoardGame_Store
                     sb.AppendLine(thin);
                     sb.AppendLine("Состав заказа:");
                     sb.AppendLine(thin);
-
                     sb.AppendLine(PadLeft("№", 3) + "  " + PadRight("Наименование", nameWidth) + "  " + PadLeft("Кол-во", 6) + "  " + PadLeft("Цена", 10) + "  " + PadLeft("Сумма", 10));
                     sb.AppendLine(thin);
 
-                    string sqlItems =
-                        "SELECT g.title, oi.quantity, oi.unit_price, " +
-                        "(oi.quantity*oi.unit_price) AS total " +
-                        "FROM order_items oi " +
-                        "JOIN board_games g ON oi.game_id=g.game_id " +
-                        "WHERE oi.order_id=@id ORDER BY oi.order_item_id";
+                    string sqlItems = "SELECT g.title, oi.quantity, oi.unit_price, (oi.quantity*oi.unit_price) AS total FROM order_items oi " +
+                                      "JOIN board_games g ON oi.game_id=g.game_id WHERE oi.order_id=@id ORDER BY oi.order_item_id";
 
                     int n = 1;
                     using (MySqlCommand cmd = new MySqlCommand(sqlItems, conn))
@@ -446,10 +400,7 @@ namespace BoardGame_Store
                 File.WriteAllText(path, sb.ToString(), new UTF8Encoding(true));
                 MessageHelper.ShowInfo("Чек сохранён:\n" + path);
             }
-            catch (Exception ex)
-            {
-                MessageHelper.ShowError("Ошибка печати чека: " + ex.Message);
-            }
+            catch (Exception ex) { MessageHelper.ShowError("Ошибка печати чека: " + ex.Message); }
         }
 
         private static string PadRight(string s, int width)
@@ -468,11 +419,27 @@ namespace BoardGame_Store
 
         private void btnReport_Click(object sender, EventArgs e)
         {
-            Form parent = this.ParentForm;
-            if (parent is MainFormAdmin admin) { admin.SwitchToTab("special"); return; }
-            new SpecialForm().ShowDialog();
-        }
+            Control parent = this.Parent;
+            while (parent != null && !(parent is TabControl)) parent = parent.Parent;
 
-        private void btnBack_Click(object sender, EventArgs e) { this.Close(); }
+            if (parent is TabControl tabControl)
+            {
+                bool found = false;
+                foreach (TabPage page in tabControl.TabPages)
+                {
+                    if (page.Text.ToLower().Contains("спец") || page.Text.ToLower().Contains("отчет"))
+                    {
+                        tabControl.SelectedTab = page;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) MessageHelper.ShowWarning("Вкладка с отчетами не найдена в главном меню.");
+            }
+            else
+            {
+                new SpecialForm().ShowDialog();
+            }
+        }
     }
 }

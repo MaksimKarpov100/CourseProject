@@ -41,7 +41,7 @@
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(984, 60);
+            this.panelTop.Size = new System.Drawing.Size(1124, 60);
             this.panelTop.TabIndex = 0;
             // 
             // lblTitle
@@ -60,7 +60,7 @@
             this.lblUserInfo.AutoSize = true;
             this.lblUserInfo.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.lblUserInfo.ForeColor = System.Drawing.Color.White;
-            this.lblUserInfo.Location = new System.Drawing.Point(531, 19);
+            this.lblUserInfo.Location = new System.Drawing.Point(576, 19);
             this.lblUserInfo.Name = "lblUserInfo";
             this.lblUserInfo.Size = new System.Drawing.Size(107, 20);
             this.lblUserInfo.TabIndex = 1;
@@ -72,7 +72,7 @@
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnExit.ForeColor = System.Drawing.Color.White;
-            this.btnExit.Location = new System.Drawing.Point(872, 11);
+            this.btnExit.Location = new System.Drawing.Point(1012, 11);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(100, 36);
             this.btnExit.TabIndex = 2;
@@ -94,7 +94,7 @@
             this.tabMain.Location = new System.Drawing.Point(0, 60);
             this.tabMain.Name = "tabMain";
             this.tabMain.SelectedIndex = 0;
-            this.tabMain.Size = new System.Drawing.Size(984, 700);
+            this.tabMain.Size = new System.Drawing.Size(1124, 760);
             this.tabMain.TabIndex = 1;
             this.tabMain.SelectedIndexChanged += new System.EventHandler(this.tabMain_SelectedIndexChanged);
             // 
@@ -103,7 +103,7 @@
             this.tabOrders.Location = new System.Drawing.Point(4, 26);
             this.tabOrders.Name = "tabOrders";
             this.tabOrders.Padding = new System.Windows.Forms.Padding(3);
-            this.tabOrders.Size = new System.Drawing.Size(976, 670);
+            this.tabOrders.Size = new System.Drawing.Size(1116, 730);
             this.tabOrders.TabIndex = 0;
             this.tabOrders.Text = "📦 Заказы";
             // 
@@ -111,7 +111,7 @@
             // 
             this.tabGames.Location = new System.Drawing.Point(4, 26);
             this.tabGames.Name = "tabGames";
-            this.tabGames.Size = new System.Drawing.Size(1192, 670);
+            this.tabGames.Size = new System.Drawing.Size(976, 670);
             this.tabGames.TabIndex = 1;
             this.tabGames.Text = "🎮 Товары";
             // 
@@ -119,7 +119,7 @@
             // 
             this.tabUsers.Location = new System.Drawing.Point(4, 26);
             this.tabUsers.Name = "tabUsers";
-            this.tabUsers.Size = new System.Drawing.Size(1192, 670);
+            this.tabUsers.Size = new System.Drawing.Size(1116, 730);
             this.tabUsers.TabIndex = 2;
             this.tabUsers.Text = "👥 Пользователи";
             // 
@@ -127,7 +127,7 @@
             // 
             this.tabCatalogs.Location = new System.Drawing.Point(4, 26);
             this.tabCatalogs.Name = "tabCatalogs";
-            this.tabCatalogs.Size = new System.Drawing.Size(1192, 670);
+            this.tabCatalogs.Size = new System.Drawing.Size(976, 670);
             this.tabCatalogs.TabIndex = 3;
             this.tabCatalogs.Text = "🏷️ Справочники";
             // 
@@ -135,7 +135,7 @@
             // 
             this.tabDiscounts.Location = new System.Drawing.Point(4, 26);
             this.tabDiscounts.Name = "tabDiscounts";
-            this.tabDiscounts.Size = new System.Drawing.Size(1192, 670);
+            this.tabDiscounts.Size = new System.Drawing.Size(976, 670);
             this.tabDiscounts.TabIndex = 4;
             this.tabDiscounts.Text = "💰 Скидки";
             // 
@@ -143,7 +143,7 @@
             // 
             this.tabSpecial.Location = new System.Drawing.Point(4, 26);
             this.tabSpecial.Name = "tabSpecial";
-            this.tabSpecial.Size = new System.Drawing.Size(1192, 670);
+            this.tabSpecial.Size = new System.Drawing.Size(976, 670);
             this.tabSpecial.TabIndex = 5;
             this.tabSpecial.Text = "⚙️ Специальные возможности";
             // 
@@ -151,7 +151,7 @@
             // 
             this.tabProfile.Location = new System.Drawing.Point(4, 26);
             this.tabProfile.Name = "tabProfile";
-            this.tabProfile.Size = new System.Drawing.Size(1192, 670);
+            this.tabProfile.Size = new System.Drawing.Size(976, 670);
             this.tabProfile.TabIndex = 6;
             this.tabProfile.Text = "👤 Профиль";
             // 
@@ -159,7 +159,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 760);
+            this.ClientSize = new System.Drawing.Size(1124, 820);
             this.ControlBox = false;
             this.Controls.Add(this.tabMain);
             this.Controls.Add(this.panelTop);

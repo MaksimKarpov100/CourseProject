@@ -18,6 +18,17 @@ namespace BoardGame_Store
             InitializeComponent();
 
             lblUserInfo.Text = CurrentUser.FullName + " (" + CurrentUser.Role + ")";
+
+            if (tabMain.TabPages.Contains(tabOrders))
+            {
+                tabMain.SelectedTab = tabOrders;
+            }
+            else
+            {
+                tabMain.SelectedIndex = 0;
+            }
+
+            tabMain_SelectedIndexChanged(tabMain, EventArgs.Empty);
         }
 
         private void LoadFormInTab(Form form, TabPage page)
@@ -42,27 +53,13 @@ namespace BoardGame_Store
         {
             switch (tabKey)
             {
-                case "orders":
-                    tabMain.SelectedTab = tabOrders;
-                    break;
-                case "games":
-                    tabMain.SelectedTab = tabGames;
-                    break;
-                case "users":
-                    tabMain.SelectedTab = tabUsers;
-                    break;
-                case "catalogs":
-                    tabMain.SelectedTab = tabCatalogs;
-                    break;
-                case "discounts":
-                    tabMain.SelectedTab = tabDiscounts;
-                    break;
-                case "special":
-                    tabMain.SelectedTab = tabSpecial;
-                    break;
-                case "profile":
-                    tabMain.SelectedTab = tabProfile;
-                    break;
+                case "orders": tabMain.SelectedTab = tabOrders; break;
+                case "games": tabMain.SelectedTab = tabGames; break;
+                case "users": tabMain.SelectedTab = tabUsers; break;
+                case "catalogs": tabMain.SelectedTab = tabCatalogs; break;
+                case "discounts": tabMain.SelectedTab = tabDiscounts; break;
+                case "special": tabMain.SelectedTab = tabSpecial; break;
+                case "profile": tabMain.SelectedTab = tabProfile; break;
             }
         }
 
@@ -98,7 +95,7 @@ namespace BoardGame_Store
                 {
                     if (catalogsForm == null || catalogsForm.IsDisposed)
                     {
-                        catalogsForm = new CatalogsForm(0);
+                        catalogsForm = new CatalogsForm(0); 
                         LoadFormInTab(catalogsForm, tabCatalogs);
                     }
                 }
@@ -129,7 +126,7 @@ namespace BoardGame_Store
             }
             catch (Exception ex)
             {
-                MessageHelper.ShowError("Ошибка вкладки: " + ex.Message);
+                MessageHelper.ShowError("Ошибка загрузки вкладки: " + ex.Message);
             }
         }
 

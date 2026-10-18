@@ -53,6 +53,7 @@
             // 
             // lblTitle
             // 
+            this.lblTitle.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblTitle.AutoSize = true;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this.lblTitle.Location = new System.Drawing.Point(280, 10);
@@ -63,6 +64,8 @@
             // 
             // grpImportExport
             // 
+            this.grpImportExport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpImportExport.Controls.Add(this.lblTables);
             this.grpImportExport.Controls.Add(this.clbTables);
             this.grpImportExport.Controls.Add(this.btnSelectAll);
@@ -75,7 +78,7 @@
             this.grpImportExport.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.grpImportExport.Location = new System.Drawing.Point(20, 50);
             this.grpImportExport.Name = "grpImportExport";
-            this.grpImportExport.Size = new System.Drawing.Size(898, 190);
+            this.grpImportExport.Size = new System.Drawing.Size(854, 190);
             this.grpImportExport.TabIndex = 2;
             this.grpImportExport.TabStop = false;
             this.grpImportExport.Text = "Импорт и экспорт CSV (отметьте нужные таблицы)";
@@ -109,7 +112,7 @@
             this.btnSelectAll.ForeColor = System.Drawing.Color.White;
             this.btnSelectAll.Location = new System.Drawing.Point(625, 45);
             this.btnSelectAll.Name = "btnSelectAll";
-            this.btnSelectAll.Size = new System.Drawing.Size(110, 30);
+            this.btnSelectAll.Size = new System.Drawing.Size(100, 30);
             this.btnSelectAll.TabIndex = 2;
             this.btnSelectAll.Text = "Выбрать все";
             this.btnSelectAll.UseVisualStyleBackColor = false;
@@ -121,7 +124,7 @@
             this.btnDeselectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDeselectAll.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnDeselectAll.ForeColor = System.Drawing.Color.White;
-            this.btnDeselectAll.Location = new System.Drawing.Point(625, 81);
+            this.btnDeselectAll.Location = new System.Drawing.Point(735, 45);
             this.btnDeselectAll.Name = "btnDeselectAll";
             this.btnDeselectAll.Size = new System.Drawing.Size(110, 30);
             this.btnDeselectAll.TabIndex = 3;
@@ -141,14 +144,17 @@
             // 
             // txtFolder
             // 
+            this.txtFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFolder.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtFolder.Location = new System.Drawing.Point(80, 127);
             this.txtFolder.Name = "txtFolder";
-            this.txtFolder.Size = new System.Drawing.Size(535, 23);
+            this.txtFolder.Size = new System.Drawing.Size(527, 23);
             this.txtFolder.TabIndex = 5;
             // 
             // btnBrowse
             // 
+            this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBrowse.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnBrowse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBrowse.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -169,7 +175,7 @@
             this.btnExportSelected.ForeColor = System.Drawing.Color.White;
             this.btnExportSelected.Location = new System.Drawing.Point(20, 155);
             this.btnExportSelected.Name = "btnExportSelected";
-            this.btnExportSelected.Size = new System.Drawing.Size(221, 30);
+            this.btnExportSelected.Size = new System.Drawing.Size(200, 30);
             this.btnExportSelected.TabIndex = 7;
             this.btnExportSelected.Text = "Экспорт выбранных в CSV";
             this.btnExportSelected.UseVisualStyleBackColor = false;
@@ -181,7 +187,7 @@
             this.btnImportSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnImportSelected.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnImportSelected.ForeColor = System.Drawing.Color.White;
-            this.btnImportSelected.Location = new System.Drawing.Point(250, 154);
+            this.btnImportSelected.Location = new System.Drawing.Point(240, 155);
             this.btnImportSelected.Name = "btnImportSelected";
             this.btnImportSelected.Size = new System.Drawing.Size(200, 30);
             this.btnImportSelected.TabIndex = 8;
@@ -191,6 +197,8 @@
             // 
             // grpBackup
             // 
+            this.grpBackup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpBackup.Controls.Add(this.btnBackupManual);
             this.grpBackup.Controls.Add(this.chkBackupAuto);
             this.grpBackup.Controls.Add(this.lblInterval);
@@ -201,9 +209,9 @@
             this.grpBackup.Controls.Add(this.btnRestore);
             this.grpBackup.Controls.Add(this.btnRefreshBackups);
             this.grpBackup.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.grpBackup.Location = new System.Drawing.Point(20, 256);
+            this.grpBackup.Location = new System.Drawing.Point(20, 250);
             this.grpBackup.Name = "grpBackup";
-            this.grpBackup.Size = new System.Drawing.Size(898, 277);
+            this.grpBackup.Size = new System.Drawing.Size(854, 210);
             this.grpBackup.TabIndex = 3;
             this.grpBackup.TabStop = false;
             this.grpBackup.Text = "Резервное копирование и Восстановление";
@@ -246,7 +254,7 @@
             // nudInterval
             // 
             this.nudInterval.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.nudInterval.Location = new System.Drawing.Point(440, 33);
+            this.nudInterval.Location = new System.Drawing.Point(490, 32);
             this.nudInterval.Maximum = new decimal(new int[] {
             999,
             0,
@@ -270,7 +278,7 @@
             // 
             this.lblIntervalUnit.AutoSize = true;
             this.lblIntervalUnit.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblIntervalUnit.Location = new System.Drawing.Point(516, 35);
+            this.lblIntervalUnit.Location = new System.Drawing.Point(570, 35);
             this.lblIntervalUnit.Name = "lblIntervalUnit";
             this.lblIntervalUnit.Size = new System.Drawing.Size(45, 19);
             this.lblIntervalUnit.TabIndex = 4;
@@ -290,6 +298,8 @@
             // 
             this.dgvBackups.AllowUserToAddRows = false;
             this.dgvBackups.AllowUserToDeleteRows = false;
+            this.dgvBackups.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvBackups.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvBackups.BackgroundColor = System.Drawing.Color.White;
             this.dgvBackups.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -300,16 +310,17 @@
             this.dgvBackups.ReadOnly = true;
             this.dgvBackups.RowHeadersVisible = false;
             this.dgvBackups.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBackups.Size = new System.Drawing.Size(654, 161);
+            this.dgvBackups.Size = new System.Drawing.Size(600, 95);
             this.dgvBackups.TabIndex = 6;
             // 
             // btnRestore
             // 
+            this.btnRestore.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRestore.BackColor = System.Drawing.Color.DarkRed;
             this.btnRestore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRestore.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnRestore.ForeColor = System.Drawing.Color.White;
-            this.btnRestore.Location = new System.Drawing.Point(680, 95);
+            this.btnRestore.Location = new System.Drawing.Point(632, 95);
             this.btnRestore.Name = "btnRestore";
             this.btnRestore.Size = new System.Drawing.Size(200, 45);
             this.btnRestore.TabIndex = 7;
@@ -319,13 +330,14 @@
             // 
             // btnRefreshBackups
             // 
+            this.btnRefreshBackups.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRefreshBackups.BackColor = System.Drawing.Color.Gray;
             this.btnRefreshBackups.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRefreshBackups.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnRefreshBackups.ForeColor = System.Drawing.Color.White;
-            this.btnRefreshBackups.Location = new System.Drawing.Point(680, 146);
+            this.btnRefreshBackups.Location = new System.Drawing.Point(632, 145);
             this.btnRefreshBackups.Name = "btnRefreshBackups";
-            this.btnRefreshBackups.Size = new System.Drawing.Size(200, 43);
+            this.btnRefreshBackups.Size = new System.Drawing.Size(200, 30);
             this.btnRefreshBackups.TabIndex = 8;
             this.btnRefreshBackups.Text = "Обновить список";
             this.btnRefreshBackups.UseVisualStyleBackColor = false;
@@ -333,15 +345,17 @@
             // 
             // grpReports
             // 
+            this.grpReports.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grpReports.Controls.Add(this.lblPeriod);
             this.grpReports.Controls.Add(this.dtpFrom);
             this.grpReports.Controls.Add(this.lblTo);
             this.grpReports.Controls.Add(this.dtpTo);
             this.grpReports.Controls.Add(this.btnExcel);
             this.grpReports.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.grpReports.Location = new System.Drawing.Point(20, 539);
+            this.grpReports.Location = new System.Drawing.Point(20, 470);
             this.grpReports.Name = "grpReports";
-            this.grpReports.Size = new System.Drawing.Size(416, 100);
+            this.grpReports.Size = new System.Drawing.Size(854, 100);
             this.grpReports.TabIndex = 4;
             this.grpReports.TabStop = false;
             this.grpReports.Text = "Отчёты";
@@ -390,7 +404,7 @@
             this.btnExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExcel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnExcel.ForeColor = System.Drawing.Color.White;
-            this.btnExcel.Location = new System.Drawing.Point(20, 60);
+            this.btnExcel.Location = new System.Drawing.Point(376, 24);
             this.btnExcel.Name = "btnExcel";
             this.btnExcel.Size = new System.Drawing.Size(350, 32);
             this.btnExcel.TabIndex = 7;
@@ -400,30 +414,33 @@
             // 
             // lblLog
             // 
+            this.lblLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLog.AutoSize = true;
             this.lblLog.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblLog.Location = new System.Drawing.Point(457, 536);
+            this.lblLog.Location = new System.Drawing.Point(20, 580);
             this.lblLog.Name = "lblLog";
-            this.lblLog.Size = new System.Drawing.Size(28, 15);
+            this.lblLog.Size = new System.Drawing.Size(116, 15);
             this.lblLog.TabIndex = 5;
-            this.lblLog.Text = "Лог";
+            this.lblLog.Text = "Журнал операций:";
             // 
             // txtLog
             // 
+            this.txtLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtLog.Font = new System.Drawing.Font("Consolas", 9F);
-            this.txtLog.Location = new System.Drawing.Point(460, 554);
+            this.txtLog.Location = new System.Drawing.Point(20, 600);
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(458, 140);
+            this.txtLog.Size = new System.Drawing.Size(854, 140);
             this.txtLog.TabIndex = 6;
             // 
             // SpecialForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(932, 707);
+            this.ClientSize = new System.Drawing.Size(894, 760);
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.lblLog);
             this.Controls.Add(this.grpReports);
@@ -431,11 +448,8 @@
             this.Controls.Add(this.grpImportExport);
             this.Controls.Add(this.lblTitle);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "SpecialForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Специальные возможности";
             this.grpImportExport.ResumeLayout(false);
             this.grpImportExport.PerformLayout();
@@ -461,7 +475,6 @@
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.Button btnExportSelected;
         private System.Windows.Forms.Button btnImportSelected;
-
         private System.Windows.Forms.GroupBox grpBackup;
         private System.Windows.Forms.Button btnBackupManual;
         private System.Windows.Forms.CheckBox chkBackupAuto;
@@ -472,7 +485,6 @@
         private System.Windows.Forms.DataGridView dgvBackups;
         private System.Windows.Forms.Button btnRestore;
         private System.Windows.Forms.Button btnRefreshBackups;
-
         private System.Windows.Forms.GroupBox grpReports;
         private System.Windows.Forms.Label lblPeriod;
         private System.Windows.Forms.DateTimePicker dtpFrom;
@@ -482,4 +494,4 @@
         private System.Windows.Forms.Label lblLog;
         private System.Windows.Forms.TextBox txtLog;
     }
-}   
+}

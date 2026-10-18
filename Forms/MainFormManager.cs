@@ -5,90 +5,58 @@ namespace BoardGame_Store
 {
     public partial class MainFormManager : Form
     {
-        private GamesForm gamesForm;
-        private OrdersListForm ordersForm;
-        private UserProfileForm profileForm;
-
         public MainFormManager()
         {
             InitializeComponent();
+            lblUserInfo.Text = CurrentUser.FullName + " (Товаровед)";
 
-            lblUserInfo.Text = CurrentUser.FullName + " (" + CurrentUser.Role + ")";
-        }
-
-        private void LoadFormInTab(Form form, TabPage page)
-        {
-            form.TopLevel = false;
-            form.FormBorderStyle = FormBorderStyle.None;
-            form.Dock = DockStyle.Fill;
-
-            page.Controls.Add(form);
-            form.Show();
-
-            foreach (Control c in form.Controls)
-            {
-                if (c.Name == "btnBack")
-                {
-                    c.Visible = false;
-                }
-            }
-        }
-        public void SwitchToTab(string tabKey)
-        {
-            switch (tabKey)
-            {
-                case "games":
-                    tabMain.SelectedTab = tabGames;
-                    break;
-                case "orders":
-                    tabMain.SelectedTab = tabOrders;
-                    break;
-                case "profile":
-                    tabMain.SelectedTab = tabProfile;
-                    break;
-            }
+            tabMain.SelectedIndex = 0;
+            LoadTabContent(tabMain.SelectedTab);
         }
 
         private void tabMain_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            LoadTabContent(tabMain.SelectedTab);
+        }
+
+        private void LoadTabContent(TabPage selectedTab)
+        {
+            if (selectedTab.Controls.Count > 0) return;
+
+            Form formToLoad = null;
+
+            if (selectedTab == tabGames)
             {
-                if (tabMain.SelectedTab == tabGames)
-                {
-                    if (gamesForm == null || gamesForm.IsDisposed)
-                    {
-                        gamesForm = new GamesForm(false);
-                        LoadFormInTab(gamesForm, tabGames);
-                    }
-                }
-                else if (tabMain.SelectedTab == tabOrders)
-                {
-                    if (ordersForm == null || ordersForm.IsDisposed)
-                    {
-                        ordersForm = new OrdersListForm();
-                        LoadFormInTab(ordersForm, tabOrders);
-                    }
-                }
-                else if (tabMain.SelectedTab == tabProfile)
-                {
-                    if (profileForm == null || profileForm.IsDisposed)
-                    {
-                        profileForm = new UserProfileForm();
-                        LoadFormInTab(profileForm, tabProfile);
-                    }
-                }
+                formToLoad = new GamesForm(false);
             }
-            catch (Exception ex)
+            else if (selectedTab == tabOrders)
             {
-                MessageHelper.ShowError("Ошибка вкладки: " + ex.Message);
+                formToLoad = new OrdersListForm();
+            }
+            else if (selectedTab == tabReports)
+            {
+                formToLoad = new SpecialForm();
+            }
+            else if (selectedTab == tabProfile)
+            {
+                formToLoad = new UserProfileForm();
+            }
+
+            if (formToLoad != null)
+            {
+                formToLoad.TopLevel = false;
+                formToLoad.FormBorderStyle = FormBorderStyle.None;
+                formToLoad.Dock = DockStyle.Fill;
+                selectedTab.Controls.Add(formToLoad);
+                formToLoad.Show();
             }
         }
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            if (MessageHelper.AskConfirm("Выйти из системы?"))
+            if (MessageHelper.AskConfirm("Вы действительно хотите выйти?"))
             {
-                this.Close();
+                Application.Exit();
             }
         }
     }

@@ -31,8 +31,6 @@
             this.btnReset = new System.Windows.Forms.Button();
             this.dgvOrders = new System.Windows.Forms.DataGridView();
             this.lblCount = new System.Windows.Forms.Label();
-
-            // --- НОВАЯ ЦВЕТНАЯ ЛЕГЕНДА ---
             this.lblLegendTitle = new System.Windows.Forms.Label();
             this.panelLegendNew = new System.Windows.Forms.Panel();
             this.lblLegendNew = new System.Windows.Forms.Label();
@@ -42,8 +40,6 @@
             this.lblLegendReady = new System.Windows.Forms.Label();
             this.panelLegendCancelled = new System.Windows.Forms.Panel();
             this.lblLegendCancelled = new System.Windows.Forms.Label();
-            // -----------------------------
-
             this.panelPagination = new System.Windows.Forms.Panel();
             this.btnFirst = new System.Windows.Forms.Button();
             this.btnPrev = new System.Windows.Forms.Button();
@@ -70,7 +66,6 @@
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnWord = new System.Windows.Forms.Button();
             this.btnReport = new System.Windows.Forms.Button();
-            this.btnBack = new System.Windows.Forms.Button();
             this.lblHint = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panelFilters.SuspendLayout();
@@ -84,17 +79,19 @@
             // 
             // lblTitle
             // 
-            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTitle.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.Location = new System.Drawing.Point(0, 0);
+            this.lblTitle.Location = new System.Drawing.Point(-1, -4);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(900, 40);
+            this.lblTitle.Size = new System.Drawing.Size(894, 30);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Учёт заказов";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panelFilters
             // 
+            this.panelFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelFilters.BackColor = System.Drawing.SystemColors.ControlLight;
             this.panelFilters.Controls.Add(this.lblOrderNumber);
             this.panelFilters.Controls.Add(this.cmbOrderNumber);
@@ -107,9 +104,9 @@
             this.panelFilters.Controls.Add(this.lblSort);
             this.panelFilters.Controls.Add(this.cmbSort);
             this.panelFilters.Controls.Add(this.btnReset);
-            this.panelFilters.Location = new System.Drawing.Point(12, 45);
+            this.panelFilters.Location = new System.Drawing.Point(12, 29);
             this.panelFilters.Name = "panelFilters";
-            this.panelFilters.Size = new System.Drawing.Size(876, 75);
+            this.panelFilters.Size = new System.Drawing.Size(864, 75);
             this.panelFilters.TabIndex = 1;
             // 
             // lblOrderNumber
@@ -216,11 +213,12 @@
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(786, 20);
+            this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnReset.Location = new System.Drawing.Point(759, 20);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(80, 40);
+            this.btnReset.Size = new System.Drawing.Size(95, 32);
             this.btnReset.TabIndex = 10;
-            this.btnReset.Text = "Сброс";
+            this.btnReset.Text = "Сбросить";
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
@@ -228,116 +226,129 @@
             // 
             this.dgvOrders.AllowUserToAddRows = false;
             this.dgvOrders.AllowUserToDeleteRows = false;
+            this.dgvOrders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvOrders.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvOrders.BackgroundColor = System.Drawing.Color.White;
             this.dgvOrders.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvOrders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvOrders.Location = new System.Drawing.Point(12, 130);
+            this.dgvOrders.Location = new System.Drawing.Point(12, 114);
             this.dgvOrders.Name = "dgvOrders";
             this.dgvOrders.ReadOnly = true;
             this.dgvOrders.RowHeadersVisible = false;
             this.dgvOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvOrders.Size = new System.Drawing.Size(876, 260);
+            this.dgvOrders.Size = new System.Drawing.Size(864, 369);
             this.dgvOrders.TabIndex = 2;
             this.dgvOrders.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrders_CellDoubleClick);
             this.dgvOrders.SelectionChanged += new System.EventHandler(this.dgvOrders_SelectionChanged);
             // 
             // lblCount
             // 
+            this.lblCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCount.AutoSize = true;
-            this.lblCount.Location = new System.Drawing.Point(12, 400);
+            this.lblCount.Location = new System.Drawing.Point(9, 493);
             this.lblCount.Name = "lblCount";
             this.lblCount.Size = new System.Drawing.Size(151, 19);
             this.lblCount.TabIndex = 3;
             this.lblCount.Text = "Количество записей: 0";
-
             // 
             // lblLegendTitle
             // 
+            this.lblLegendTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLegendTitle.AutoSize = true;
             this.lblLegendTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblLegendTitle.ForeColor = System.Drawing.Color.DimGray;
-            this.lblLegendTitle.Location = new System.Drawing.Point(195, 403);
+            this.lblLegendTitle.Location = new System.Drawing.Point(192, 496);
             this.lblLegendTitle.Name = "lblLegendTitle";
-            this.lblLegendTitle.Size = new System.Drawing.Size(52, 15);
+            this.lblLegendTitle.Size = new System.Drawing.Size(55, 15);
             this.lblLegendTitle.TabIndex = 9;
             this.lblLegendTitle.Text = "Статусы:";
             // 
             // panelLegendNew
             // 
+            this.panelLegendNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panelLegendNew.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(243)))), ((int)(((byte)(205)))));
             this.panelLegendNew.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelLegendNew.Location = new System.Drawing.Point(253, 405);
+            this.panelLegendNew.Location = new System.Drawing.Point(250, 498);
             this.panelLegendNew.Name = "panelLegendNew";
             this.panelLegendNew.Size = new System.Drawing.Size(14, 14);
             this.panelLegendNew.TabIndex = 10;
             // 
             // lblLegendNew
             // 
+            this.lblLegendNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLegendNew.AutoSize = true;
-            this.lblLegendNew.Location = new System.Drawing.Point(270, 402);
+            this.lblLegendNew.Location = new System.Drawing.Point(267, 495);
             this.lblLegendNew.Name = "lblLegendNew";
-            this.lblLegendNew.Size = new System.Drawing.Size(54, 19);
+            this.lblLegendNew.Size = new System.Drawing.Size(52, 19);
             this.lblLegendNew.TabIndex = 11;
             this.lblLegendNew.Text = "Новый";
             // 
             // panelLegendNotReady
             // 
+            this.panelLegendNotReady.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panelLegendNotReady.BackColor = System.Drawing.Color.White;
             this.panelLegendNotReady.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelLegendNotReady.Location = new System.Drawing.Point(335, 405);
+            this.panelLegendNotReady.Location = new System.Drawing.Point(332, 498);
             this.panelLegendNotReady.Name = "panelLegendNotReady";
             this.panelLegendNotReady.Size = new System.Drawing.Size(14, 14);
             this.panelLegendNotReady.TabIndex = 12;
             // 
             // lblLegendNotReady
             // 
+            this.lblLegendNotReady.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLegendNotReady.AutoSize = true;
-            this.lblLegendNotReady.Location = new System.Drawing.Point(352, 402);
+            this.lblLegendNotReady.Location = new System.Drawing.Point(349, 495);
             this.lblLegendNotReady.Name = "lblLegendNotReady";
-            this.lblLegendNotReady.Size = new System.Drawing.Size(68, 19);
+            this.lblLegendNotReady.Size = new System.Drawing.Size(64, 19);
             this.lblLegendNotReady.TabIndex = 13;
             this.lblLegendNotReady.Text = "Не готов";
             // 
             // panelLegendReady
             // 
+            this.panelLegendReady.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panelLegendReady.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(237)))), ((int)(((byte)(218)))));
             this.panelLegendReady.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelLegendReady.Location = new System.Drawing.Point(430, 405);
+            this.panelLegendReady.Location = new System.Drawing.Point(427, 498);
             this.panelLegendReady.Name = "panelLegendReady";
             this.panelLegendReady.Size = new System.Drawing.Size(14, 14);
             this.panelLegendReady.TabIndex = 14;
             // 
             // lblLegendReady
             // 
+            this.lblLegendReady.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLegendReady.AutoSize = true;
-            this.lblLegendReady.Location = new System.Drawing.Point(447, 402);
+            this.lblLegendReady.Location = new System.Drawing.Point(444, 495);
             this.lblLegendReady.Name = "lblLegendReady";
-            this.lblLegendReady.Size = new System.Drawing.Size(47, 19);
+            this.lblLegendReady.Size = new System.Drawing.Size(45, 19);
             this.lblLegendReady.TabIndex = 15;
             this.lblLegendReady.Text = "Готов";
             // 
             // panelLegendCancelled
             // 
+            this.panelLegendCancelled.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panelLegendCancelled.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(215)))), ((int)(((byte)(218)))));
             this.panelLegendCancelled.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelLegendCancelled.Location = new System.Drawing.Point(505, 405);
+            this.panelLegendCancelled.Location = new System.Drawing.Point(502, 498);
             this.panelLegendCancelled.Name = "panelLegendCancelled";
             this.panelLegendCancelled.Size = new System.Drawing.Size(14, 14);
             this.panelLegendCancelled.TabIndex = 16;
             // 
             // lblLegendCancelled
             // 
+            this.lblLegendCancelled.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLegendCancelled.AutoSize = true;
-            this.lblLegendCancelled.Location = new System.Drawing.Point(522, 402);
+            this.lblLegendCancelled.Location = new System.Drawing.Point(519, 495);
             this.lblLegendCancelled.Name = "lblLegendCancelled";
-            this.lblLegendCancelled.Size = new System.Drawing.Size(70, 19);
+            this.lblLegendCancelled.Size = new System.Drawing.Size(66, 19);
             this.lblLegendCancelled.TabIndex = 17;
             this.lblLegendCancelled.Text = "Отменён";
-
             // 
             // panelPagination
             // 
+            this.panelPagination.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPagination.Controls.Add(this.btnFirst);
             this.panelPagination.Controls.Add(this.btnPrev);
             this.panelPagination.Controls.Add(this.lblPageInfo);
@@ -345,9 +356,9 @@
             this.panelPagination.Controls.Add(this.btnLast);
             this.panelPagination.Controls.Add(this.lblPageSize);
             this.panelPagination.Controls.Add(this.cmbPageSize);
-            this.panelPagination.Location = new System.Drawing.Point(12, 425);
+            this.panelPagination.Location = new System.Drawing.Point(12, 518);
             this.panelPagination.Name = "panelPagination";
-            this.panelPagination.Size = new System.Drawing.Size(700, 40);
+            this.panelPagination.Size = new System.Drawing.Size(864, 40);
             this.panelPagination.TabIndex = 4;
             // 
             // btnFirst
@@ -424,9 +435,10 @@
             // 
             // lblComposition
             // 
+            this.lblComposition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblComposition.AutoSize = true;
             this.lblComposition.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblComposition.Location = new System.Drawing.Point(12, 475);
+            this.lblComposition.Location = new System.Drawing.Point(9, 568);
             this.lblComposition.Name = "lblComposition";
             this.lblComposition.Size = new System.Drawing.Size(108, 20);
             this.lblComposition.TabIndex = 5;
@@ -436,11 +448,13 @@
             // 
             this.dgvContent.AllowUserToAddRows = false;
             this.dgvContent.AllowUserToDeleteRows = false;
+            this.dgvContent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvContent.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvContent.BackgroundColor = System.Drawing.Color.White;
             this.dgvContent.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvContent.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvContent.Location = new System.Drawing.Point(12, 500);
+            this.dgvContent.Location = new System.Drawing.Point(12, 593);
             this.dgvContent.Name = "dgvContent";
             this.dgvContent.ReadOnly = true;
             this.dgvContent.RowHeadersVisible = false;
@@ -450,6 +464,7 @@
             // 
             // panelCalc
             // 
+            this.panelCalc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.panelCalc.BackColor = System.Drawing.SystemColors.ControlLight;
             this.panelCalc.Controls.Add(this.lblDiscount);
             this.panelCalc.Controls.Add(this.nudDiscount);
@@ -461,7 +476,7 @@
             this.panelCalc.Controls.Add(this.txtSumWith);
             this.panelCalc.Controls.Add(this.lblTotal);
             this.panelCalc.Controls.Add(this.txtTotal);
-            this.panelCalc.Location = new System.Drawing.Point(633, 500);
+            this.panelCalc.Location = new System.Drawing.Point(621, 593);
             this.panelCalc.Name = "panelCalc";
             this.panelCalc.Size = new System.Drawing.Size(255, 150);
             this.panelCalc.TabIndex = 7;
@@ -555,15 +570,16 @@
             // 
             // panelButtons
             // 
+            this.panelButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelButtons.Controls.Add(this.btnAdd);
             this.panelButtons.Controls.Add(this.btnEdit);
             this.panelButtons.Controls.Add(this.btnWord);
             this.panelButtons.Controls.Add(this.btnReport);
-            this.panelButtons.Controls.Add(this.btnBack);
             this.panelButtons.Controls.Add(this.lblHint);
-            this.panelButtons.Location = new System.Drawing.Point(12, 660);
+            this.panelButtons.Location = new System.Drawing.Point(12, 757);
             this.panelButtons.Name = "panelButtons";
-            this.panelButtons.Size = new System.Drawing.Size(876, 45);
+            this.panelButtons.Size = new System.Drawing.Size(864, 45);
             this.panelButtons.TabIndex = 8;
             // 
             // btnAdd
@@ -622,20 +638,6 @@
             this.btnReport.UseVisualStyleBackColor = false;
             this.btnReport.Click += new System.EventHandler(this.btnReport_Click);
             // 
-            // btnBack
-            // 
-            this.btnBack.BackColor = System.Drawing.Color.DimGray;
-            this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBack.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnBack.ForeColor = System.Drawing.Color.White;
-            this.btnBack.Location = new System.Drawing.Point(720, 5);
-            this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(150, 35);
-            this.btnBack.TabIndex = 5;
-            this.btnBack.Text = "В меню";
-            this.btnBack.UseVisualStyleBackColor = false;
-            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
-            // 
             // lblHint
             // 
             this.lblHint.AutoSize = true;
@@ -643,7 +645,7 @@
             this.lblHint.ForeColor = System.Drawing.Color.Gray;
             this.lblHint.Location = new System.Drawing.Point(610, 15);
             this.lblHint.Name = "lblHint";
-            this.lblHint.Size = new System.Drawing.Size(98, 13);
+            this.lblHint.Size = new System.Drawing.Size(105, 13);
             this.lblHint.TabIndex = 4;
             this.lblHint.Text = "Двойной клик - ред.";
             // 
@@ -651,14 +653,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(900, 720);
+            this.ClientSize = new System.Drawing.Size(894, 830);
             this.Controls.Add(this.panelButtons);
             this.Controls.Add(this.panelCalc);
             this.Controls.Add(this.dgvContent);
             this.Controls.Add(this.lblComposition);
             this.Controls.Add(this.panelPagination);
-
-            // Добавляем легенду на форму
             this.Controls.Add(this.lblCount);
             this.Controls.Add(this.lblLegendTitle);
             this.Controls.Add(this.panelLegendNew);
@@ -669,16 +669,12 @@
             this.Controls.Add(this.lblLegendReady);
             this.Controls.Add(this.panelLegendCancelled);
             this.Controls.Add(this.lblLegendCancelled);
-
             this.Controls.Add(this.dgvOrders);
             this.Controls.Add(this.panelFilters);
             this.Controls.Add(this.lblTitle);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "OrdersListForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Учёт заказов";
             this.panelFilters.ResumeLayout(false);
             this.panelFilters.PerformLayout();
@@ -711,8 +707,6 @@
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.DataGridView dgvOrders;
         private System.Windows.Forms.Label lblCount;
-
-        // Новые элементы легенды
         private System.Windows.Forms.Label lblLegendTitle;
         private System.Windows.Forms.Panel panelLegendNew;
         private System.Windows.Forms.Label lblLegendNew;
@@ -722,7 +716,6 @@
         private System.Windows.Forms.Label lblLegendReady;
         private System.Windows.Forms.Panel panelLegendCancelled;
         private System.Windows.Forms.Label lblLegendCancelled;
-
         private System.Windows.Forms.Panel panelPagination;
         private System.Windows.Forms.Button btnFirst;
         private System.Windows.Forms.Button btnPrev;
@@ -749,7 +742,6 @@
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnWord;
         private System.Windows.Forms.Button btnReport;
-        private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.Label lblHint;
         private System.Windows.Forms.ToolTip toolTip1;
     }

@@ -10,7 +10,6 @@
             {
                 components.Dispose();
             }
-
             base.Dispose(disposing);
         }
 
@@ -23,6 +22,7 @@
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabGames = new System.Windows.Forms.TabPage();
             this.tabOrders = new System.Windows.Forms.TabPage();
+            this.tabReports = new System.Windows.Forms.TabPage();
             this.tabProfile = new System.Windows.Forms.TabPage();
             this.panelTop.SuspendLayout();
             this.tabMain.SuspendLayout();
@@ -30,14 +30,14 @@
             // 
             // panelTop
             // 
-            this.panelTop.BackColor = System.Drawing.Color.SteelBlue;
+            this.panelTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.panelTop.Controls.Add(this.lblTitle);
             this.panelTop.Controls.Add(this.lblUserInfo);
             this.panelTop.Controls.Add(this.btnExit);
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(984, 60);
+            this.panelTop.Size = new System.Drawing.Size(1100, 60);
             this.panelTop.TabIndex = 0;
             // 
             // lblTitle
@@ -45,7 +45,7 @@
             this.lblTitle.AutoSize = true;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(20, 15);
+            this.lblTitle.Location = new System.Drawing.Point(20, 16);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(245, 25);
             this.lblTitle.TabIndex = 0;
@@ -53,10 +53,11 @@
             // 
             // lblUserInfo
             // 
+            this.lblUserInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblUserInfo.AutoSize = true;
             this.lblUserInfo.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.lblUserInfo.ForeColor = System.Drawing.Color.White;
-            this.lblUserInfo.Location = new System.Drawing.Point(645, 19);
+            this.lblUserInfo.Location = new System.Drawing.Point(454, 20);
             this.lblUserInfo.Name = "lblUserInfo";
             this.lblUserInfo.Size = new System.Drawing.Size(107, 20);
             this.lblUserInfo.TabIndex = 1;
@@ -64,11 +65,12 @@
             // 
             // btnExit
             // 
-            this.btnExit.BackColor = System.Drawing.Color.DarkBlue;
+            this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExit.BackColor = System.Drawing.Color.White;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnExit.ForeColor = System.Drawing.Color.White;
-            this.btnExit.Location = new System.Drawing.Point(872, 11);
+            this.btnExit.ForeColor = System.Drawing.Color.DarkRed;
+            this.btnExit.Location = new System.Drawing.Point(970, 12);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(100, 36);
             this.btnExit.TabIndex = 2;
@@ -80,13 +82,14 @@
             // 
             this.tabMain.Controls.Add(this.tabGames);
             this.tabMain.Controls.Add(this.tabOrders);
+            this.tabMain.Controls.Add(this.tabReports);
             this.tabMain.Controls.Add(this.tabProfile);
             this.tabMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabMain.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.tabMain.Location = new System.Drawing.Point(0, 60);
             this.tabMain.Name = "tabMain";
             this.tabMain.SelectedIndex = 0;
-            this.tabMain.Size = new System.Drawing.Size(984, 700);
+            this.tabMain.Size = new System.Drawing.Size(1100, 631);
             this.tabMain.TabIndex = 1;
             this.tabMain.SelectedIndexChanged += new System.EventHandler(this.tabMain_SelectedIndexChanged);
             // 
@@ -95,7 +98,7 @@
             this.tabGames.Location = new System.Drawing.Point(4, 26);
             this.tabGames.Name = "tabGames";
             this.tabGames.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGames.Size = new System.Drawing.Size(976, 670);
+            this.tabGames.Size = new System.Drawing.Size(1092, 601);
             this.tabGames.TabIndex = 0;
             this.tabGames.Text = "🎮 Товары";
             // 
@@ -103,23 +106,34 @@
             // 
             this.tabOrders.Location = new System.Drawing.Point(4, 26);
             this.tabOrders.Name = "tabOrders";
-            this.tabOrders.Size = new System.Drawing.Size(1192, 670);
+            this.tabOrders.Padding = new System.Windows.Forms.Padding(3);
+            this.tabOrders.Size = new System.Drawing.Size(1092, 601);
             this.tabOrders.TabIndex = 1;
             this.tabOrders.Text = "📦 Заказы";
+            // 
+            // tabReports
+            // 
+            this.tabReports.Location = new System.Drawing.Point(4, 26);
+            this.tabReports.Name = "tabReports";
+            this.tabReports.Padding = new System.Windows.Forms.Padding(3);
+            this.tabReports.Size = new System.Drawing.Size(1092, 601);
+            this.tabReports.TabIndex = 2;
+            this.tabReports.Text = "📊 Отчеты";
             // 
             // tabProfile
             // 
             this.tabProfile.Location = new System.Drawing.Point(4, 26);
             this.tabProfile.Name = "tabProfile";
-            this.tabProfile.Size = new System.Drawing.Size(1192, 670);
-            this.tabProfile.TabIndex = 2;
+            this.tabProfile.Padding = new System.Windows.Forms.Padding(3);
+            this.tabProfile.Size = new System.Drawing.Size(1092, 601);
+            this.tabProfile.TabIndex = 3;
             this.tabProfile.Text = "👤 Профиль";
             // 
             // MainFormManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 760);
+            this.ClientSize = new System.Drawing.Size(1100, 691);
             this.ControlBox = false;
             this.Controls.Add(this.tabMain);
             this.Controls.Add(this.panelTop);
@@ -141,6 +155,7 @@
         private System.Windows.Forms.TabControl tabMain;
         private System.Windows.Forms.TabPage tabGames;
         private System.Windows.Forms.TabPage tabOrders;
+        private System.Windows.Forms.TabPage tabReports;
         private System.Windows.Forms.TabPage tabProfile;
     }
 }

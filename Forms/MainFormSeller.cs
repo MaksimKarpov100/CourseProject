@@ -14,6 +14,9 @@ namespace BoardGame_Store
             InitializeComponent();
 
             lblUserInfo.Text = CurrentUser.FullName + " (" + CurrentUser.Role + ")";
+
+            tabMain.SelectedIndex = 0;
+            tabMain_SelectedIndexChanged(tabMain, EventArgs.Empty);
         }
 
         private void LoadFormInTab(Form form, TabPage page)

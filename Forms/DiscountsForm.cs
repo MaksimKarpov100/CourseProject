@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace BoardGame_Store
@@ -9,9 +10,9 @@ namespace BoardGame_Store
         {
             InitializeComponent();
 
-            lblSum1.Text = "• Сумма заказа от 2 000 ₽  —  скидка 5%";
-            lblSum2.Text = "• Сумма заказа от 5 000 ₽  —  скидка 10%";
-            lblSum3.Text = "• Сумма заказа от 10 000 ₽ —  скидка 15%";
+            lblSum1.Text = "• Сумма заказа от 2 000 ₽ — скидка 5%";
+            lblSum2.Text = "• Сумма заказа от 5 000 ₽ — скидка 10%";
+            lblSum3.Text = "• Сумма заказа от 10 000 ₽ — скидка 15%";
 
             lblSeason1.Text = "• Новогодняя скидка — 15% (с 20 по 31 декабря)";
             lblSeason2.Text = "• Скидка к 8 марта — 10% (с 7 по 9 марта)";
@@ -24,11 +25,6 @@ namespace BoardGame_Store
             lblExample.Text = "Пример: заказ на 6 000 ₽ в декабре.\r\n" +
                               "Скидка от 5 000 ₽ = 10%, новогодняя = 15%. Применяется 15%.\r\n" +
                               "Сумма скидки: 6 000 × 0,15 = 900 ₽. Итого к оплате: 5 100 ₽.";
-        }
-
-        private void btnBack_Click(object sender, EventArgs e)
-        {
-            this.Close();
         }
     }
 }

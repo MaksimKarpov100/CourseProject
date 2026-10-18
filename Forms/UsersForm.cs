@@ -18,7 +18,35 @@ namespace BoardGame_Store
             cmbRoleFilter.SelectedIndex = 0;
             cmbSort.SelectedIndex = 0;
             cmbRoleEdit.SelectedIndex = 0;
+
+            dgvUsers.DataBindingComplete += dgvUsers_DataBindingComplete;
+
             LoadUsers();
+        }
+
+        private void dgvUsers_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            ApplyRowFormatting();
+        }
+
+        private void ApplyRowFormatting()
+        {
+            foreach (DataGridViewRow row in dgvUsers.Rows)
+            {
+                if (row.IsNewRow) continue;
+                DataRowView drv = row.DataBoundItem as DataRowView;
+                if (drv == null) continue;
+
+                string role = drv["Роль"]?.ToString() ?? "";
+
+                if (role == "Администратор")
+                {
+                    row.DefaultCellStyle.ForeColor = Color.DarkRed;
+                    row.DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                }
+                else if (role == "Товаровед") row.DefaultCellStyle.ForeColor = Color.DarkBlue;
+                else if (role == "Продавец") row.DefaultCellStyle.ForeColor = Color.DarkGreen;
+            }
         }
 
         private void LoadUsers()
@@ -90,7 +118,6 @@ namespace BoardGame_Store
                     if (dgvUsers.Columns.Contains("Телефон")) row.Cells["Телефон"].ToolTipText = "Телефон: " + (drv["PhoneOriginal"]?.ToString() ?? "");
                 }
 
-                ApplyRowFormatting();
                 lblCount.Text = "Записей: " + totalRecords;
                 lblPageInfo.Text = "Страница " + currentPage + " из " + totalPages;
 
@@ -101,20 +128,6 @@ namespace BoardGame_Store
             {
                 isLoading = false;
                 MessageHelper.ShowError("Ошибка загрузки: " + ex.Message);
-            }
-        }
-
-        private void ApplyRowFormatting()
-        {
-            foreach (DataGridViewRow row in dgvUsers.Rows)
-            {
-                DataRowView drv = row.DataBoundItem as DataRowView;
-                if (drv == null) continue;
-                string role = drv["Роль"]?.ToString() ?? "";
-
-                if (role == "Администратор") { row.DefaultCellStyle.ForeColor = Color.DarkRed; row.DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold); }
-                else if (role == "Товаровед") row.DefaultCellStyle.ForeColor = Color.DarkBlue;
-                else if (role == "Продавец") row.DefaultCellStyle.ForeColor = Color.DarkGreen;
             }
         }
 
@@ -256,7 +269,5 @@ namespace BoardGame_Store
             form.ShowDialog();
             LoadUsers();
         }
-
-        private void btnBack_Click(object sender, EventArgs e) { this.Close(); }
     }
 }

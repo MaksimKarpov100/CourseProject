@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,19 +21,41 @@ namespace BoardGame_Store
         private Timer autoBackupTimer;
         private DateTime lastBackupTime = DateTime.MinValue;
 
-        private static string SettingsPath = Path.Combine(Application.StartupPath, "backup_settings.txt");
+        private static string SettingsPath =
+            Path.Combine(Application.StartupPath, "backup_settings.txt");
 
-        private string BackupFolder = Path.Combine(Application.StartupPath, "Backup");
+        private string BackupFolder = Path.Combine(Application.StartupPath, "Бэкап");
 
         public SpecialForm()
         {
             InitializeComponent();
 
+            // ================= ПРОВЕРКА ПРАВ ДОСТУПА =================
+            if (CurrentUser.Role != "Администратор")
+            {
+                // Скрываем всё, что связано с базой, бэкапами и логами
+                grpImportExport.Visible = false;
+                grpBackup.Visible = false;
+                lblLog.Visible = false;
+                txtLog.Visible = false;
+
+                // Поднимаем блок отчетов наверх
+                grpReports.Location = new Point(20, 50);
+
+                // Центрируем заголовок
+                lblTitle.Location = new Point((this.Width / 2) - (lblTitle.Width / 2), 10);
+                lblTitle.Anchor = AnchorStyles.Top;
+
+                // ВАЖНО: Выходим из конструктора, чтобы не запускать таймеры бэкапа!
+                return;
+            }
+            // =========================================================
+
+            // --- КОД ТОЛЬКО ДЛЯ АДМИНИСТРАТОРА ---
             if (!Directory.Exists(BackupFolder))
             {
                 Directory.CreateDirectory(BackupFolder);
             }
-
             lblBackupsTitle.Text = "Доступные копии в папке: " + BackupFolder;
 
             autoBackupTimer = new Timer();
@@ -47,23 +70,25 @@ namespace BoardGame_Store
 
             LoadAutoBackupSettings();
             LoadBackupsList();
-            Log("Готово. Папка бэкапов: " + BackupFolder);
+            Log("Готово. Выберите таблицы и папку.");
         }
 
         private void Log(string text)
         {
+            if (!txtLog.Visible) return; // Если лог скрыт (не админ), ничего не пишем
+
             string line = "[" + DateTime.Now.ToString("HH:mm:ss") + "] " + text + "\r\n";
             txtLog.AppendText(line);
             txtLog.SelectionStart = txtLog.TextLength;
             txtLog.ScrollToCaret();
         }
 
+        // ==================== СПИСОК БЭКАПОВ ====================
+
         private void LoadBackupsList()
         {
-            if (!Directory.Exists(BackupFolder))
-            {
-                Directory.CreateDirectory(BackupFolder);
-            }
+            if (CurrentUser.Role != "Администратор") return;
+            if (!Directory.Exists(BackupFolder)) Directory.CreateDirectory(BackupFolder);
 
             try
             {
@@ -77,7 +102,7 @@ namespace BoardGame_Store
                 dt.Columns.Add("Имя файла", typeof(string));
                 dt.Columns.Add("Дата создания", typeof(string));
                 dt.Columns.Add("Размер", typeof(string));
-                dt.Columns.Add("FullPath", typeof(string)); 
+                dt.Columns.Add("FullPath", typeof(string));
 
                 foreach (var file in files)
                 {
@@ -145,6 +170,8 @@ namespace BoardGame_Store
             }
         }
 
+        // ==================== НАСТРОЙКИ АВТОРЕЗЕРВА ====================
+
         private void LoadAutoBackupSettings()
         {
             try
@@ -155,9 +182,7 @@ namespace BoardGame_Store
                     if (lines.Length >= 3)
                     {
                         nudInterval.Value = Convert.ToInt32(lines[1]);
-                        if (!string.IsNullOrWhiteSpace(lines[2]))
-                            txtFolder.Text = lines[2];
-
+                        if (!string.IsNullOrWhiteSpace(lines[2])) txtFolder.Text = lines[2];
                         chkBackupAuto.Checked = lines[0] == "1";
                     }
                 }
@@ -173,7 +198,7 @@ namespace BoardGame_Store
                 {
                     chkBackupAuto.Checked ? "1" : "0",
                     ((int)nudInterval.Value).ToString(),
-                    txtFolder.Text 
+                    txtFolder.Text
                 };
                 File.WriteAllLines(SettingsPath, lines);
             }
@@ -202,7 +227,6 @@ namespace BoardGame_Store
         private void nudInterval_ValueChanged(object sender, EventArgs e)
         {
             SaveAutoBackupSettings();
-            if (chkBackupAuto.Checked) Log("Интервал изменён: " + nudInterval.Value + " ч.");
         }
 
         private void autoBackupTimer_Tick(object sender, EventArgs e)
@@ -231,7 +255,7 @@ namespace BoardGame_Store
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.Description = "Выберите папку для экспорта/импорта CSV файлов";
+            fbd.Description = "Выберите папку для экспорта/импорта CSV";
 
             if (fbd.ShowDialog() == DialogResult.OK)
             {
@@ -264,13 +288,15 @@ namespace BoardGame_Store
             return result;
         }
 
+        // ==================== ЭКСПОРТ / ИМПОРТ CSV ====================
+
         private void btnExportSelected_Click(object sender, EventArgs e)
         {
             List<string> tables = GetSelectedTables();
             if (tables.Count == 0) { MessageHelper.ShowWarning("Выберите хотя бы одну таблицу"); return; }
 
             string folder = txtFolder.Text;
-            if (string.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder)) { MessageHelper.ShowWarning("Сначала выберите папку для CSV"); return; }
+            if (string.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder)) { MessageHelper.ShowWarning("Сначала выберите папку"); return; }
 
             Log("=== ЭКСПОРТ CSV ===");
             int ok = 0, errors = 0;
@@ -335,7 +361,7 @@ namespace BoardGame_Store
             if (tables.Count == 0) { MessageHelper.ShowWarning("Выберите хотя бы одну таблицу"); return; }
 
             string folder = txtFolder.Text;
-            if (string.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder)) { MessageHelper.ShowWarning("Сначала выберите папку для CSV"); return; }
+            if (string.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder)) { MessageHelper.ShowWarning("Сначала выберите папку"); return; }
             if (!MessageHelper.AskConfirm("Импорт добавит данные в существующие таблицы. Продолжить?")) return;
 
             Log("=== ИМПОРТ CSV ===");
@@ -471,6 +497,8 @@ namespace BoardGame_Store
             return result.ToArray();
         }
 
+        // ==================== БЭКАП ====================
+
         private void btnBackupManual_Click(object sender, EventArgs e)
         {
             string fileName = "backup_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".sql";
@@ -482,8 +510,7 @@ namespace BoardGame_Store
                 MakeBackup(fullPath);
                 Log("Готово: " + fileName);
                 MessageHelper.ShowInfo("Резервная копия успешно создана!\n" + fullPath);
-
-                LoadBackupsList(); 
+                LoadBackupsList();
             }
             catch (Exception ex)
             {
@@ -533,10 +560,11 @@ namespace BoardGame_Store
                 }
                 sb.AppendLine();
             }
-
             sb.AppendLine("SET FOREIGN_KEY_CHECKS=1;");
             File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
         }
+
+        // ==================== ОТЧЕТЫ ====================
 
         private void btnExcel_Click(object sender, EventArgs e)
         {
@@ -605,7 +633,8 @@ namespace BoardGame_Store
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            autoBackupTimer.Stop();
+            if (autoBackupTimer != null)
+                autoBackupTimer.Stop();
             this.Close();
         }
     }
