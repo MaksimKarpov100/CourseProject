@@ -27,6 +27,17 @@
             this.btnReset = new System.Windows.Forms.Button();
             this.dgvUsers = new System.Windows.Forms.DataGridView();
             this.lblCount = new System.Windows.Forms.Label();
+
+            // --- ЦВЕТНАЯ ЛЕГЕНДА ПОЛЬЗОВАТЕЛЕЙ ---
+            this.lblLegendTitle = new System.Windows.Forms.Label();
+            this.panelLegendAdmin = new System.Windows.Forms.Panel();
+            this.lblLegendAdmin = new System.Windows.Forms.Label();
+            this.panelLegendManager = new System.Windows.Forms.Panel();
+            this.lblLegendManager = new System.Windows.Forms.Label();
+            this.panelLegendSeller = new System.Windows.Forms.Panel();
+            this.lblLegendSeller = new System.Windows.Forms.Label();
+            // --------------------------------------
+
             this.panelPagination = new System.Windows.Forms.Panel();
             this.btnFirst = new System.Windows.Forms.Button();
             this.btnPrev = new System.Windows.Forms.Button();
@@ -182,6 +193,79 @@
             this.lblCount.Size = new System.Drawing.Size(151, 19);
             this.lblCount.TabIndex = 4;
             this.lblCount.Text = "Количество записей: 0";
+
+            // 
+            // lblLegendTitle
+            // 
+            this.lblLegendTitle.AutoSize = true;
+            this.lblLegendTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblLegendTitle.ForeColor = System.Drawing.Color.DimGray;
+            this.lblLegendTitle.Location = new System.Drawing.Point(200, 503);
+            this.lblLegendTitle.Name = "lblLegendTitle";
+            this.lblLegendTitle.Size = new System.Drawing.Size(43, 15);
+            this.lblLegendTitle.TabIndex = 10;
+            this.lblLegendTitle.Text = "Роли:";
+            // 
+            // panelLegendAdmin
+            // 
+            this.panelLegendAdmin.BackColor = System.Drawing.Color.DarkRed;
+            this.panelLegendAdmin.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelLegendAdmin.Location = new System.Drawing.Point(250, 505);
+            this.panelLegendAdmin.Name = "panelLegendAdmin";
+            this.panelLegendAdmin.Size = new System.Drawing.Size(14, 14);
+            this.panelLegendAdmin.TabIndex = 11;
+            // 
+            // lblLegendAdmin
+            // 
+            this.lblLegendAdmin.AutoSize = true;
+            this.lblLegendAdmin.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblLegendAdmin.ForeColor = System.Drawing.Color.DarkRed;
+            this.lblLegendAdmin.Location = new System.Drawing.Point(267, 502);
+            this.lblLegendAdmin.Name = "lblLegendAdmin";
+            this.lblLegendAdmin.Size = new System.Drawing.Size(97, 15);
+            this.lblLegendAdmin.TabIndex = 12;
+            this.lblLegendAdmin.Text = "Администратор";
+            // 
+            // panelLegendManager
+            // 
+            this.panelLegendManager.BackColor = System.Drawing.Color.DarkBlue;
+            this.panelLegendManager.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelLegendManager.Location = new System.Drawing.Point(375, 505);
+            this.panelLegendManager.Name = "panelLegendManager";
+            this.panelLegendManager.Size = new System.Drawing.Size(14, 14);
+            this.panelLegendManager.TabIndex = 13;
+            // 
+            // lblLegendManager
+            // 
+            this.lblLegendManager.AutoSize = true;
+            this.lblLegendManager.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblLegendManager.ForeColor = System.Drawing.Color.DarkBlue;
+            this.lblLegendManager.Location = new System.Drawing.Point(392, 502);
+            this.lblLegendManager.Name = "lblLegendManager";
+            this.lblLegendManager.Size = new System.Drawing.Size(73, 15);
+            this.lblLegendManager.TabIndex = 14;
+            this.lblLegendManager.Text = "Товаровед";
+            // 
+            // panelLegendSeller
+            // 
+            this.panelLegendSeller.BackColor = System.Drawing.Color.DarkGreen;
+            this.panelLegendSeller.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelLegendSeller.Location = new System.Drawing.Point(480, 505);
+            this.panelLegendSeller.Name = "panelLegendSeller";
+            this.panelLegendSeller.Size = new System.Drawing.Size(14, 14);
+            this.panelLegendSeller.TabIndex = 15;
+            // 
+            // lblLegendSeller
+            // 
+            this.lblLegendSeller.AutoSize = true;
+            this.lblLegendSeller.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblLegendSeller.ForeColor = System.Drawing.Color.DarkGreen;
+            this.lblLegendSeller.Location = new System.Drawing.Point(497, 502);
+            this.lblLegendSeller.Name = "lblLegendSeller";
+            this.lblLegendSeller.Size = new System.Drawing.Size(61, 15);
+            this.lblLegendSeller.TabIndex = 16;
+            this.lblLegendSeller.Text = "Продавец";
+
             // 
             // panelPagination
             // 
@@ -446,7 +530,17 @@
             this.Controls.Add(this.panelButtons);
             this.Controls.Add(this.panelEdit);
             this.Controls.Add(this.panelPagination);
+
+            // Добавляем элементы легенды на форму
             this.Controls.Add(this.lblCount);
+            this.Controls.Add(this.lblLegendTitle);
+            this.Controls.Add(this.panelLegendAdmin);
+            this.Controls.Add(this.lblLegendAdmin);
+            this.Controls.Add(this.panelLegendManager);
+            this.Controls.Add(this.lblLegendManager);
+            this.Controls.Add(this.panelLegendSeller);
+            this.Controls.Add(this.lblLegendSeller);
+
             this.Controls.Add(this.dgvUsers);
             this.Controls.Add(this.panelFilters);
             this.Controls.Add(this.lblTitle);
@@ -482,6 +576,16 @@
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.DataGridView dgvUsers;
         private System.Windows.Forms.Label lblCount;
+
+        // Элементы легенды
+        private System.Windows.Forms.Label lblLegendTitle;
+        private System.Windows.Forms.Panel panelLegendAdmin;
+        private System.Windows.Forms.Label lblLegendAdmin;
+        private System.Windows.Forms.Panel panelLegendManager;
+        private System.Windows.Forms.Label lblLegendManager;
+        private System.Windows.Forms.Panel panelLegendSeller;
+        private System.Windows.Forms.Label lblLegendSeller;
+
         private System.Windows.Forms.Panel panelPagination;
         private System.Windows.Forms.Button btnFirst;
         private System.Windows.Forms.Button btnPrev;

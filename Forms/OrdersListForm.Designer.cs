@@ -19,7 +19,7 @@
             this.lblTitle = new System.Windows.Forms.Label();
             this.panelFilters = new System.Windows.Forms.Panel();
             this.lblOrderNumber = new System.Windows.Forms.Label();
-            this.txtOrderNumber = new System.Windows.Forms.TextBox();
+            this.cmbOrderNumber = new System.Windows.Forms.ComboBox();
             this.lblDateFrom = new System.Windows.Forms.Label();
             this.dtpDateFrom = new System.Windows.Forms.DateTimePicker();
             this.lblDateTo = new System.Windows.Forms.Label();
@@ -31,6 +31,19 @@
             this.btnReset = new System.Windows.Forms.Button();
             this.dgvOrders = new System.Windows.Forms.DataGridView();
             this.lblCount = new System.Windows.Forms.Label();
+
+            // --- НОВАЯ ЦВЕТНАЯ ЛЕГЕНДА ---
+            this.lblLegendTitle = new System.Windows.Forms.Label();
+            this.panelLegendNew = new System.Windows.Forms.Panel();
+            this.lblLegendNew = new System.Windows.Forms.Label();
+            this.panelLegendNotReady = new System.Windows.Forms.Panel();
+            this.lblLegendNotReady = new System.Windows.Forms.Label();
+            this.panelLegendReady = new System.Windows.Forms.Panel();
+            this.lblLegendReady = new System.Windows.Forms.Label();
+            this.panelLegendCancelled = new System.Windows.Forms.Panel();
+            this.lblLegendCancelled = new System.Windows.Forms.Label();
+            // -----------------------------
+
             this.panelPagination = new System.Windows.Forms.Panel();
             this.btnFirst = new System.Windows.Forms.Button();
             this.btnPrev = new System.Windows.Forms.Button();
@@ -55,6 +68,7 @@
             this.panelButtons = new System.Windows.Forms.Panel();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
+            this.btnWord = new System.Windows.Forms.Button();
             this.btnReport = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
             this.lblHint = new System.Windows.Forms.Label();
@@ -83,7 +97,7 @@
             // 
             this.panelFilters.BackColor = System.Drawing.SystemColors.ControlLight;
             this.panelFilters.Controls.Add(this.lblOrderNumber);
-            this.panelFilters.Controls.Add(this.txtOrderNumber);
+            this.panelFilters.Controls.Add(this.cmbOrderNumber);
             this.panelFilters.Controls.Add(this.lblDateFrom);
             this.panelFilters.Controls.Add(this.dtpDateFrom);
             this.panelFilters.Controls.Add(this.lblDateTo);
@@ -107,14 +121,15 @@
             this.lblOrderNumber.TabIndex = 0;
             this.lblOrderNumber.Text = "Номер заказа";
             // 
-            // txtOrderNumber
+            // cmbOrderNumber
             // 
-            this.txtOrderNumber.Location = new System.Drawing.Point(110, 7);
-            this.txtOrderNumber.Name = "txtOrderNumber";
-            this.txtOrderNumber.Size = new System.Drawing.Size(90, 25);
-            this.txtOrderNumber.TabIndex = 1;
-            this.txtOrderNumber.Text = "Поиск...";
-            this.txtOrderNumber.TextChanged += new System.EventHandler(this.txtOrderNumber_TextChanged);
+            this.cmbOrderNumber.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbOrderNumber.FormattingEnabled = true;
+            this.cmbOrderNumber.Location = new System.Drawing.Point(110, 7);
+            this.cmbOrderNumber.Name = "cmbOrderNumber";
+            this.cmbOrderNumber.Size = new System.Drawing.Size(100, 25);
+            this.cmbOrderNumber.TabIndex = 1;
+            this.cmbOrderNumber.SelectedIndexChanged += new System.EventHandler(this.cmbOrderNumber_SelectedIndexChanged);
             // 
             // lblDateFrom
             // 
@@ -235,6 +250,91 @@
             this.lblCount.Size = new System.Drawing.Size(151, 19);
             this.lblCount.TabIndex = 3;
             this.lblCount.Text = "Количество записей: 0";
+
+            // 
+            // lblLegendTitle
+            // 
+            this.lblLegendTitle.AutoSize = true;
+            this.lblLegendTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblLegendTitle.ForeColor = System.Drawing.Color.DimGray;
+            this.lblLegendTitle.Location = new System.Drawing.Point(195, 403);
+            this.lblLegendTitle.Name = "lblLegendTitle";
+            this.lblLegendTitle.Size = new System.Drawing.Size(52, 15);
+            this.lblLegendTitle.TabIndex = 9;
+            this.lblLegendTitle.Text = "Статусы:";
+            // 
+            // panelLegendNew
+            // 
+            this.panelLegendNew.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(243)))), ((int)(((byte)(205)))));
+            this.panelLegendNew.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelLegendNew.Location = new System.Drawing.Point(253, 405);
+            this.panelLegendNew.Name = "panelLegendNew";
+            this.panelLegendNew.Size = new System.Drawing.Size(14, 14);
+            this.panelLegendNew.TabIndex = 10;
+            // 
+            // lblLegendNew
+            // 
+            this.lblLegendNew.AutoSize = true;
+            this.lblLegendNew.Location = new System.Drawing.Point(270, 402);
+            this.lblLegendNew.Name = "lblLegendNew";
+            this.lblLegendNew.Size = new System.Drawing.Size(54, 19);
+            this.lblLegendNew.TabIndex = 11;
+            this.lblLegendNew.Text = "Новый";
+            // 
+            // panelLegendNotReady
+            // 
+            this.panelLegendNotReady.BackColor = System.Drawing.Color.White;
+            this.panelLegendNotReady.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelLegendNotReady.Location = new System.Drawing.Point(335, 405);
+            this.panelLegendNotReady.Name = "panelLegendNotReady";
+            this.panelLegendNotReady.Size = new System.Drawing.Size(14, 14);
+            this.panelLegendNotReady.TabIndex = 12;
+            // 
+            // lblLegendNotReady
+            // 
+            this.lblLegendNotReady.AutoSize = true;
+            this.lblLegendNotReady.Location = new System.Drawing.Point(352, 402);
+            this.lblLegendNotReady.Name = "lblLegendNotReady";
+            this.lblLegendNotReady.Size = new System.Drawing.Size(68, 19);
+            this.lblLegendNotReady.TabIndex = 13;
+            this.lblLegendNotReady.Text = "Не готов";
+            // 
+            // panelLegendReady
+            // 
+            this.panelLegendReady.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(237)))), ((int)(((byte)(218)))));
+            this.panelLegendReady.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelLegendReady.Location = new System.Drawing.Point(430, 405);
+            this.panelLegendReady.Name = "panelLegendReady";
+            this.panelLegendReady.Size = new System.Drawing.Size(14, 14);
+            this.panelLegendReady.TabIndex = 14;
+            // 
+            // lblLegendReady
+            // 
+            this.lblLegendReady.AutoSize = true;
+            this.lblLegendReady.Location = new System.Drawing.Point(447, 402);
+            this.lblLegendReady.Name = "lblLegendReady";
+            this.lblLegendReady.Size = new System.Drawing.Size(47, 19);
+            this.lblLegendReady.TabIndex = 15;
+            this.lblLegendReady.Text = "Готов";
+            // 
+            // panelLegendCancelled
+            // 
+            this.panelLegendCancelled.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(215)))), ((int)(((byte)(218)))));
+            this.panelLegendCancelled.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelLegendCancelled.Location = new System.Drawing.Point(505, 405);
+            this.panelLegendCancelled.Name = "panelLegendCancelled";
+            this.panelLegendCancelled.Size = new System.Drawing.Size(14, 14);
+            this.panelLegendCancelled.TabIndex = 16;
+            // 
+            // lblLegendCancelled
+            // 
+            this.lblLegendCancelled.AutoSize = true;
+            this.lblLegendCancelled.Location = new System.Drawing.Point(522, 402);
+            this.lblLegendCancelled.Name = "lblLegendCancelled";
+            this.lblLegendCancelled.Size = new System.Drawing.Size(70, 19);
+            this.lblLegendCancelled.TabIndex = 17;
+            this.lblLegendCancelled.Text = "Отменён";
+
             // 
             // panelPagination
             // 
@@ -457,6 +557,7 @@
             // 
             this.panelButtons.Controls.Add(this.btnAdd);
             this.panelButtons.Controls.Add(this.btnEdit);
+            this.panelButtons.Controls.Add(this.btnWord);
             this.panelButtons.Controls.Add(this.btnReport);
             this.panelButtons.Controls.Add(this.btnBack);
             this.panelButtons.Controls.Add(this.lblHint);
@@ -473,9 +574,9 @@
             this.btnAdd.ForeColor = System.Drawing.Color.White;
             this.btnAdd.Location = new System.Drawing.Point(0, 5);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(140, 35);
+            this.btnAdd.Size = new System.Drawing.Size(130, 35);
             this.btnAdd.TabIndex = 0;
-            this.btnAdd.Text = "Добавить заказ";
+            this.btnAdd.Text = "Добавить";
             this.btnAdd.UseVisualStyleBackColor = false;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
@@ -485,25 +586,39 @@
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnEdit.ForeColor = System.Drawing.Color.White;
-            this.btnEdit.Location = new System.Drawing.Point(150, 5);
+            this.btnEdit.Location = new System.Drawing.Point(140, 5);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(140, 35);
+            this.btnEdit.Size = new System.Drawing.Size(130, 35);
             this.btnEdit.TabIndex = 1;
             this.btnEdit.Text = "Изменить";
             this.btnEdit.UseVisualStyleBackColor = false;
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
+            // btnWord
+            // 
+            this.btnWord.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnWord.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnWord.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnWord.ForeColor = System.Drawing.Color.White;
+            this.btnWord.Location = new System.Drawing.Point(280, 5);
+            this.btnWord.Name = "btnWord";
+            this.btnWord.Size = new System.Drawing.Size(140, 35);
+            this.btnWord.TabIndex = 2;
+            this.btnWord.Text = "Печать чека";
+            this.btnWord.UseVisualStyleBackColor = false;
+            this.btnWord.Click += new System.EventHandler(this.btnWord_Click);
+            // 
             // btnReport
             // 
-            this.btnReport.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnReport.BackColor = System.Drawing.Color.DimGray;
             this.btnReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReport.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnReport.ForeColor = System.Drawing.Color.White;
-            this.btnReport.Location = new System.Drawing.Point(300, 5);
+            this.btnReport.Location = new System.Drawing.Point(430, 5);
             this.btnReport.Name = "btnReport";
-            this.btnReport.Size = new System.Drawing.Size(172, 35);
-            this.btnReport.TabIndex = 2;
-            this.btnReport.Text = "Сформировать отчёт";
+            this.btnReport.Size = new System.Drawing.Size(170, 35);
+            this.btnReport.TabIndex = 3;
+            this.btnReport.Text = "Перейти к отчётам";
             this.btnReport.UseVisualStyleBackColor = false;
             this.btnReport.Click += new System.EventHandler(this.btnReport_Click);
             // 
@@ -516,7 +631,7 @@
             this.btnBack.Location = new System.Drawing.Point(720, 5);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(150, 35);
-            this.btnBack.TabIndex = 4;
+            this.btnBack.TabIndex = 5;
             this.btnBack.Text = "В меню";
             this.btnBack.UseVisualStyleBackColor = false;
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
@@ -526,11 +641,11 @@
             this.lblHint.AutoSize = true;
             this.lblHint.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
             this.lblHint.ForeColor = System.Drawing.Color.Gray;
-            this.lblHint.Location = new System.Drawing.Point(490, 15);
+            this.lblHint.Location = new System.Drawing.Point(610, 15);
             this.lblHint.Name = "lblHint";
-            this.lblHint.Size = new System.Drawing.Size(130, 13);
-            this.lblHint.TabIndex = 3;
-            this.lblHint.Text = "Двойной клик - удалить";
+            this.lblHint.Size = new System.Drawing.Size(98, 13);
+            this.lblHint.TabIndex = 4;
+            this.lblHint.Text = "Двойной клик - ред.";
             // 
             // OrdersListForm
             // 
@@ -542,7 +657,19 @@
             this.Controls.Add(this.dgvContent);
             this.Controls.Add(this.lblComposition);
             this.Controls.Add(this.panelPagination);
+
+            // Добавляем легенду на форму
             this.Controls.Add(this.lblCount);
+            this.Controls.Add(this.lblLegendTitle);
+            this.Controls.Add(this.panelLegendNew);
+            this.Controls.Add(this.lblLegendNew);
+            this.Controls.Add(this.panelLegendNotReady);
+            this.Controls.Add(this.lblLegendNotReady);
+            this.Controls.Add(this.panelLegendReady);
+            this.Controls.Add(this.lblLegendReady);
+            this.Controls.Add(this.panelLegendCancelled);
+            this.Controls.Add(this.lblLegendCancelled);
+
             this.Controls.Add(this.dgvOrders);
             this.Controls.Add(this.panelFilters);
             this.Controls.Add(this.lblTitle);
@@ -572,7 +699,7 @@
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Panel panelFilters;
         private System.Windows.Forms.Label lblOrderNumber;
-        private System.Windows.Forms.TextBox txtOrderNumber;
+        private System.Windows.Forms.ComboBox cmbOrderNumber;
         private System.Windows.Forms.Label lblDateFrom;
         private System.Windows.Forms.DateTimePicker dtpDateFrom;
         private System.Windows.Forms.Label lblDateTo;
@@ -584,6 +711,18 @@
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.DataGridView dgvOrders;
         private System.Windows.Forms.Label lblCount;
+
+        // Новые элементы легенды
+        private System.Windows.Forms.Label lblLegendTitle;
+        private System.Windows.Forms.Panel panelLegendNew;
+        private System.Windows.Forms.Label lblLegendNew;
+        private System.Windows.Forms.Panel panelLegendNotReady;
+        private System.Windows.Forms.Label lblLegendNotReady;
+        private System.Windows.Forms.Panel panelLegendReady;
+        private System.Windows.Forms.Label lblLegendReady;
+        private System.Windows.Forms.Panel panelLegendCancelled;
+        private System.Windows.Forms.Label lblLegendCancelled;
+
         private System.Windows.Forms.Panel panelPagination;
         private System.Windows.Forms.Button btnFirst;
         private System.Windows.Forms.Button btnPrev;
@@ -608,6 +747,7 @@
         private System.Windows.Forms.Panel panelButtons;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnEdit;
+        private System.Windows.Forms.Button btnWord;
         private System.Windows.Forms.Button btnReport;
         private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.Label lblHint;

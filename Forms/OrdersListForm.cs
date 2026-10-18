@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
@@ -14,10 +16,11 @@ namespace BoardGame_Store
         private int totalPages = 1;
         private int selectedOrderId = 0;
 
+        private bool isLoadingContent = false;
+
         public OrdersListForm()
         {
             InitializeComponent();
-
             cmbPageSize.SelectedIndex = 0;
             cmbStatus.SelectedIndex = 0;
             cmbSort.SelectedIndex = 0;
@@ -25,22 +28,67 @@ namespace BoardGame_Store
             dtpDateFrom.Value = DateTime.Today.AddMonths(-3);
             dtpDateTo.Value = DateTime.Today;
 
+            LoadOrderNumbers();
             LoadOrders();
+        }
+
+        private void LoadOrderNumbers()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                dt.Columns.Add("order_id", typeof(int));
+                dt.Columns.Add("display_name", typeof(string));
+                dt.Rows.Add(0, "Все");
+
+                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT order_id FROM orders ORDER BY order_id DESC", conn);
+
+                    using (var r = cmd.ExecuteReader())
+                    {
+                        while (r.Read())
+                        {
+                            int id = Convert.ToInt32(r["order_id"]);
+                            dt.Rows.Add(id, id.ToString());
+                        }
+                    }
+                }
+
+                cmbOrderNumber.SelectedIndexChanged -= cmbOrderNumber_SelectedIndexChanged;
+
+                cmbOrderNumber.DataSource = dt;
+                cmbOrderNumber.DisplayMember = "display_name";
+                cmbOrderNumber.ValueMember = "order_id";
+
+                cmbOrderNumber.SelectedIndexChanged += cmbOrderNumber_SelectedIndexChanged;
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError("Ошибка загрузки номеров заказов: " + ex.Message);
+            }
         }
 
         private void LoadOrders()
         {
             try
             {
+                int selectedOrderNum = 0;
+                if (cmbOrderNumber.SelectedItem is DataRowView drv)
+                {
+                    selectedOrderNum = Convert.ToInt32(drv["order_id"]);
+                }
+
                 using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
                 {
                     conn.Open();
 
                     string where = " WHERE o.order_date >= @df AND o.order_date < @dt ";
 
-                    if (!string.IsNullOrWhiteSpace(txtOrderNumber.Text) && txtOrderNumber.Text != "Поиск...")
+                    if (selectedOrderNum > 0)
                     {
-                        where += " AND o.order_id LIKE @num ";
+                        where += " AND o.order_id = @num ";
                     }
 
                     if (cmbStatus.SelectedIndex > 0)
@@ -58,8 +106,8 @@ namespace BoardGame_Store
                         "SELECT COUNT(*) FROM orders o " +
                         "JOIN statuses s ON o.status_id=s.status_id " + where, conn);
 
-                    if (!string.IsNullOrWhiteSpace(txtOrderNumber.Text) && txtOrderNumber.Text != "Поиск...")
-                        cmdCount.Parameters.AddWithValue("@num", "%" + txtOrderNumber.Text + "%");
+                    if (selectedOrderNum > 0)
+                        cmdCount.Parameters.AddWithValue("@num", selectedOrderNum);
 
                     if (cmbStatus.SelectedIndex > 0)
                         cmdCount.Parameters.AddWithValue("@status", cmbStatus.SelectedItem.ToString());
@@ -88,8 +136,8 @@ namespace BoardGame_Store
 
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
 
-                    if (!string.IsNullOrWhiteSpace(txtOrderNumber.Text) && txtOrderNumber.Text != "Поиск...")
-                        cmd.Parameters.AddWithValue("@num", "%" + txtOrderNumber.Text + "%");
+                    if (selectedOrderNum > 0)
+                        cmd.Parameters.AddWithValue("@num", selectedOrderNum);
 
                     if (cmbStatus.SelectedIndex > 0)
                         cmd.Parameters.AddWithValue("@status", cmbStatus.SelectedItem.ToString());
@@ -104,11 +152,7 @@ namespace BoardGame_Store
                     da.Fill(dt);
 
                     dgvOrders.DataSource = dt;
-
-                    if (dgvOrders.Columns["ID"] != null)
-                    {
-                        dgvOrders.Columns["ID"].Visible = false;
-                    }
+                    dgvOrders.ClearSelection();
                 }
 
                 ApplyRowColors();
@@ -126,6 +170,7 @@ namespace BoardGame_Store
         {
             foreach (DataGridViewRow row in dgvOrders.Rows)
             {
+                if (row.IsNewRow) continue;
                 string status = row.Cells["Статус"].Value == null ? "" : row.Cells["Статус"].Value.ToString();
 
                 if (status == "Новый") row.DefaultCellStyle.BackColor = Color.FromArgb(255, 243, 205);
@@ -138,6 +183,7 @@ namespace BoardGame_Store
 
         private void LoadOrderContent(int orderId)
         {
+            isLoadingContent = true;
             try
             {
                 using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
@@ -157,6 +203,7 @@ namespace BoardGame_Store
                     da.Fill(dt);
 
                     dgvContent.DataSource = dt;
+                    dgvContent.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
                     MySqlCommand cmd = new MySqlCommand(
                         "SELECT discount, total_without_discount, total_with_discount, total_amount " +
@@ -169,8 +216,12 @@ namespace BoardGame_Store
                         {
                             decimal sw = Convert.ToDecimal(r["total_without_discount"]);
                             decimal sww = Convert.ToDecimal(r["total_with_discount"]);
+                            decimal discountVal = Convert.ToDecimal(r["discount"]);
 
-                            nudDiscount.Value = Convert.ToDecimal(r["discount"]);
+                            if (discountVal < nudDiscount.Minimum) discountVal = nudDiscount.Minimum;
+                            if (discountVal > nudDiscount.Maximum) discountVal = nudDiscount.Maximum;
+
+                            nudDiscount.Value = discountVal;
                             txtSumWithout.Text = sw.ToString("0.00");
                             txtDiscountAmount.Text = (sw - sww).ToString("0.00");
                             txtSumWith.Text = sww.ToString("0.00");
@@ -183,9 +234,13 @@ namespace BoardGame_Store
             {
                 MessageHelper.ShowError("Ошибка состава: " + ex.Message);
             }
+            finally
+            {
+                isLoadingContent = false;
+            }
         }
 
-        private void txtOrderNumber_TextChanged(object sender, EventArgs e) { currentPage = 1; LoadOrders(); }
+        private void cmbOrderNumber_SelectedIndexChanged(object sender, EventArgs e) { currentPage = 1; LoadOrders(); }
         private void cmbStatus_SelectedIndexChanged(object sender, EventArgs e) { currentPage = 1; LoadOrders(); }
         private void cmbSort_SelectedIndexChanged(object sender, EventArgs e) { LoadOrders(); }
         private void dtpDateFrom_ValueChanged(object sender, EventArgs e) { currentPage = 1; LoadOrders(); }
@@ -199,7 +254,7 @@ namespace BoardGame_Store
 
         private void btnReset_Click(object sender, EventArgs e)
         {
-            txtOrderNumber.Text = "Поиск...";
+            cmbOrderNumber.SelectedIndex = 0;
             cmbStatus.SelectedIndex = 0;
             cmbSort.SelectedIndex = 0;
             dtpDateFrom.Value = DateTime.Today.AddMonths(-3);
@@ -210,24 +265,39 @@ namespace BoardGame_Store
 
         private void dgvOrders_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvOrders.CurrentRow == null) return;
+            if (dgvOrders.CurrentRow == null || dgvOrders.SelectedRows.Count == 0) return;
 
-            selectedOrderId = Convert.ToInt32(dgvOrders.CurrentRow.Cells["Номер"].Value);
-            LoadOrderContent(selectedOrderId);
+            object cellValue = dgvOrders.CurrentRow.Cells["Номер"].Value;
+            if (cellValue == null || cellValue == DBNull.Value) return;
+
+            int newId = Convert.ToInt32(cellValue);
+
+            if (newId != selectedOrderId)
+            {
+                selectedOrderId = newId;
+                LoadOrderContent(selectedOrderId);
+            }
         }
 
         private void dgvOrders_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
-            int id = Convert.ToInt32(dgvOrders.Rows[e.RowIndex].Cells["Номер"].Value);
+            object cellValue = dgvOrders.Rows[e.RowIndex].Cells["Номер"].Value;
+            if (cellValue == null || cellValue == DBNull.Value) return;
+
+            int id = Convert.ToInt32(cellValue);
             OrderEditForm editForm = new OrderEditForm(id);
             editForm.ShowDialog();
+
+            LoadOrderNumbers();
             LoadOrders();
         }
 
         private void nudDiscount_ValueChanged(object sender, EventArgs e)
         {
+            if (isLoadingContent) return;
+
             decimal sw;
             if (decimal.TryParse(txtSumWithout.Text, out sw))
             {
@@ -239,12 +309,161 @@ namespace BoardGame_Store
             }
         }
 
-        private void btnAdd_Click(object sender, EventArgs e) { new OrderAddForm().ShowDialog(); LoadOrders(); }
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            new OrderAddForm().ShowDialog();
+            LoadOrderNumbers();
+            LoadOrders();
+        }
+
         private void btnEdit_Click(object sender, EventArgs e)
         {
             if (selectedOrderId == 0) { MessageHelper.ShowWarning("Выберите заказ"); return; }
             new OrderEditForm(selectedOrderId).ShowDialog();
+            LoadOrderNumbers();
             LoadOrders();
+        }
+
+        private void btnWord_Click(object sender, EventArgs e)
+        {
+            if (selectedOrderId == 0)
+            {
+                MessageHelper.ShowWarning("Выберите заказ в таблице для печати чека");
+                return;
+            }
+
+            try
+            {
+                string path = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                    "Чек_Заказ_" + selectedOrderId + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".doc");
+
+                string line = new string('=', 62);
+                string thin = new string('-', 62);
+                const int nameWidth = 25;
+
+                StringBuilder sb = new StringBuilder();
+
+                sb.AppendLine(line);
+                sb.AppendLine("                    МАГАЗИН НАСТОЛЬНЫХ ИГР");
+                sb.AppendLine(line);
+                sb.AppendLine("                         КАССОВЫЙ ЧЕК");
+                sb.AppendLine("                          Чек № " + selectedOrderId);
+                sb.AppendLine(thin);
+
+                string fullName = "";
+                DateTime orderDate = DateTime.Now;
+                decimal discountPercent = 0;
+                decimal totalWithout = 0;
+                decimal totalWith = 0;
+                string status = "";
+
+                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                {
+                    conn.Open();
+
+                    string sqlOrder =
+                        "SELECT c.full_name, o.order_date, o.discount, " +
+                        "o.total_without_discount, o.total_with_discount, " +
+                        "s.status_name FROM orders o " +
+                        "JOIN customers c ON o.customer_id=c.customer_id " +
+                        "JOIN statuses s ON o.status_id=s.status_id " +
+                        "WHERE o.order_id=@id";
+
+                    using (MySqlCommand cmd = new MySqlCommand(sqlOrder, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", selectedOrderId);
+                        using (var r = cmd.ExecuteReader())
+                        {
+                            if (r.Read())
+                            {
+                                fullName = r["full_name"].ToString();
+                                orderDate = Convert.ToDateTime(r["order_date"]);
+                                discountPercent = Convert.ToDecimal(r["discount"]);
+                                totalWithout = Convert.ToDecimal(r["total_without_discount"]);
+                                totalWith = Convert.ToDecimal(r["total_with_discount"]);
+                                status = r["status_name"].ToString();
+                            }
+                        }
+                    }
+
+                    sb.AppendLine("Дата чека:     " + DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
+                    sb.AppendLine("Дата заказа:   " + orderDate.ToString("dd.MM.yyyy HH:mm"));
+                    sb.AppendLine("Клиент:        " + fullName);
+                    sb.AppendLine("Статус:        " + status);
+                    sb.AppendLine(thin);
+                    sb.AppendLine("Состав заказа:");
+                    sb.AppendLine(thin);
+
+                    sb.AppendLine(PadLeft("№", 3) + "  " + PadRight("Наименование", nameWidth) + "  " + PadLeft("Кол-во", 6) + "  " + PadLeft("Цена", 10) + "  " + PadLeft("Сумма", 10));
+                    sb.AppendLine(thin);
+
+                    string sqlItems =
+                        "SELECT g.title, oi.quantity, oi.unit_price, " +
+                        "(oi.quantity*oi.unit_price) AS total " +
+                        "FROM order_items oi " +
+                        "JOIN board_games g ON oi.game_id=g.game_id " +
+                        "WHERE oi.order_id=@id ORDER BY oi.order_item_id";
+
+                    int n = 1;
+                    using (MySqlCommand cmd = new MySqlCommand(sqlItems, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", selectedOrderId);
+                        using (var r = cmd.ExecuteReader())
+                        {
+                            while (r.Read())
+                            {
+                                string title = r["title"].ToString();
+                                if (title.Length > nameWidth - 1) title = title.Substring(0, nameWidth - 2) + "…";
+                                int qty = Convert.ToInt32(r["quantity"]);
+                                decimal price = Convert.ToDecimal(r["unit_price"]);
+                                decimal sum = Convert.ToDecimal(r["total"]);
+
+                                sb.AppendLine(PadLeft(n.ToString(), 3) + "  " + PadRight(title, nameWidth) + "  " + PadLeft(qty.ToString(), 6) + "  " + PadLeft(price.ToString("0.00"), 10) + "  " + PadLeft(sum.ToString("0.00"), 10));
+                                n++;
+                            }
+                        }
+                    }
+
+                    sb.AppendLine(thin);
+
+                    decimal discountAmount = totalWithout - totalWith;
+                    sb.AppendLine(PadLeft("Подытог:", 45) + "  " + PadLeft(totalWithout.ToString("0.00"), 10) + " руб.");
+
+                    if (discountPercent > 0)
+                    {
+                        string discLabel = "Скидка (" + discountPercent.ToString("0.##") + "%):";
+                        sb.AppendLine(PadLeft(discLabel, 45) + "  " + PadLeft("-" + discountAmount.ToString("0.00"), 10) + " руб.");
+                    }
+
+                    sb.AppendLine(line);
+                    sb.AppendLine(PadLeft("ИТОГО К ОПЛАТЕ:", 45) + "  " + PadLeft(totalWith.ToString("0.00"), 10) + " руб.");
+                    sb.AppendLine(line);
+                    sb.AppendLine("                    Спасибо за покупку!");
+                    sb.AppendLine(line);
+                }
+
+                File.WriteAllText(path, sb.ToString(), new UTF8Encoding(true));
+                MessageHelper.ShowInfo("Чек сохранён:\n" + path);
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError("Ошибка печати чека: " + ex.Message);
+            }
+        }
+
+        private static string PadRight(string s, int width)
+        {
+            if (string.IsNullOrEmpty(s)) return new string(' ', width);
+            if (s.Length > width) return s.Substring(0, width);
+            return s.PadRight(width);
+        }
+
+        private static string PadLeft(string s, int width)
+        {
+            if (string.IsNullOrEmpty(s)) return new string(' ', width);
+            if (s.Length > width) return s;
+            return s.PadLeft(width);
         }
 
         private void btnReport_Click(object sender, EventArgs e)

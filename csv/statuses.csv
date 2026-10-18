@@ -1,5 +1,5 @@
-status_id;status_name
-1;Новый
-2;Не готов
+﻿status_id;status_name
 3;Готов
+2;Не готов
+1;Новый
 4;Отменён

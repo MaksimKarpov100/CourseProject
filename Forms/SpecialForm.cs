@@ -13,49 +13,136 @@ namespace BoardGame_Store
     {
         private static readonly string[] TablesInOrder =
         {
-            "users",
-            "customers",
-            "categories",
-            "statuses",
-            "board_games",
-            "orders",
-            "order_items"
+            "users", "customers", "categories", "statuses",
+            "board_games", "orders", "order_items"
         };
 
         private Timer autoBackupTimer;
         private DateTime lastBackupTime = DateTime.MinValue;
 
-        private static string SettingsPath =
-            Path.Combine(Application.StartupPath, "backup_settings.txt");
+        private static string SettingsPath = Path.Combine(Application.StartupPath, "backup_settings.txt");
+
+        private string BackupFolder = Path.Combine(Application.StartupPath, "Backup");
 
         public SpecialForm()
         {
             InitializeComponent();
 
-            clbTables.Items.Clear();
-
-            foreach (string t in TablesInOrder)
+            if (!Directory.Exists(BackupFolder))
             {
-                clbTables.Items.Add(t);
+                Directory.CreateDirectory(BackupFolder);
             }
 
-            LoadOrdersToCombo();
-            LoadAutoBackupSettings();
+            lblBackupsTitle.Text = "Доступные копии в папке: " + BackupFolder;
 
             autoBackupTimer = new Timer();
             autoBackupTimer.Interval = 1000;
             autoBackupTimer.Tick += autoBackupTimer_Tick;
 
-            Log("Готово. Выберите таблицы и папку.");
+            clbTables.Items.Clear();
+            foreach (string t in TablesInOrder)
+            {
+                clbTables.Items.Add(t);
+            }
+
+            LoadAutoBackupSettings();
+            LoadBackupsList();
+            Log("Готово. Папка бэкапов: " + BackupFolder);
         }
 
         private void Log(string text)
         {
             string line = "[" + DateTime.Now.ToString("HH:mm:ss") + "] " + text + "\r\n";
-
             txtLog.AppendText(line);
             txtLog.SelectionStart = txtLog.TextLength;
             txtLog.ScrollToCaret();
+        }
+
+        private void LoadBackupsList()
+        {
+            if (!Directory.Exists(BackupFolder))
+            {
+                Directory.CreateDirectory(BackupFolder);
+            }
+
+            try
+            {
+                var files = Directory.GetFiles(BackupFolder, "*.sql");
+
+                dgvBackups.DataSource = null;
+                dgvBackups.Rows.Clear();
+                dgvBackups.Columns.Clear();
+
+                DataTable dt = new DataTable();
+                dt.Columns.Add("Имя файла", typeof(string));
+                dt.Columns.Add("Дата создания", typeof(string));
+                dt.Columns.Add("Размер", typeof(string));
+                dt.Columns.Add("FullPath", typeof(string)); 
+
+                foreach (var file in files)
+                {
+                    FileInfo fi = new FileInfo(file);
+                    dt.Rows.Add(fi.Name, fi.CreationTime.ToString("dd.MM.yyyy HH:mm"),
+                        Math.Ceiling(fi.Length / 1024.0) + " KB", fi.FullName);
+                }
+
+                dgvBackups.DataSource = dt;
+
+                if (dgvBackups.Columns.Contains("FullPath"))
+                    dgvBackups.Columns["FullPath"].Visible = false;
+
+                dgvBackups.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            }
+            catch (Exception ex)
+            {
+                Log("Ошибка чтения папки с бэкапами: " + ex.Message);
+            }
+        }
+
+        private void btnRefreshBackups_Click(object sender, EventArgs e)
+        {
+            LoadBackupsList();
+            Log("Список бэкапов обновлен.");
+        }
+
+        private void btnRestore_Click(object sender, EventArgs e)
+        {
+            if (dgvBackups.CurrentRow == null)
+            {
+                MessageHelper.ShowWarning("Выберите файл бэкапа из списка");
+                return;
+            }
+
+            string filePath = dgvBackups.CurrentRow.Cells["FullPath"].Value.ToString();
+            string fileName = dgvBackups.CurrentRow.Cells["Имя файла"].Value.ToString();
+
+            if (!MessageHelper.AskConfirm($"ВНИМАНИЕ!\nВы собираетесь восстановить базу данных из файла:\n{fileName}\n\nВсе текущие данные будут УДАЛЕНЫ и заменены данными из копии. Продолжить?"))
+            {
+                return;
+            }
+
+            Log("=== ВОССТАНОВЛЕНИЕ ИЗ БЭКАПА ===");
+            Log("Файл: " + fileName);
+
+            try
+            {
+                string script = File.ReadAllText(filePath, Encoding.UTF8);
+
+                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                {
+                    conn.Open();
+                    MySqlScript mySqlScript = new MySqlScript(conn, script);
+                    mySqlScript.Execute();
+                }
+
+                Log("УСПЕХ: База данных успешно восстановлена.");
+                MessageHelper.ShowInfo("База данных успешно восстановлена!");
+            }
+            catch (Exception ex)
+            {
+                Log("ОШИБКА ВОССТАНОВЛЕНИЯ: " + ex.Message);
+                MessageHelper.ShowError("Ошибка восстановления:\n" + ex.Message);
+            }
         }
 
         private void LoadAutoBackupSettings()
@@ -65,18 +152,17 @@ namespace BoardGame_Store
                 if (File.Exists(SettingsPath))
                 {
                     string[] lines = File.ReadAllLines(SettingsPath);
-
                     if (lines.Length >= 3)
                     {
-                        chkBackupAuto.Checked = lines[0] == "1";
                         nudInterval.Value = Convert.ToInt32(lines[1]);
-                        txtFolder.Text = lines[2];
+                        if (!string.IsNullOrWhiteSpace(lines[2]))
+                            txtFolder.Text = lines[2];
+
+                        chkBackupAuto.Checked = lines[0] == "1";
                     }
                 }
             }
-            catch
-            {
-            }
+            catch { }
         }
 
         private void SaveAutoBackupSettings()
@@ -87,9 +173,8 @@ namespace BoardGame_Store
                 {
                     chkBackupAuto.Checked ? "1" : "0",
                     ((int)nudInterval.Value).ToString(),
-                    txtFolder.Text
+                    txtFolder.Text 
                 };
-
                 File.WriteAllLines(SettingsPath, lines);
             }
             catch (Exception ex)
@@ -102,38 +187,22 @@ namespace BoardGame_Store
         {
             if (chkBackupAuto.Checked)
             {
-                if (string.IsNullOrWhiteSpace(txtFolder.Text) || !Directory.Exists(txtFolder.Text))
-                {
-                    MessageHelper.ShowWarning("Сначала выберите папку для авторезерва");
-                    chkBackupAuto.Checked = false;
-                    return;
-                }
-
                 lastBackupTime = DateTime.Now;
                 autoBackupTimer.Start();
-
                 Log("Авторезерв ВКЛЮЧЁН. Интервал: " + nudInterval.Value + " ч.");
-                MessageHelper.ShowInfo("Авторезерв включён\nИнтервал: " + nudInterval.Value + " ч.");
             }
             else
             {
                 autoBackupTimer.Stop();
-
                 Log("Авторезерв ВЫКЛЮЧЕН.");
-                MessageHelper.ShowInfo("Авторезерв выключен");
             }
-
             SaveAutoBackupSettings();
         }
 
         private void nudInterval_ValueChanged(object sender, EventArgs e)
         {
             SaveAutoBackupSettings();
-
-            if (chkBackupAuto.Checked)
-            {
-                Log("Интервал изменён: " + nudInterval.Value + " ч.");
-            }
+            if (chkBackupAuto.Checked) Log("Интервал изменён: " + nudInterval.Value + " ч.");
         }
 
         private void autoBackupTimer_Tick(object sender, EventArgs e)
@@ -143,25 +212,14 @@ namespace BoardGame_Store
             if (hoursPassed >= (double)nudInterval.Value)
             {
                 lastBackupTime = DateTime.Now;
-
                 Log("=== АВТОРЕЗЕРВ ===");
 
                 try
                 {
-                    string folder = txtFolder.Text;
-
-                    if (!Directory.Exists(folder))
-                    {
-                        Log("Ошибка: папка " + folder + " не найдена");
-                        return;
-                    }
-
-                    string file = Path.Combine(folder,
-                        "autobackup_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".sql");
-
+                    string file = Path.Combine(BackupFolder, "autobackup_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".sql");
                     MakeBackup(file);
-
                     Log("Автобэкап создан: " + Path.GetFileName(file));
+                    LoadBackupsList();
                 }
                 catch (Exception ex)
                 {
@@ -173,79 +231,49 @@ namespace BoardGame_Store
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.Description = "Выберите папку для CSV и бэкапов";
+            fbd.Description = "Выберите папку для экспорта/импорта CSV файлов";
 
-            if (fbd.ShowDialog() != DialogResult.OK)
+            if (fbd.ShowDialog() == DialogResult.OK)
             {
-                return;
+                txtFolder.Text = fbd.SelectedPath;
+                Log("Папка для CSV: " + fbd.SelectedPath);
+                SaveAutoBackupSettings();
             }
-
-            txtFolder.Text = fbd.SelectedPath;
-
-            Log("Папка: " + fbd.SelectedPath);
-            SaveAutoBackupSettings();
         }
 
         private void btnSelectAll_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < clbTables.Items.Count; i++)
-            {
-                clbTables.SetItemChecked(i, true);
-            }
+            for (int i = 0; i < clbTables.Items.Count; i++) clbTables.SetItemChecked(i, true);
         }
 
         private void btnDeselectAll_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < clbTables.Items.Count; i++)
-            {
-                clbTables.SetItemChecked(i, false);
-            }
+            for (int i = 0; i < clbTables.Items.Count; i++) clbTables.SetItemChecked(i, false);
         }
 
         private List<string> GetSelectedTables()
         {
             HashSet<string> checkedSet = new HashSet<string>();
-
-            foreach (var item in clbTables.CheckedItems)
-            {
-                checkedSet.Add(item.ToString());
-            }
+            foreach (var item in clbTables.CheckedItems) checkedSet.Add(item.ToString());
 
             List<string> result = new List<string>();
-
             foreach (string t in TablesInOrder)
             {
-                if (checkedSet.Contains(t))
-                {
-                    result.Add(t);
-                }
+                if (checkedSet.Contains(t)) result.Add(t);
             }
-
             return result;
         }
 
         private void btnExportSelected_Click(object sender, EventArgs e)
         {
             List<string> tables = GetSelectedTables();
-
-            if (tables.Count == 0)
-            {
-                MessageHelper.ShowWarning("Выберите хотя бы одну таблицу");
-                return;
-            }
+            if (tables.Count == 0) { MessageHelper.ShowWarning("Выберите хотя бы одну таблицу"); return; }
 
             string folder = txtFolder.Text;
-
-            if (string.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder))
-            {
-                MessageHelper.ShowWarning("Сначала выберите папку");
-                return;
-            }
+            if (string.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder)) { MessageHelper.ShowWarning("Сначала выберите папку для CSV"); return; }
 
             Log("=== ЭКСПОРТ CSV ===");
-
-            int ok = 0;
-            int errors = 0;
+            int ok = 0, errors = 0;
 
             foreach (string table in tables)
             {
@@ -253,7 +281,6 @@ namespace BoardGame_Store
                 {
                     string path = Path.Combine(folder, table + ".csv");
                     int rows = ExportTable(table, path);
-
                     Log("  OK " + table + " -> " + Path.GetFileName(path) + " (" + rows + " записей)");
                     ok++;
                 }
@@ -263,19 +290,15 @@ namespace BoardGame_Store
                     errors++;
                 }
             }
-
-            Log("Итого: успешно " + ok + ", ошибок " + errors);
             MessageHelper.ShowInfo("Экспорт завершён\nУспешно: " + ok + "\nОшибок: " + errors);
         }
 
         private int ExportTable(string table, string path)
         {
             int rows = 0;
-
             using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
             {
                 conn.Open();
-
                 MySqlCommand cmd = new MySqlCommand("SELECT * FROM " + table, conn);
 
                 using (var reader = cmd.ExecuteReader())
@@ -284,78 +307,43 @@ namespace BoardGame_Store
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
                         writer.Write(reader.GetName(i));
-
-                        if (i < reader.FieldCount - 1)
-                        {
-                            writer.Write(";");
-                        }
+                        if (i < reader.FieldCount - 1) writer.Write(";");
                     }
-
                     writer.WriteLine();
 
                     while (reader.Read())
                     {
                         for (int i = 0; i < reader.FieldCount; i++)
                         {
-                            string val = reader.IsDBNull(i)
-                                ? ""
-                                : reader.GetValue(i).ToString();
-
-                            if (val.Contains(";") || val.Contains("\"") ||
-                                val.Contains("\n") || val.Contains("\r"))
-                            {
+                            string val = reader.IsDBNull(i) ? "" : reader.GetValue(i).ToString();
+                            if (val.Contains(";") || val.Contains("\"") || val.Contains("\n") || val.Contains("\r"))
                                 val = "\"" + val.Replace("\"", "\"\"") + "\"";
-                            }
-
                             writer.Write(val);
-
-                            if (i < reader.FieldCount - 1)
-                            {
-                                writer.Write(";");
-                            }
+                            if (i < reader.FieldCount - 1) writer.Write(";");
                         }
-
                         writer.WriteLine();
                         rows++;
                     }
                 }
             }
-
             return rows;
         }
 
         private void btnImportSelected_Click(object sender, EventArgs e)
         {
             List<string> tables = GetSelectedTables();
-
-            if (tables.Count == 0)
-            {
-                MessageHelper.ShowWarning("Выберите хотя бы одну таблицу");
-                return;
-            }
+            if (tables.Count == 0) { MessageHelper.ShowWarning("Выберите хотя бы одну таблицу"); return; }
 
             string folder = txtFolder.Text;
-
-            if (string.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder))
-            {
-                MessageHelper.ShowWarning("Сначала выберите папку");
-                return;
-            }
-
-            if (!MessageHelper.AskConfirm("Импорт добавит данные в существующие таблицы. Продолжить?"))
-            {
-                return;
-            }
+            if (string.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder)) { MessageHelper.ShowWarning("Сначала выберите папку для CSV"); return; }
+            if (!MessageHelper.AskConfirm("Импорт добавит данные в существующие таблицы. Продолжить?")) return;
 
             Log("=== ИМПОРТ CSV ===");
-
-            int ok = 0;
-            int errors = 0;
+            int ok = 0, errors = 0;
 
             foreach (string table in tables)
             {
                 string path = Path.Combine(folder, table + ".csv");
-
                 if (!File.Exists(path))
                 {
                     Log("  ОШИБКА: файл не найден " + path);
@@ -366,7 +354,6 @@ namespace BoardGame_Store
                 try
                 {
                     int rows = ImportTable(table, path);
-
                     Log("  OK " + Path.GetFileName(path) + " -> " + table + " (" + rows + " записей)");
                     ok++;
                 }
@@ -376,26 +363,17 @@ namespace BoardGame_Store
                     errors++;
                 }
             }
-
-            Log("Итого: успешно " + ok + ", ошибок " + errors);
             MessageHelper.ShowInfo("Импорт завершён\nУспешно: " + ok + "\nОшибок: " + errors);
         }
 
         private int ImportTable(string table, string path)
         {
             int inserted = 0;
-
             string[] lines = File.ReadAllLines(path, Encoding.UTF8);
-
-            if (lines.Length < 2)
-            {
-                return 0;
-            }
+            if (lines.Length < 2) return 0;
 
             string[] csvColumns = SplitCsvLine(lines[0]);
-
             List<string> realColumns = GetTableColumns(table);
-
             List<string> validColumns = new List<string>();
             List<int> validIndexes = new List<int>();
 
@@ -408,39 +386,23 @@ namespace BoardGame_Store
                 }
             }
 
-            if (validColumns.Count == 0)
-            {
-                return 0;
-            }
+            if (validColumns.Count == 0) return 0;
 
             string colList = string.Join(", ", validColumns);
             string paramList = "@p" + string.Join(", @p", Enumerable.Range(0, validColumns.Count));
-
-            string sql = "INSERT IGNORE INTO " + table +
-                         " (" + colList + ") VALUES (" + paramList + ")";
+            string sql = "INSERT IGNORE INTO " + table + " (" + colList + ") VALUES (" + paramList + ")";
 
             using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
             {
                 conn.Open();
-
-                MySqlCommand fk0 = new MySqlCommand("SET FOREIGN_KEY_CHECKS=0", conn);
-                fk0.ExecuteNonQuery();
-
+                new MySqlCommand("SET FOREIGN_KEY_CHECKS=0", conn).ExecuteNonQuery();
                 try
                 {
                     for (int i = 1; i < lines.Length; i++)
                     {
-                        if (string.IsNullOrWhiteSpace(lines[i]))
-                        {
-                            continue;
-                        }
-
+                        if (string.IsNullOrWhiteSpace(lines[i])) continue;
                         string[] values = SplitCsvLine(lines[i]);
-
-                        if (values.Length != csvColumns.Length)
-                        {
-                            continue;
-                        }
+                        if (values.Length != csvColumns.Length) continue;
 
                         using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                         {
@@ -448,137 +410,85 @@ namespace BoardGame_Store
                             {
                                 int csvIndex = validIndexes[k];
                                 string v = values[csvIndex];
-
-                                if (string.IsNullOrEmpty(v))
-                                {
-                                    cmd.Parameters.AddWithValue("@p" + k, DBNull.Value);
-                                }
-                                else
-                                {
-                                    cmd.Parameters.AddWithValue("@p" + k, v);
-                                }
+                                cmd.Parameters.AddWithValue("@p" + k, string.IsNullOrEmpty(v) ? (object)DBNull.Value : v);
                             }
-
                             inserted += cmd.ExecuteNonQuery();
                         }
                     }
                 }
                 finally
                 {
-                    MySqlCommand fk1 = new MySqlCommand("SET FOREIGN_KEY_CHECKS=1", conn);
-                    fk1.ExecuteNonQuery();
+                    new MySqlCommand("SET FOREIGN_KEY_CHECKS=1", conn).ExecuteNonQuery();
                 }
             }
-
             return inserted;
         }
 
         private List<string> GetTableColumns(string table)
         {
             List<string> columns = new List<string>();
-
             try
             {
                 using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
                 {
                     conn.Open();
-
-                    MySqlCommand cmd = new MySqlCommand("SHOW COLUMNS FROM " + table, conn);
-
-                    using (var reader = cmd.ExecuteReader())
+                    using (var reader = new MySqlCommand("SHOW COLUMNS FROM " + table, conn).ExecuteReader())
                     {
-                        while (reader.Read())
-                        {
-                            columns.Add(reader["Field"].ToString());
-                        }
+                        while (reader.Read()) columns.Add(reader["Field"].ToString());
                     }
                 }
             }
-            catch
-            {
-            }
-
+            catch { }
             return columns;
         }
 
         private string[] SplitCsvLine(string line)
         {
             List<string> result = new List<string>();
-
             bool inQuotes = false;
             StringBuilder sb = new StringBuilder();
 
             for (int i = 0; i < line.Length; i++)
             {
                 char c = line[i];
-
                 if (inQuotes)
                 {
                     if (c == '"')
                     {
-                        if (i + 1 < line.Length && line[i + 1] == '"')
-                        {
-                            sb.Append('"');
-                            i++;
-                        }
-                        else
-                        {
-                            inQuotes = false;
-                        }
+                        if (i + 1 < line.Length && line[i + 1] == '"') { sb.Append('"'); i++; }
+                        else inQuotes = false;
                     }
-                    else
-                    {
-                        sb.Append(c);
-                    }
+                    else sb.Append(c);
                 }
                 else
                 {
-                    if (c == '"')
-                    {
-                        inQuotes = true;
-                    }
-                    else if (c == ';')
-                    {
-                        result.Add(sb.ToString());
-                        sb.Clear();
-                    }
-                    else
-                    {
-                        sb.Append(c);
-                    }
+                    if (c == '"') inQuotes = true;
+                    else if (c == ';') { result.Add(sb.ToString()); sb.Clear(); }
+                    else sb.Append(c);
                 }
             }
-
             result.Add(sb.ToString());
-
             return result.ToArray();
         }
 
         private void btnBackupManual_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "SQL|*.sql";
-            sfd.FileName = "backup_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".sql";
-
-            if (sfd.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
+            string fileName = "backup_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".sql";
+            string fullPath = Path.Combine(BackupFolder, fileName);
 
             Log("=== РУЧНОЙ БЭКАП ===");
-            Log("Файл: " + sfd.FileName);
-
             try
             {
-                MakeBackup(sfd.FileName);
+                MakeBackup(fullPath);
+                Log("Готово: " + fileName);
+                MessageHelper.ShowInfo("Резервная копия успешно создана!\n" + fullPath);
 
-                Log("Готово: " + sfd.FileName);
-                MessageHelper.ShowInfo("Резервная копия создана:\n" + sfd.FileName);
+                LoadBackupsList(); 
             }
             catch (Exception ex)
             {
                 Log("Ошибка: " + ex.Message);
-                MessageHelper.ShowError("Ошибка: " + ex.Message);
+                MessageHelper.ShowError("Ошибка создания бэкапа: " + ex.Message);
             }
         }
 
@@ -586,229 +496,46 @@ namespace BoardGame_Store
         {
             StringBuilder sb = new StringBuilder();
 
+            sb.AppendLine("SET FOREIGN_KEY_CHECKS=0;");
             sb.AppendLine("USE board_game_store;");
             sb.AppendLine();
 
             foreach (string table in TablesInOrder)
             {
+                sb.AppendLine("DELETE FROM " + table + ";");
+
                 using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
                 {
                     conn.Open();
-
                     MySqlCommand cmd = new MySqlCommand("SELECT * FROM " + table, conn);
-
                     using (var reader = cmd.ExecuteReader())
                     {
                         int rows = 0;
-
                         while (reader.Read())
                         {
                             sb.Append("INSERT INTO " + table + " VALUES (");
-
                             for (int i = 0; i < reader.FieldCount; i++)
                             {
-                                if (reader.IsDBNull(i))
-                                {
-                                    sb.Append("NULL");
-                                }
+                                if (reader.IsDBNull(i)) sb.Append("NULL");
                                 else
                                 {
                                     object v = reader.GetValue(i);
-
-                                    if (v is string || v is DateTime)
-                                    {
-                                        sb.Append("'" + v.ToString().Replace("'", "''") + "'");
-                                    }
-                                    else
-                                    {
-                                        sb.Append(v.ToString().Replace(",", "."));
-                                    }
+                                    if (v is string || v is DateTime) sb.Append("'" + v.ToString().Replace("'", "''") + "'");
+                                    else sb.Append(v.ToString().Replace(",", "."));
                                 }
-
-                                if (i < reader.FieldCount - 1)
-                                {
-                                    sb.Append(", ");
-                                }
+                                if (i < reader.FieldCount - 1) sb.Append(", ");
                             }
-
                             sb.AppendLine(");");
                             rows++;
                         }
-
                         Log("  OK " + table + " (" + rows + " записей)");
                     }
                 }
-
                 sb.AppendLine();
             }
 
+            sb.AppendLine("SET FOREIGN_KEY_CHECKS=1;");
             File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
-        }
-
-        private void btnWord_Click(object sender, EventArgs e)
-        {
-            if (cmbOrder.SelectedValue == null)
-            {
-                MessageHelper.ShowWarning("Выберите заказ");
-                return;
-            }
-
-            int orderId = Convert.ToInt32(cmbOrder.SelectedValue);
-
-            try
-            {
-                string path = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                    "Чек_Заказ_" + orderId + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".doc");
-
-                string line = new string('=', 62);
-                string thin = new string('-', 62);
-                const int nameWidth = 25;
-
-                StringBuilder sb = new StringBuilder();
-
-                sb.AppendLine(line);
-                sb.AppendLine("                    МАГАЗИН НАСТОЛЬНЫХ ИГР");
-                sb.AppendLine(line);
-                sb.AppendLine("                         КАССОВЫЙ ЧЕК");
-                sb.AppendLine("                          Чек № " + orderId);
-                sb.AppendLine(thin);
-
-                string fullName = "";
-                DateTime orderDate = DateTime.Now;
-                decimal discountPercent = 0;
-                decimal totalWithout = 0;
-                decimal totalWith = 0;
-                string status = "";
-
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                {
-                    conn.Open();
-
-                    string sqlOrder =
-                        "SELECT c.full_name, o.order_date, o.discount, " +
-                        "o.total_without_discount, o.total_with_discount, " +
-                        "s.status_name FROM orders o " +
-                        "JOIN customers c ON o.customer_id=c.customer_id " +
-                        "JOIN statuses s ON o.status_id=s.status_id " +
-                        "WHERE o.order_id=@id";
-
-                    using (MySqlCommand cmd = new MySqlCommand(sqlOrder, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@id", orderId);
-                        using (var r = cmd.ExecuteReader())
-                        {
-                            if (r.Read())
-                            {
-                                fullName = r["full_name"].ToString();
-                                orderDate = Convert.ToDateTime(r["order_date"]);
-                                discountPercent = Convert.ToDecimal(r["discount"]);
-                                totalWithout = Convert.ToDecimal(r["total_without_discount"]);
-                                totalWith = Convert.ToDecimal(r["total_with_discount"]);
-                                status = r["status_name"].ToString();
-                            }
-                        }
-                    }
-
-                    sb.AppendLine("Дата чека:     " + DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
-                    sb.AppendLine("Дата заказа:   " + orderDate.ToString("dd.MM.yyyy HH:mm"));
-                    sb.AppendLine("Клиент:        " + fullName);
-                    sb.AppendLine("Статус:        " + status);
-                    sb.AppendLine(thin);
-                    sb.AppendLine("Состав заказа:");
-                    sb.AppendLine(thin);
-
-                    sb.AppendLine(
-                        PadLeft2("№", 3) + "  " +
-                        PadRight2("Наименование", nameWidth) + "  " +
-                        PadLeft2("Кол-во", 6) + "  " +
-                        PadLeft2("Цена", 10) + "  " +
-                        PadLeft2("Сумма", 10));
-                    sb.AppendLine(thin);
-
-                    string sqlItems =
-                        "SELECT g.title, oi.quantity, oi.unit_price, " +
-                        "(oi.quantity*oi.unit_price) AS total " +
-                        "FROM order_items oi " +
-                        "JOIN board_games g ON oi.game_id=g.game_id " +
-                        "WHERE oi.order_id=@id ORDER BY oi.order_item_id";
-
-                    int n = 1;
-
-                    using (MySqlCommand cmd = new MySqlCommand(sqlItems, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@id", orderId);
-                        using (var r = cmd.ExecuteReader())
-                        {
-                            while (r.Read())
-                            {
-                                string title = r["title"].ToString();
-                                if (title.Length > nameWidth - 1)
-                                    title = title.Substring(0, nameWidth - 2) + "…";
-
-                                int qty = Convert.ToInt32(r["quantity"]);
-                                decimal price = Convert.ToDecimal(r["unit_price"]);
-                                decimal sum = Convert.ToDecimal(r["total"]);
-
-                                sb.AppendLine(
-                                    PadLeft2(n.ToString(), 3) + "  " +
-                                    PadRight2(title, nameWidth) + "  " +
-                                    PadLeft2(qty.ToString(), 6) + "  " +
-                                    PadLeft2(price.ToString("0.00"), 10) + "  " +
-                                    PadLeft2(sum.ToString("0.00"), 10));
-
-                                n++;
-                            }
-                        }
-                    }
-
-                    sb.AppendLine(thin);
-
-                    decimal discountAmount = totalWithout - totalWith;
-
-                    sb.AppendLine(
-                        PadLeft2("Подытог:", 45) + "  " +
-                        PadLeft2(totalWithout.ToString("0.00"), 10) + " руб.");
-
-                    if (discountPercent > 0)
-                    {
-                        string discLabel = "Скидка (" + discountPercent.ToString("0.##") + "%):";
-                        sb.AppendLine(
-                            PadLeft2(discLabel, 45) + "  " +
-                            PadLeft2("-" + discountAmount.ToString("0.00"), 10) + " руб.");
-                    }
-
-                    sb.AppendLine(line);
-                    sb.AppendLine(
-                        PadLeft2("ИТОГО К ОПЛАТЕ:", 45) + "  " +
-                        PadLeft2(totalWith.ToString("0.00"), 10) + " руб.");
-                    sb.AppendLine(line);
-                    sb.AppendLine("                    Спасибо за покупку!");
-                    sb.AppendLine(line);
-                }
-
-                File.WriteAllText(path, sb.ToString(), new UTF8Encoding(true));
-
-                MessageHelper.ShowInfo("Чек сохранён:\n" + path);
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.ShowError("Ошибка: " + ex.Message);
-            }
-        }
-
-        private static string PadRight2(string s, int width)
-        {
-            if (string.IsNullOrEmpty(s)) return new string(' ', width);
-            if (s.Length > width) return s.Substring(0, width);
-            return s.PadRight(width);
-        }
-
-        private static string PadLeft2(string s, int width)
-        {
-            if (string.IsNullOrEmpty(s)) return new string(' ', width);
-            if (s.Length > width) return s;
-            return s.PadLeft(width);
         }
 
         private void btnExcel_Click(object sender, EventArgs e)
@@ -822,14 +549,10 @@ namespace BoardGame_Store
                 using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
                 {
                     conn.Open();
-
-                    string sql =
-                        "SELECT o.order_id, c.full_name, o.order_date, s.status_name, " +
-                        "o.total_amount FROM orders o " +
-                        "JOIN customers c ON o.customer_id=c.customer_id " +
-                        "JOIN statuses s ON o.status_id=s.status_id " +
-                        "WHERE o.order_date >= @f AND o.order_date <= @t " +
-                        "ORDER BY o.order_date";
+                    string sql = "SELECT o.order_id, c.full_name, o.order_date, s.status_name, o.total_amount FROM orders o " +
+                                 "JOIN customers c ON o.customer_id=c.customer_id " +
+                                 "JOIN statuses s ON o.status_id=s.status_id " +
+                                 "WHERE o.order_date >= @f AND o.order_date <= @t ORDER BY o.order_date";
 
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@f", dtpFrom.Value.Date);
@@ -840,29 +563,20 @@ namespace BoardGame_Store
                     {
                         w.WriteLine("МАГАЗИН НАСТОЛЬНЫХ ИГР");
                         w.WriteLine("Отчёт по заказам");
-                        w.WriteLine("Период: " + dtpFrom.Value.ToShortDateString()
-                            + " - " + dtpTo.Value.ToShortDateString());
+                        w.WriteLine("Период: " + dtpFrom.Value.ToShortDateString() + " - " + dtpTo.Value.ToShortDateString());
                         w.WriteLine("Дата формирования: " + DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
                         w.WriteLine();
                         w.WriteLine("Номер;Клиент;Дата;Статус;Сумма");
 
                         while (r.Read())
                         {
-                            w.WriteLine(
-                                r["order_id"] + ";" +
-                                r["full_name"] + ";" +
-                                Convert.ToDateTime(r["order_date"]).ToShortDateString() + ";" +
-                                r["status_name"] + ";" +
-                                r["total_amount"]);
+                            w.WriteLine(r["order_id"] + ";" + r["full_name"] + ";" +
+                                        Convert.ToDateTime(r["order_date"]).ToShortDateString() + ";" +
+                                        r["status_name"] + ";" + r["total_amount"]);
                         }
                     }
 
-                    MySqlCommand cmdTotal = new MySqlCommand(
-                        "SELECT COUNT(*) AS c, IFNULL(SUM(total_amount), 0) AS s, " +
-                        "IFNULL(AVG(total_amount), 0) AS avg_sum, " +
-                        "IFNULL(MAX(total_amount), 0) AS max_sum " +
-                        "FROM orders WHERE order_date >= @f AND order_date <= @t", conn);
-
+                    MySqlCommand cmdTotal = new MySqlCommand("SELECT COUNT(*) AS c, IFNULL(SUM(total_amount), 0) AS s, IFNULL(AVG(total_amount), 0) AS avg_sum, IFNULL(MAX(total_amount), 0) AS max_sum FROM orders WHERE order_date >= @f AND order_date <= @t", conn);
                     cmdTotal.Parameters.AddWithValue("@f", dtpFrom.Value.Date);
                     cmdTotal.Parameters.AddWithValue("@t", dtpTo.Value.Date.AddDays(1));
 
@@ -884,39 +598,9 @@ namespace BoardGame_Store
                         }
                     }
                 }
-
                 MessageHelper.ShowInfo("Отчёт сохранён:\n" + path);
             }
-            catch (Exception ex)
-            {
-                MessageHelper.ShowError("Ошибка отчёта: " + ex.Message);
-            }
-        }
-
-        private void LoadOrdersToCombo()
-        {
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                {
-                    conn.Open();
-
-                    string sql = "SELECT o.order_id, c.full_name FROM orders o " +
-                                 "JOIN customers c ON o.customer_id=c.customer_id " +
-                                 "ORDER BY o.order_id DESC";
-
-                    MySqlDataAdapter da = new MySqlDataAdapter(sql, conn);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-
-                    cmbOrder.DataSource = dt;
-                    cmbOrder.DisplayMember = "order_id";
-                    cmbOrder.ValueMember = "order_id";
-                }
-            }
-            catch
-            {
-            }
+            catch (Exception ex) { MessageHelper.ShowError("Ошибка отчёта: " + ex.Message); }
         }
 
         private void btnBack_Click(object sender, EventArgs e)
