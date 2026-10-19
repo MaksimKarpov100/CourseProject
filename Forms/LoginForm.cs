@@ -30,11 +30,11 @@ namespace BoardGame_Store
         {
             if (txtPassword.PasswordChar == '*')
             {
-                txtPassword.PasswordChar = '\0'; 
+                txtPassword.PasswordChar = '\0';
             }
             else
             {
-                txtPassword.PasswordChar = '*'; 
+                txtPassword.PasswordChar = '*';
             }
         }
 
@@ -55,7 +55,7 @@ namespace BoardGame_Store
             string password = txtPassword.Text;
             string captcha = txtCaptcha.Text.Trim();
 
-            if (failedAttempts >= 3 && !captchaGen.Validate(captcha))
+            if (pbCaptcha.Visible && !captchaGen.Validate(captcha))
             {
                 lblError.Text = "Неверная капча!";
                 lblError.Visible = true;
@@ -100,7 +100,7 @@ namespace BoardGame_Store
 
             if (isValid)
             {
-                this.Hide(); 
+                this.Hide();
                 if (CurrentUser.Role == "Администратор")
                     new MainFormAdmin().ShowDialog();
                 else if (CurrentUser.Role == "Товаровед")
@@ -117,11 +117,12 @@ namespace BoardGame_Store
                 lblError.Text = "Неверный логин или пароль!";
                 lblError.Visible = true;
 
-                if (failedAttempts >= 3)
+                if (failedAttempts >= 2)
                 {
                     lblCaptcha.Visible = true;
                     txtCaptcha.Visible = true;
                     pbCaptcha.Visible = true;
+                    lblCaptchaHint.Visible = true;
                     LoadCaptcha();
                 }
 
