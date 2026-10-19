@@ -107,7 +107,6 @@
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(200, 25);
             this.txtSearch.TabIndex = 1;
-            this.txtSearch.Text = "Поиск...";
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // lblRoleFilter

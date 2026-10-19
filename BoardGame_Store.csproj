@@ -236,10 +236,8 @@
     <Content Include="db\board_game_store_structure.sql" />
     <Content Include="db\board_game_store_users.sql" />
     <Content Include="db\import_all.sql" />
-    <Content Include="ER.png" />
+    <Content Include="Resources\ER.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
