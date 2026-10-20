@@ -6,41 +6,40 @@ namespace BoardGame_Store
 {
     public partial class ChangePasswordForm : Form
     {
-        private int userId;
-        private string userLogin;
-
-        public ChangePasswordForm(int id, string login)
+        public ChangePasswordForm()
         {
             InitializeComponent();
+        }
 
-            userId = id;
-            userLogin = login;
-
-            lblUser.Text = "Пользователь: " + userLogin;
-
-            txtNewPassword.Focus();
+        // ВОТ ЭТОТ МЕТОД НУЖНО БЫЛО ДОБАВИТЬ
+        private void chkShowPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            // Если галочка стоит, показываем текст, иначе скрываем
+            char passChar = chkShowPassword.Checked ? '\0' : '●';
+            txtOldPass.PasswordChar = passChar;
+            txtNewPass.PasswordChar = passChar;
+            txtConfirmPass.PasswordChar = passChar;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            string newPass = txtNewPassword.Text;
-            string confirm = txtConfirmPassword.Text;
-
-            if (string.IsNullOrWhiteSpace(newPass))
+            if (string.IsNullOrWhiteSpace(txtOldPass.Text) ||
+                string.IsNullOrWhiteSpace(txtNewPass.Text) ||
+                string.IsNullOrWhiteSpace(txtConfirmPass.Text))
             {
-                MessageHelper.ShowWarning("Введите новый пароль");
+                ValidationHelper.ShowWarning("Заполните все поля!");
                 return;
             }
 
-            if (!Validator.CheckPassword(newPass))
+            if (txtNewPass.Text != txtConfirmPass.Text)
             {
-                MessageHelper.ShowWarning("Пароль: 8-64 символа, буквы и цифры");
+                ValidationHelper.ShowWarning("Новые пароли не совпадают!");
                 return;
             }
 
-            if (newPass != confirm)
+            if (txtNewPass.Text.Length < 8)
             {
-                MessageHelper.ShowWarning("Пароли не совпадают");
+                ValidationHelper.ShowWarning("Новый пароль должен быть не менее 8 символов!");
                 return;
             }
 
@@ -50,55 +49,35 @@ namespace BoardGame_Store
                 {
                     conn.Open();
 
-                    MySqlCommand getHash = new MySqlCommand(
-                        "SELECT password_hash FROM users WHERE user_id=@id", conn);
-                    getHash.Parameters.AddWithValue("@id", userId);
+                    MySqlCommand cmdCheck = new MySqlCommand("SELECT password_hash FROM users WHERE user_id=@id", conn);
+                    cmdCheck.Parameters.AddWithValue("@id", CurrentUser.UserId);
+                    string oldHash = cmdCheck.ExecuteScalar().ToString();
 
-                    object oldHash = getHash.ExecuteScalar();
-
-                    if (oldHash != null && PasswordHelper.CheckPassword(newPass, oldHash.ToString()))
+                    if (!PasswordHelper.CheckPassword(txtOldPass.Text, oldHash))
                     {
-                        MessageHelper.ShowWarning("Новый пароль совпадает со старым");
+                        ValidationHelper.ShowWarning("Неверный старый пароль!");
                         return;
                     }
 
-                    string newHash = PasswordHelper.GetHash(newPass);
-
-                    MySqlCommand update = new MySqlCommand(
-                        "UPDATE users SET password_hash=@h WHERE user_id=@id", conn);
-
-                    update.Parameters.AddWithValue("@h", newHash);
-                    update.Parameters.AddWithValue("@id", userId);
-
-                    update.ExecuteNonQuery();
+                    string newHash = PasswordHelper.GetHash(txtNewPass.Text);
+                    MySqlCommand cmdUpdate = new MySqlCommand("UPDATE users SET password_hash=@hash WHERE user_id=@id", conn);
+                    cmdUpdate.Parameters.AddWithValue("@hash", newHash);
+                    cmdUpdate.Parameters.AddWithValue("@id", CurrentUser.UserId);
+                    cmdUpdate.ExecuteNonQuery();
                 }
 
-                MessageHelper.ShowInfo("Пароль успешно изменён");
+                ValidationHelper.ShowSuccess("Пароль успешно изменен!");
                 this.Close();
             }
             catch (Exception ex)
             {
-                MessageHelper.ShowError("Ошибка смены пароля: " + ex.Message);
+                ValidationHelper.ShowError("Ошибка: " + ex.Message);
             }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void chkShowPassword_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkShowPassword.Checked)
-            {
-                txtNewPassword.PasswordChar = '\0';
-                txtConfirmPassword.PasswordChar = '\0';
-            }
-            else
-            {
-                txtNewPassword.PasswordChar = '*';
-                txtConfirmPassword.PasswordChar = '*';
-            }
         }
     }
 }

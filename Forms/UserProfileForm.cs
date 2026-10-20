@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
@@ -10,43 +10,51 @@ namespace BoardGame_Store
         public UserProfileForm()
         {
             InitializeComponent();
-            LoadProfileData();
         }
 
-        private void LoadProfileData()
+        private void UserProfileForm_Load(object sender, EventArgs e)
         {
+            txtName.Text = CurrentUser.FullName;
+            txtRole.Text = CurrentUser.Role;
+
             try
             {
                 using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
                 {
                     conn.Open();
-                    string sql = "SELECT login, phone FROM users WHERE user_id = @id";
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    MySqlCommand cmd = new MySqlCommand("SELECT login, phone FROM users WHERE user_id=@id", conn);
                     cmd.Parameters.AddWithValue("@id", CurrentUser.UserId);
 
                     using (var r = cmd.ExecuteReader())
                     {
                         if (r.Read())
                         {
-                            txtFullName.Text = CurrentUser.FullName;
                             txtLogin.Text = r["login"].ToString();
-                            txtRole.Text = CurrentUser.Role;
-                            txtPhone.Text = string.IsNullOrWhiteSpace(r["phone"].ToString())
-                                            ? "Не указан"
-                                            : r["phone"].ToString();
+
+                            // Маскировка телефона по ТЗ
+                            string phone = r["phone"].ToString();
+                            if (phone.Length >= 10)
+                            {
+                                string digits = Regex.Replace(phone, @"\D", "");
+                                txtPhone.Text = digits.Substring(digits.Length - 10, 3) + "****" + digits.Substring(digits.Length - 2);
+                            }
+                            else
+                            {
+                                txtPhone.Text = phone;
+                            }
                         }
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                MessageHelper.ShowError("Ошибка загрузки профиля: " + ex.Message);
-            }
+            catch (Exception ex) { ValidationHelper.ShowError("Ошибка: " + ex.Message); }
+        }
 
-            txtFullName.ReadOnly = true;
-            txtLogin.ReadOnly = true;
-            txtRole.ReadOnly = true;
-            txtPhone.ReadOnly = true;
+        // --- ВЫЗОВ ФОРМЫ СМЕНЫ ПАРОЛЯ ---
+        private void btnChangePass_Click(object sender, EventArgs e)
+        {
+            // Открываем ту самую форму, которую мы сделали
+            ChangePasswordForm form = new ChangePasswordForm();
+            form.ShowDialog();
         }
 
         private void btnClose_Click(object sender, EventArgs e)

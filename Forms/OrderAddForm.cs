@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
@@ -7,33 +9,31 @@ namespace BoardGame_Store
 {
     public partial class OrderAddForm : Form
     {
-        private DataTable cartTable;
+        public OrderAddForm() { InitializeComponent(); }
 
-        public OrderAddForm()
+        private void OrderAddForm_Load(object sender, EventArgs e)
         {
-            InitializeComponent();
-
-            cartTable = new DataTable();
-            cartTable.Columns.Add("game_id", typeof(int));
-            cartTable.Columns.Add("Товар", typeof(string));
-            cartTable.Columns.Add("Кол-во", typeof(int));
-            cartTable.Columns.Add("Цена", typeof(decimal));
-            cartTable.Columns.Add("Сумма", typeof(decimal));
-
-            dgvContent.DataSource = cartTable;
-
-            nudQuantity.Minimum = 1;
-            nudQuantity.Value = 1;
-
-            dtpDate.Value = DateTime.Today;
-
-            nudDiscount.ReadOnly = true;
-
+            SetupCartGrid();
             LoadCustomers();
             LoadGames();
-            LoadStatuses();
+            dtpOrderDate.Value = DateTime.Now;
+        }
 
-            dtpDate.ValueChanged += dtpDate_ValueChanged;
+        private void SetupCartGrid()
+        {
+            dgvOrderItems.AutoGenerateColumns = false;
+            dgvOrderItems.Columns.Clear();
+
+            dgvOrderItems.Columns.Add(new DataGridViewImageColumn { Name = "Image", HeaderText = "Фото", ImageLayout = DataGridViewImageCellLayout.Zoom, Width = 60 });
+            dgvOrderItems.Columns.Add(new DataGridViewTextBoxColumn { Name = "ID", Visible = false });
+            dgvOrderItems.Columns.Add(new DataGridViewTextBoxColumn { Name = "Название", HeaderText = "Товар", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
+            dgvOrderItems.Columns.Add(new DataGridViewTextBoxColumn { Name = "Кол-во" });
+            dgvOrderItems.Columns.Add(new DataGridViewTextBoxColumn { Name = "Цена" });
+            dgvOrderItems.Columns.Add(new DataGridViewTextBoxColumn { Name = "Сумма" });
+
+            dgvOrderItems.RowTemplate.Height = 50;
+            dgvOrderItems.AllowUserToAddRows = false;
+            dgvOrderItems.ReadOnly = true;
         }
 
         private void LoadCustomers()
@@ -43,22 +43,15 @@ namespace BoardGame_Store
                 using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
                 {
                     conn.Open();
-
-                    MySqlDataAdapter da = new MySqlDataAdapter(
-                        "SELECT customer_id, full_name FROM customers ORDER BY full_name", conn);
-
+                    MySqlDataAdapter da = new MySqlDataAdapter("SELECT customer_id, full_name FROM customers ORDER BY full_name", conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
-
                     cmbCustomer.DataSource = dt;
                     cmbCustomer.DisplayMember = "full_name";
                     cmbCustomer.ValueMember = "customer_id";
                 }
             }
-            catch (Exception ex)
-            {
-                MessageHelper.ShowError("Ошибка клиентов: " + ex.Message);
-            }
+            catch (Exception ex) { ValidationHelper.ShowError("Ошибка клиентов: " + ex.Message); }
         }
 
         private void LoadGames()
@@ -68,246 +61,172 @@ namespace BoardGame_Store
                 using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
                 {
                     conn.Open();
-
-                    MySqlDataAdapter da = new MySqlDataAdapter(
-                        "SELECT game_id, title, price, stock_quantity FROM board_games " +
-                        "WHERE stock_quantity > 0 ORDER BY title", conn);
-
+                    MySqlDataAdapter da = new MySqlDataAdapter("SELECT game_id, title, price FROM board_games WHERE stock_quantity > 0 ORDER BY title", conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
-
                     cmbGame.DataSource = dt;
                     cmbGame.DisplayMember = "title";
                     cmbGame.ValueMember = "game_id";
                 }
-
-                if (cmbGame.SelectedItem is DataRowView row)
-                {
-                    txtPrice.Text = row["price"].ToString();
-                }
             }
-            catch (Exception ex)
-            {
-                MessageHelper.ShowError("Ошибка игр: " + ex.Message);
-            }
-        }
-
-        private void LoadStatuses()
-        {
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                {
-                    conn.Open();
-
-                    MySqlDataAdapter da = new MySqlDataAdapter(
-                        "SELECT status_id, status_name FROM statuses ORDER BY status_id", conn);
-
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-
-                    cmbStatus.DataSource = dt;
-                    cmbStatus.DisplayMember = "status_name";
-                    cmbStatus.ValueMember = "status_id";
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.ShowError("Ошибка статусов: " + ex.Message);
-            }
+            catch (Exception ex) { ValidationHelper.ShowError("Ошибка игр: " + ex.Message); }
         }
 
         private void cmbGame_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbGame.SelectedItem is DataRowView row)
+            if (cmbGame.SelectedIndex != -1)
             {
-                txtPrice.Text = row["price"].ToString();
+                DataRowView row = cmbGame.SelectedItem as DataRowView;
+                if (row != null) txtPrice.Text = row["price"].ToString();
             }
         }
 
         private void btnAddItem_Click(object sender, EventArgs e)
         {
-            if (cmbGame.SelectedItem == null)
-            {
-                MessageHelper.ShowWarning("Выберите товар");
-                return;
-            }
+            if (cmbGame.SelectedIndex == -1) { ValidationHelper.ShowWarning("Выберите товар!"); return; }
 
-            DataRowView game = (DataRowView)cmbGame.SelectedItem;
-
-            int gameId = Convert.ToInt32(game["game_id"]);
-            int stock = Convert.ToInt32(game["stock_quantity"]);
+            int id = Convert.ToInt32(cmbGame.SelectedValue);
             int qty = (int)nudQuantity.Value;
-            decimal price = Convert.ToDecimal(game["price"]);
-
-            if (qty > stock)
-            {
-                MessageHelper.ShowWarning("На складе только " + stock + " шт.");
-                return;
-            }
-
-            foreach (DataRow r in cartTable.Rows)
-            {
-                if (Convert.ToInt32(r["game_id"]) == gameId)
-                {
-                    int oldQty = Convert.ToInt32(r["Кол-во"]);
-
-                    if (oldQty + qty > stock)
-                    {
-                        MessageHelper.ShowWarning("На складе только " + stock + " шт.");
-                        return;
-                    }
-
-                    r["Кол-во"] = oldQty + qty;
-                    r["Сумма"] = (oldQty + qty) * price;
-
-                    Recalculate();
-                    return;
-                }
-            }
-
-            cartTable.Rows.Add(gameId, game["title"].ToString(), qty, price, qty * price);
-
-            Recalculate();
-        }
-
-        private void btnDeleteItem_Click(object sender, EventArgs e)
-        {
-            if (dgvContent.CurrentRow == null)
-            {
-                MessageHelper.ShowWarning("Выберите строку");
-                return;
-            }
-
-            dgvContent.Rows.Remove(dgvContent.CurrentRow);
-
-            Recalculate();
-        }
-
-        private void Recalculate()
-        {
-            decimal sum = 0;
-
-            foreach (DataRow r in cartTable.Rows)
-            {
-                sum += Convert.ToDecimal(r["Сумма"]);
-            }
-
-            decimal percent = DiscountHelper.GetDiscount(sum, dtpDate.Value);
-            nudDiscount.Value = percent;
-
-            decimal dAmount = DiscountHelper.GetDiscountAmount(sum, percent);
-            decimal total = DiscountHelper.GetTotal(sum, dAmount);
-
-            txtSumWithout.Text = sum.ToString("0.00");
-            txtDiscountAmount.Text = dAmount.ToString("0.00");
-            txtSumWith.Text = total.ToString("0.00");
-            txtTotal.Text = total.ToString("0.00");
-
-            lblCount.Text = "Количество записей: " + cartTable.Rows.Count;
-        }
-
-        private void nudDiscount_ValueChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void dtpDate_ValueChanged(object sender, EventArgs e)
-        {
-            Recalculate();
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            if (cmbCustomer.SelectedValue == null)
-            {
-                MessageHelper.ShowWarning("Выберите клиента");
-                return;
-            }
-
-            if (cartTable.Rows.Count == 0)
-            {
-                MessageHelper.ShowWarning("Корзина пуста");
-                return;
-            }
 
             try
             {
                 using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
                 {
                     conn.Open();
-
-                    MySqlTransaction tr = conn.BeginTransaction();
-
-                    try
+                    MySqlCommand cmd = new MySqlCommand("SELECT stock_quantity, title FROM board_games WHERE game_id=@id", conn);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    using (var r = cmd.ExecuteReader())
                     {
-                        string sqlOrder = "INSERT INTO orders " +
-                            "(customer_id, user_id, status_id, order_date, discount, " +
-                            "total_without_discount, total_with_discount, total_amount, shipping_address) " +
-                            "VALUES (@c, @u, @s, @d, @disc, @sw, @sww, @t, @a)";
-
-                        MySqlCommand cmd = new MySqlCommand(sqlOrder, conn, tr);
-
-                        cmd.Parameters.AddWithValue("@c", cmbCustomer.SelectedValue);
-                        cmd.Parameters.AddWithValue("@u", CurrentUser.UserId);
-                        cmd.Parameters.AddWithValue("@s", cmbStatus.SelectedValue);
-                        cmd.Parameters.AddWithValue("@d", dtpDate.Value);
-                        cmd.Parameters.AddWithValue("@disc", nudDiscount.Value);
-                        cmd.Parameters.AddWithValue("@sw", decimal.Parse(txtSumWithout.Text));
-                        cmd.Parameters.AddWithValue("@sww", decimal.Parse(txtSumWith.Text));
-                        cmd.Parameters.AddWithValue("@t", decimal.Parse(txtTotal.Text));
-                        cmd.Parameters.AddWithValue("@a", "г. Москва");
-
-                        cmd.ExecuteNonQuery();
-
-                        long orderId = cmd.LastInsertedId;
-
-                        foreach (DataRow r in cartTable.Rows)
+                        if (r.Read())
                         {
-                            string sqlItem = "INSERT INTO order_items " +
-                                "(order_id, game_id, quantity, unit_price) " +
-                                "VALUES (@o, @g, @q, @p)";
-
-                            MySqlCommand cmdItem = new MySqlCommand(sqlItem, conn, tr);
-
-                            cmdItem.Parameters.AddWithValue("@o", orderId);
-                            cmdItem.Parameters.AddWithValue("@g", r["game_id"]);
-                            cmdItem.Parameters.AddWithValue("@q", r["Кол-во"]);
-                            cmdItem.Parameters.AddWithValue("@p", r["Цена"]);
-
-                            cmdItem.ExecuteNonQuery();
-
-                            string sqlStock = "UPDATE board_games " +
-                                "SET stock_quantity = stock_quantity - @q WHERE game_id = @g";
-
-                            MySqlCommand cmdStock = new MySqlCommand(sqlStock, conn, tr);
-
-                            cmdStock.Parameters.AddWithValue("@q", r["Кол-во"]);
-                            cmdStock.Parameters.AddWithValue("@g", r["game_id"]);
-
-                            cmdStock.ExecuteNonQuery();
+                            int stock = Convert.ToInt32(r["stock_quantity"]);
+                            string title = r["title"].ToString();
+                            if (qty > stock)
+                            {
+                                ValidationHelper.ShowWarning($"На складе осталось только {stock} шт. товара '{title}'!");
+                                return;
+                            }
                         }
-
-                        tr.Commit();
-
-                        MessageHelper.ShowInfo("Заказ успешно добавлен");
-                        this.Close();
-                    }
-                    catch
-                    {
-                        tr.Rollback();
-                        throw;
                     }
                 }
             }
-            catch (Exception ex)
+            catch { return; }
+
+            Image photo = null;
+            try
             {
-                MessageHelper.ShowError("Ошибка сохранения: " + ex.Message);
+                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT image_data FROM board_games WHERE game_id=@id", conn);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    byte[] bytes = cmd.ExecuteScalar() as byte[];
+                    if (bytes != null && bytes.Length > 0)
+                        using (MemoryStream ms = new MemoryStream(bytes)) photo = Image.FromStream(ms);
+                }
+            }
+            catch { }
+
+            decimal prc = Convert.ToDecimal(txtPrice.Text);
+            dgvOrderItems.Rows.Add(photo, id, cmbGame.Text, qty, prc, qty * prc);
+            CalculateTotal();
+        }
+
+        private void btnDeleteItem_Click(object sender, EventArgs e)
+        {
+            if (dgvOrderItems.CurrentRow != null)
+            {
+                dgvOrderItems.Rows.Remove(dgvOrderItems.CurrentRow);
+                CalculateTotal();
             }
         }
 
-        private void btnBack_Click(object sender, EventArgs e)
+        private void CalculateTotal()
         {
-            this.Close();
+            decimal sum = 0;
+            foreach (DataGridViewRow row in dgvOrderItems.Rows)
+                if (row.Cells["Сумма"].Value != null) sum += Convert.ToDecimal(row.Cells["Сумма"].Value);
+
+            decimal disc = sum * (nudDiscount.Value / 100);
+            txtSumWithout.Text = sum.ToString("0.00");
+            txtDiscountAmount.Text = disc.ToString("0.00");
+            txtSumWith.Text = (sum - disc).ToString("0.00");
+            txtTotal.Text = (sum - disc).ToString("0.00");
+        }
+
+        private void nudDiscount_ValueChanged(object sender, EventArgs e) { CalculateTotal(); }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (cmbCustomer.SelectedIndex == -1) { ValidationHelper.ShowWarning("Выберите клиента!"); return; }
+            if (dgvOrderItems.Rows.Count == 0) { ValidationHelper.ShowWarning("Добавьте товары!"); return; }
+            if (dtpOrderDate.Value.Date > DateTime.Today) { ValidationHelper.ShowWarning("Дата не может быть в будущем!"); return; }
+
+            int customerId = Convert.ToInt32(cmbCustomer.SelectedValue);
+            int userId = CurrentUser.UserId;
+            DateTime orderDate = dtpOrderDate.Value;
+            decimal discount = nudDiscount.Value;
+            decimal totalWithout = 0;
+
+            foreach (DataGridViewRow row in dgvOrderItems.Rows)
+                totalWithout += Convert.ToDecimal(row.Cells["Сумма"].Value);
+
+            decimal totalWith = totalWithout - (totalWithout * (discount / 100));
+
+            using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+            {
+                conn.Open();
+                MySqlTransaction transaction = conn.BeginTransaction();
+
+                try
+                {
+                    string sqlOrder = @"INSERT INTO orders (customer_id, user_id, status_id, order_date, discount, total_without_discount, total_with_discount, total_amount, shipping_address) 
+                                        VALUES (@cust, @user, 1, @date, @disc, @totalW, @totalWo, @total, 'Самовывоз');
+                                        SELECT LAST_INSERT_ID();";
+
+                    MySqlCommand cmdOrder = new MySqlCommand(sqlOrder, conn, transaction);
+                    cmdOrder.Parameters.AddWithValue("@cust", customerId);
+                    cmdOrder.Parameters.AddWithValue("@user", userId);
+                    cmdOrder.Parameters.AddWithValue("@date", orderDate);
+                    cmdOrder.Parameters.AddWithValue("@disc", discount);
+                    cmdOrder.Parameters.AddWithValue("@totalW", totalWithout);
+                    cmdOrder.Parameters.AddWithValue("@totalWo", totalWith);
+                    cmdOrder.Parameters.AddWithValue("@total", totalWith);
+
+                    int orderId = Convert.ToInt32(cmdOrder.ExecuteScalar());
+
+                    foreach (DataGridViewRow row in dgvOrderItems.Rows)
+                    {
+                        int gameId = Convert.ToInt32(row.Cells["ID"].Value);
+                        int qty = Convert.ToInt32(row.Cells["Кол-во"].Value);
+                        decimal price = Convert.ToDecimal(row.Cells["Цена"].Value);
+
+                        string sqlItem = "INSERT INTO order_items (order_id, game_id, quantity, unit_price) VALUES (@oid, @gid, @qty, @price)";
+                        MySqlCommand cmdItem = new MySqlCommand(sqlItem, conn, transaction);
+                        cmdItem.Parameters.AddWithValue("@oid", orderId);
+                        cmdItem.Parameters.AddWithValue("@gid", gameId);
+                        cmdItem.Parameters.AddWithValue("@qty", qty);
+                        cmdItem.Parameters.AddWithValue("@price", price);
+                        cmdItem.ExecuteNonQuery();
+
+                        string sqlStock = "UPDATE board_games SET stock_quantity = stock_quantity - @qty WHERE game_id = @gid";
+                        MySqlCommand cmdStock = new MySqlCommand(sqlStock, conn, transaction);
+                        cmdStock.Parameters.AddWithValue("@qty", qty);
+                        cmdStock.Parameters.AddWithValue("@gid", gameId);
+                        cmdStock.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
+                    ValidationHelper.ShowSuccess("Заказ оформлен!");
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    ValidationHelper.ShowError("Ошибка сохранения: " + ex.Message);
+                }
+            }
         }
     }
 }

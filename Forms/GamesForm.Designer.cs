@@ -3,15 +3,7 @@
     partial class GamesForm
     {
         private System.ComponentModel.IContainer components = null;
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        protected override void Dispose(bool disposing) { if (disposing && (components != null)) components.Dispose(); base.Dispose(disposing); }
 
         private void InitializeComponent()
         {
@@ -33,30 +25,13 @@
             this.btnLast = new System.Windows.Forms.Button();
             this.lblPageSize = new System.Windows.Forms.Label();
             this.cmbPageSize = new System.Windows.Forms.ComboBox();
-            this.panelEdit = new System.Windows.Forms.Panel();
-            this.lblGameTitle = new System.Windows.Forms.Label();
-            this.txtGameTitle = new System.Windows.Forms.TextBox();
-            this.lblGameCategory = new System.Windows.Forms.Label();
-            this.cmbGameCategory = new System.Windows.Forms.ComboBox();
-            this.lblDescription = new System.Windows.Forms.Label();
-            this.txtDescription = new System.Windows.Forms.TextBox();
-            this.lblPrice = new System.Windows.Forms.Label();
-            this.txtPrice = new System.Windows.Forms.TextBox();
-            this.lblStock = new System.Windows.Forms.Label();
-            this.nudStock = new System.Windows.Forms.NumericUpDown();
-            this.pbPreview = new System.Windows.Forms.PictureBox();
-            this.btnImageAdd = new System.Windows.Forms.Button();
             this.panelButtons = new System.Windows.Forms.Panel();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
-            this.lblHint = new System.Windows.Forms.Label();
             this.panelFilters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGames)).BeginInit();
             this.panelPagination.SuspendLayout();
-            this.panelEdit.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudStock)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             this.panelButtons.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,7 +41,7 @@
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(905, 40);
+            this.lblTitle.Size = new System.Drawing.Size(900, 40);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Управление товарами";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -84,7 +59,7 @@
             this.panelFilters.Controls.Add(this.cmbSort);
             this.panelFilters.Location = new System.Drawing.Point(15, 45);
             this.panelFilters.Name = "panelFilters";
-            this.panelFilters.Size = new System.Drawing.Size(875, 50);
+            this.panelFilters.Size = new System.Drawing.Size(870, 50);
             this.panelFilters.TabIndex = 2;
             // 
             // lblSearch
@@ -102,7 +77,6 @@
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(200, 25);
             this.txtSearch.TabIndex = 1;
-            this.txtSearch.Text = "Поиск...";
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // lblCategory
@@ -161,16 +135,15 @@
             this.dgvGames.ReadOnly = true;
             this.dgvGames.RowHeadersVisible = false;
             this.dgvGames.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvGames.Size = new System.Drawing.Size(875, 311);
+            this.dgvGames.Size = new System.Drawing.Size(870, 470);
             this.dgvGames.TabIndex = 3;
             this.dgvGames.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGames_CellDoubleClick);
-            this.dgvGames.SelectionChanged += new System.EventHandler(this.dgvGames_SelectionChanged);
             // 
             // lblCount
             // 
             this.lblCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCount.AutoSize = true;
-            this.lblCount.Location = new System.Drawing.Point(8, 419);
+            this.lblCount.Location = new System.Drawing.Point(12, 585);
             this.lblCount.Name = "lblCount";
             this.lblCount.Size = new System.Drawing.Size(151, 19);
             this.lblCount.TabIndex = 4;
@@ -187,9 +160,9 @@
             this.panelPagination.Controls.Add(this.btnLast);
             this.panelPagination.Controls.Add(this.lblPageSize);
             this.panelPagination.Controls.Add(this.cmbPageSize);
-            this.panelPagination.Location = new System.Drawing.Point(12, 441);
+            this.panelPagination.Location = new System.Drawing.Point(12, 610);
             this.panelPagination.Name = "panelPagination";
-            this.panelPagination.Size = new System.Drawing.Size(878, 40);
+            this.panelPagination.Size = new System.Drawing.Size(870, 40);
             this.panelPagination.TabIndex = 5;
             // 
             // btnFirst
@@ -199,7 +172,6 @@
             this.btnFirst.Size = new System.Drawing.Size(50, 30);
             this.btnFirst.TabIndex = 0;
             this.btnFirst.Text = "<<";
-            this.btnFirst.UseVisualStyleBackColor = true;
             this.btnFirst.Click += new System.EventHandler(this.btnFirst_Click);
             // 
             // btnPrev
@@ -209,7 +181,6 @@
             this.btnPrev.Size = new System.Drawing.Size(50, 30);
             this.btnPrev.TabIndex = 1;
             this.btnPrev.Text = "<";
-            this.btnPrev.UseVisualStyleBackColor = true;
             this.btnPrev.Click += new System.EventHandler(this.btnPrev_Click);
             // 
             // lblPageInfo
@@ -228,7 +199,6 @@
             this.btnNext.Size = new System.Drawing.Size(50, 30);
             this.btnNext.TabIndex = 3;
             this.btnNext.Text = ">";
-            this.btnNext.UseVisualStyleBackColor = true;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
             // btnLast
@@ -238,7 +208,6 @@
             this.btnLast.Size = new System.Drawing.Size(50, 30);
             this.btnLast.TabIndex = 4;
             this.btnLast.Text = ">>";
-            this.btnLast.UseVisualStyleBackColor = true;
             this.btnLast.Click += new System.EventHandler(this.btnLast_Click);
             // 
             // lblPageSize
@@ -264,140 +233,6 @@
             this.cmbPageSize.TabIndex = 6;
             this.cmbPageSize.SelectedIndexChanged += new System.EventHandler(this.cmbPageSize_SelectedIndexChanged);
             // 
-            // panelEdit
-            // 
-            this.panelEdit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelEdit.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.panelEdit.Controls.Add(this.lblGameTitle);
-            this.panelEdit.Controls.Add(this.txtGameTitle);
-            this.panelEdit.Controls.Add(this.lblGameCategory);
-            this.panelEdit.Controls.Add(this.cmbGameCategory);
-            this.panelEdit.Controls.Add(this.lblDescription);
-            this.panelEdit.Controls.Add(this.txtDescription);
-            this.panelEdit.Controls.Add(this.lblPrice);
-            this.panelEdit.Controls.Add(this.txtPrice);
-            this.panelEdit.Controls.Add(this.lblStock);
-            this.panelEdit.Controls.Add(this.nudStock);
-            this.panelEdit.Location = new System.Drawing.Point(12, 487);
-            this.panelEdit.Name = "panelEdit";
-            this.panelEdit.Size = new System.Drawing.Size(687, 171);
-            this.panelEdit.TabIndex = 6;
-            // 
-            // lblGameTitle
-            // 
-            this.lblGameTitle.AutoSize = true;
-            this.lblGameTitle.Location = new System.Drawing.Point(15, 15);
-            this.lblGameTitle.Name = "lblGameTitle";
-            this.lblGameTitle.Size = new System.Drawing.Size(69, 19);
-            this.lblGameTitle.TabIndex = 0;
-            this.lblGameTitle.Text = "Название";
-            // 
-            // txtGameTitle
-            // 
-            this.txtGameTitle.Location = new System.Drawing.Point(95, 12);
-            this.txtGameTitle.Name = "txtGameTitle";
-            this.txtGameTitle.Size = new System.Drawing.Size(250, 25);
-            this.txtGameTitle.TabIndex = 1;
-            // 
-            // lblGameCategory
-            // 
-            this.lblGameCategory.AutoSize = true;
-            this.lblGameCategory.Location = new System.Drawing.Point(360, 15);
-            this.lblGameCategory.Name = "lblGameCategory";
-            this.lblGameCategory.Size = new System.Drawing.Size(73, 19);
-            this.lblGameCategory.TabIndex = 2;
-            this.lblGameCategory.Text = "Категория";
-            // 
-            // cmbGameCategory
-            // 
-            this.cmbGameCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbGameCategory.Location = new System.Drawing.Point(440, 12);
-            this.cmbGameCategory.Name = "cmbGameCategory";
-            this.cmbGameCategory.Size = new System.Drawing.Size(120, 25);
-            this.cmbGameCategory.TabIndex = 3;
-            // 
-            // lblDescription
-            // 
-            this.lblDescription.AutoSize = true;
-            this.lblDescription.Location = new System.Drawing.Point(15, 55);
-            this.lblDescription.Name = "lblDescription";
-            this.lblDescription.Size = new System.Drawing.Size(72, 19);
-            this.lblDescription.TabIndex = 4;
-            this.lblDescription.Text = "Описание";
-            // 
-            // txtDescription
-            // 
-            this.txtDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtDescription.Location = new System.Drawing.Point(95, 52);
-            this.txtDescription.Multiline = true;
-            this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(465, 50);
-            this.txtDescription.TabIndex = 5;
-            // 
-            // lblPrice
-            // 
-            this.lblPrice.AutoSize = true;
-            this.lblPrice.Location = new System.Drawing.Point(15, 120);
-            this.lblPrice.Name = "lblPrice";
-            this.lblPrice.Size = new System.Drawing.Size(41, 19);
-            this.lblPrice.TabIndex = 6;
-            this.lblPrice.Text = "Цена";
-            // 
-            // txtPrice
-            // 
-            this.txtPrice.Location = new System.Drawing.Point(95, 117);
-            this.txtPrice.Name = "txtPrice";
-            this.txtPrice.Size = new System.Drawing.Size(120, 25);
-            this.txtPrice.TabIndex = 7;
-            // 
-            // lblStock
-            // 
-            this.lblStock.AutoSize = true;
-            this.lblStock.Location = new System.Drawing.Point(240, 120);
-            this.lblStock.Name = "lblStock";
-            this.lblStock.Size = new System.Drawing.Size(60, 19);
-            this.lblStock.TabIndex = 8;
-            this.lblStock.Text = "Остаток";
-            // 
-            // nudStock
-            // 
-            this.nudStock.Location = new System.Drawing.Point(320, 117);
-            this.nudStock.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.nudStock.Name = "nudStock";
-            this.nudStock.Size = new System.Drawing.Size(100, 25);
-            this.nudStock.TabIndex = 9;
-            // 
-            // pbPreview
-            // 
-            this.pbPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbPreview.Location = new System.Drawing.Point(705, 487);
-            this.pbPreview.Name = "pbPreview";
-            this.pbPreview.Size = new System.Drawing.Size(185, 130);
-            this.pbPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbPreview.TabIndex = 7;
-            this.pbPreview.TabStop = false;
-            // 
-            // btnImageAdd
-            // 
-            this.btnImageAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnImageAdd.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnImageAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnImageAdd.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnImageAdd.ForeColor = System.Drawing.Color.White;
-            this.btnImageAdd.Location = new System.Drawing.Point(705, 623);
-            this.btnImageAdd.Name = "btnImageAdd";
-            this.btnImageAdd.Size = new System.Drawing.Size(185, 35);
-            this.btnImageAdd.TabIndex = 8;
-            this.btnImageAdd.Text = "Загрузить картинку";
-            this.btnImageAdd.UseVisualStyleBackColor = false;
-            // 
             // panelButtons
             // 
             this.panelButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -405,21 +240,20 @@
             this.panelButtons.Controls.Add(this.btnAdd);
             this.panelButtons.Controls.Add(this.btnEdit);
             this.panelButtons.Controls.Add(this.btnDelete);
-            this.panelButtons.Controls.Add(this.lblHint);
-            this.panelButtons.Location = new System.Drawing.Point(15, 664);
+            this.panelButtons.Location = new System.Drawing.Point(15, 665);
             this.panelButtons.Name = "panelButtons";
-            this.panelButtons.Size = new System.Drawing.Size(875, 45);
-            this.panelButtons.TabIndex = 9;
+            this.panelButtons.Size = new System.Drawing.Size(870, 45);
+            this.panelButtons.TabIndex = 6;
             // 
             // btnAdd
             // 
-            this.btnAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnAdd.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnAdd.ForeColor = System.Drawing.Color.White;
             this.btnAdd.Location = new System.Drawing.Point(0, 5);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(140, 35);
+            this.btnAdd.Size = new System.Drawing.Size(150, 35);
             this.btnAdd.TabIndex = 0;
             this.btnAdd.Text = "Добавить";
             this.btnAdd.UseVisualStyleBackColor = false;
@@ -427,13 +261,13 @@
             // 
             // btnEdit
             // 
-            this.btnEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnEdit.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnEdit.ForeColor = System.Drawing.Color.White;
-            this.btnEdit.Location = new System.Drawing.Point(150, 5);
+            this.btnEdit.Location = new System.Drawing.Point(160, 5);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(140, 35);
+            this.btnEdit.Size = new System.Drawing.Size(150, 35);
             this.btnEdit.TabIndex = 1;
             this.btnEdit.Text = "Изменить";
             this.btnEdit.UseVisualStyleBackColor = false;
@@ -441,38 +275,24 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnDelete.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnDelete.ForeColor = System.Drawing.Color.White;
-            this.btnDelete.Location = new System.Drawing.Point(300, 5);
+            this.btnDelete.Location = new System.Drawing.Point(320, 5);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(140, 35);
-            this.btnDelete.TabIndex = 3;
+            this.btnDelete.Size = new System.Drawing.Size(150, 35);
+            this.btnDelete.TabIndex = 2;
             this.btnDelete.Text = "Удалить";
             this.btnDelete.UseVisualStyleBackColor = false;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-            // 
-            // lblHint
-            // 
-            this.lblHint.AutoSize = true;
-            this.lblHint.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
-            this.lblHint.ForeColor = System.Drawing.Color.Gray;
-            this.lblHint.Location = new System.Drawing.Point(460, 16);
-            this.lblHint.Name = "lblHint";
-            this.lblHint.Size = new System.Drawing.Size(137, 13);
-            this.lblHint.TabIndex = 2;
-            this.lblHint.Text = "Двойной клик - изменить";
             // 
             // GamesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(905, 721);
+            this.ClientSize = new System.Drawing.Size(900, 721);
             this.Controls.Add(this.panelButtons);
-            this.Controls.Add(this.btnImageAdd);
-            this.Controls.Add(this.pbPreview);
-            this.Controls.Add(this.panelEdit);
             this.Controls.Add(this.panelPagination);
             this.Controls.Add(this.lblCount);
             this.Controls.Add(this.dgvGames);
@@ -482,22 +302,17 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "GamesForm";
             this.Text = "Управление товарами";
+            this.Load += new System.EventHandler(this.GamesForm_Load);
             this.panelFilters.ResumeLayout(false);
             this.panelFilters.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGames)).EndInit();
             this.panelPagination.ResumeLayout(false);
             this.panelPagination.PerformLayout();
-            this.panelEdit.ResumeLayout(false);
-            this.panelEdit.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudStock)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             this.panelButtons.ResumeLayout(false);
-            this.panelButtons.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
-
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Panel panelFilters;
         private System.Windows.Forms.Label lblSearch;
@@ -516,23 +331,9 @@
         private System.Windows.Forms.Button btnLast;
         private System.Windows.Forms.Label lblPageSize;
         private System.Windows.Forms.ComboBox cmbPageSize;
-        private System.Windows.Forms.Panel panelEdit;
-        private System.Windows.Forms.Label lblGameTitle;
-        private System.Windows.Forms.TextBox txtGameTitle;
-        private System.Windows.Forms.Label lblGameCategory;
-        private System.Windows.Forms.ComboBox cmbGameCategory;
-        private System.Windows.Forms.Label lblDescription;
-        private System.Windows.Forms.TextBox txtDescription;
-        private System.Windows.Forms.Label lblPrice;
-        private System.Windows.Forms.TextBox txtPrice;
-        private System.Windows.Forms.Label lblStock;
-        private System.Windows.Forms.NumericUpDown nudStock;
-        private System.Windows.Forms.PictureBox pbPreview;
-        private System.Windows.Forms.Button btnImageAdd;
         private System.Windows.Forms.Panel panelButtons;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.Label lblHint;
     }
 }

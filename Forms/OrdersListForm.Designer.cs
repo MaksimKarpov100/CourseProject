@@ -19,7 +19,7 @@
             this.lblTitle = new System.Windows.Forms.Label();
             this.panelFilters = new System.Windows.Forms.Panel();
             this.lblOrderNumber = new System.Windows.Forms.Label();
-            this.cmbOrderNumber = new System.Windows.Forms.ComboBox();
+            this.txtOrderNumber = new System.Windows.Forms.TextBox(); // ИЗМЕНЕНО НА TEXTBOX
             this.lblDateFrom = new System.Windows.Forms.Label();
             this.dtpDateFrom = new System.Windows.Forms.DateTimePicker();
             this.lblDateTo = new System.Windows.Forms.Label();
@@ -90,11 +90,11 @@
             // 
             // panelFilters
             // 
-            this.panelFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.panelFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelFilters.BackColor = System.Drawing.SystemColors.ControlLight;
             this.panelFilters.Controls.Add(this.lblOrderNumber);
-            this.panelFilters.Controls.Add(this.cmbOrderNumber);
+            this.panelFilters.Controls.Add(this.txtOrderNumber);
             this.panelFilters.Controls.Add(this.lblDateFrom);
             this.panelFilters.Controls.Add(this.dtpDateFrom);
             this.panelFilters.Controls.Add(this.lblDateTo);
@@ -118,15 +118,13 @@
             this.lblOrderNumber.TabIndex = 0;
             this.lblOrderNumber.Text = "Номер заказа";
             // 
-            // cmbOrderNumber
+            // txtOrderNumber
             // 
-            this.cmbOrderNumber.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbOrderNumber.FormattingEnabled = true;
-            this.cmbOrderNumber.Location = new System.Drawing.Point(110, 7);
-            this.cmbOrderNumber.Name = "cmbOrderNumber";
-            this.cmbOrderNumber.Size = new System.Drawing.Size(100, 25);
-            this.cmbOrderNumber.TabIndex = 1;
-            this.cmbOrderNumber.SelectedIndexChanged += new System.EventHandler(this.cmbOrderNumber_SelectedIndexChanged);
+            this.txtOrderNumber.Location = new System.Drawing.Point(110, 7);
+            this.txtOrderNumber.Name = "txtOrderNumber";
+            this.txtOrderNumber.Size = new System.Drawing.Size(100, 25);
+            this.txtOrderNumber.TabIndex = 1;
+            this.txtOrderNumber.TextChanged += new System.EventHandler(this.txtOrderNumber_TextChanged);
             // 
             // lblDateFrom
             // 
@@ -226,8 +224,8 @@
             // 
             this.dgvOrders.AllowUserToAddRows = false;
             this.dgvOrders.AllowUserToDeleteRows = false;
-            this.dgvOrders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvOrders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvOrders.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvOrders.BackgroundColor = System.Drawing.Color.White;
@@ -347,7 +345,7 @@
             // 
             // panelPagination
             // 
-            this.panelPagination.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.panelPagination.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPagination.Controls.Add(this.btnFirst);
             this.panelPagination.Controls.Add(this.btnPrev);
@@ -448,7 +446,7 @@
             // 
             this.dgvContent.AllowUserToAddRows = false;
             this.dgvContent.AllowUserToDeleteRows = false;
-            this.dgvContent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvContent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvContent.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvContent.BackgroundColor = System.Drawing.Color.White;
@@ -570,7 +568,7 @@
             // 
             // panelButtons
             // 
-            this.panelButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.panelButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelButtons.Controls.Add(this.btnAdd);
             this.panelButtons.Controls.Add(this.btnEdit);
@@ -676,6 +674,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "OrdersListForm";
             this.Text = "Учёт заказов";
+            this.Load += new System.EventHandler(this.OrdersListForm_Load);
             this.panelFilters.ResumeLayout(false);
             this.panelFilters.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrders)).EndInit();
@@ -695,7 +694,7 @@
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Panel panelFilters;
         private System.Windows.Forms.Label lblOrderNumber;
-        private System.Windows.Forms.ComboBox cmbOrderNumber;
+        private System.Windows.Forms.TextBox txtOrderNumber; 
         private System.Windows.Forms.Label lblDateFrom;
         private System.Windows.Forms.DateTimePicker dtpDateFrom;
         private System.Windows.Forms.Label lblDateTo;
