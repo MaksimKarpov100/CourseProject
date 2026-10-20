@@ -273,6 +273,7 @@
     <Content Include="db\board_game_store_users.sql" />
     <Content Include="db\import_all.sql" />
     <Content Include="Resources\ER.png" />
+    <None Include="Resources\images.jpg" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
