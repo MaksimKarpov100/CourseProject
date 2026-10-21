@@ -11,24 +11,18 @@ namespace BoardGame_Store
         private CatalogsForm catalogsForm;
         private DiscountsForm discountsForm;
         private SpecialForm specialForm;
-        private UserProfileForm profileForm;
 
         public MainFormAdmin()
         {
             InitializeComponent();
-
             lblUserInfo.Text = CurrentUser.FullName + " (" + CurrentUser.Role + ")";
 
-            if (tabMain.TabPages.Contains(tabOrders))
+            tabMain.SelectedTab = tabOrders;
+            if (ordersForm == null || ordersForm.IsDisposed)
             {
-                tabMain.SelectedTab = tabOrders;
+                ordersForm = new OrdersListForm();
+                LoadFormInTab(ordersForm, tabOrders);
             }
-            else
-            {
-                tabMain.SelectedIndex = 0;
-            }
-
-            tabMain_SelectedIndexChanged(tabMain, EventArgs.Empty);
         }
 
         private void LoadFormInTab(Form form, TabPage page)
@@ -36,7 +30,6 @@ namespace BoardGame_Store
             form.TopLevel = false;
             form.FormBorderStyle = FormBorderStyle.None;
             form.Dock = DockStyle.Fill;
-
             page.Controls.Add(form);
             form.Show();
 
@@ -46,20 +39,6 @@ namespace BoardGame_Store
                 {
                     c.Visible = false;
                 }
-            }
-        }
-
-        public void SwitchToTab(string tabKey)
-        {
-            switch (tabKey)
-            {
-                case "orders": tabMain.SelectedTab = tabOrders; break;
-                case "games": tabMain.SelectedTab = tabGames; break;
-                case "users": tabMain.SelectedTab = tabUsers; break;
-                case "catalogs": tabMain.SelectedTab = tabCatalogs; break;
-                case "discounts": tabMain.SelectedTab = tabDiscounts; break;
-                case "special": tabMain.SelectedTab = tabSpecial; break;
-                case "profile": tabMain.SelectedTab = tabProfile; break;
             }
         }
 
@@ -95,7 +74,7 @@ namespace BoardGame_Store
                 {
                     if (catalogsForm == null || catalogsForm.IsDisposed)
                     {
-                        catalogsForm = new CatalogsForm(0); 
+                        catalogsForm = new CatalogsForm(0);
                         LoadFormInTab(catalogsForm, tabCatalogs);
                     }
                 }
@@ -115,24 +94,17 @@ namespace BoardGame_Store
                         LoadFormInTab(specialForm, tabSpecial);
                     }
                 }
-                else if (tabMain.SelectedTab == tabProfile)
-                {
-                    if (profileForm == null || profileForm.IsDisposed)
-                    {
-                        profileForm = new UserProfileForm();
-                        LoadFormInTab(profileForm, tabProfile);
-                    }
-                }
             }
             catch (Exception ex)
             {
-                MessageHelper.ShowError("Ошибка загрузки вкладки: " + ex.Message);
+                MessageBox.Show("Ошибка вкладки: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            if (MessageHelper.AskConfirm("Выйти из системы?"))
+            DialogResult result = MessageBox.Show("Выйти из системы?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
             {
                 this.Close();
             }

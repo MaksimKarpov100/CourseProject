@@ -1,640 +1,341 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using System.Diagnostics;
 
 namespace BoardGame_Store
 {
     public partial class SpecialForm : Form
     {
-        private static readonly string[] TablesInOrder =
-        {
-            "users", "customers", "categories", "statuses",
-            "board_games", "orders", "order_items"
-        };
-
-        private Timer autoBackupTimer;
-        private DateTime lastBackupTime = DateTime.MinValue;
-
-        private static string SettingsPath =
-            Path.Combine(Application.StartupPath, "backup_settings.txt");
-
-        private string BackupFolder = Path.Combine(Application.StartupPath, "Бэкап");
-
         public SpecialForm()
         {
             InitializeComponent();
+        }
 
-            // ================= ПРОВЕРКА ПРАВ ДОСТУПА =================
-            if (CurrentUser.Role != "Администратор")
+        private void SpecialForm_Load(object sender, EventArgs e)
+        {
+            txtFolder.Text = Path.Combine(Application.StartupPath, "Backups");
+            RefreshBackupsList();
+        }
+
+        private void btnSelectAll_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < clbTables.Items.Count; i++)
             {
-                // Скрываем всё, что связано с базой, бэкапами и логами
-                grpImportExport.Visible = false;
-                grpBackup.Visible = false;
-                lblLog.Visible = false;
-                txtLog.Visible = false;
+                clbTables.SetItemChecked(i, true);
+            }
+        }
 
-                // Поднимаем блок отчетов наверх
-                grpReports.Location = new Point(20, 50);
+        private void btnDeselectAll_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < clbTables.Items.Count; i++)
+            {
+                clbTables.SetItemChecked(i, false);
+            }
+        }
 
-                // Центрируем заголовок
-                lblTitle.Location = new Point((this.Width / 2) - (lblTitle.Width / 2), 10);
-                lblTitle.Anchor = AnchorStyles.Top;
+        private void btnBrowse_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog fbd = new FolderBrowserDialog())
+            {
+                if (fbd.ShowDialog() == DialogResult.OK)
+                {
+                    txtFolder.Text = fbd.SelectedPath;
+                    RefreshBackupsList();
+                }
+            }
+        }
 
-                // ВАЖНО: Выходим из конструктора, чтобы не запускать таймеры бэкапа!
+        private void btnExportSelected_Click(object sender, EventArgs e)
+        {
+            if (clbTables.CheckedItems.Count == 0)
+            {
+                MessageBox.Show("Отметьте хотя бы одну таблицу!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            // =========================================================
 
-            // --- КОД ТОЛЬКО ДЛЯ АДМИНИСТРАТОРА ---
-            if (!Directory.Exists(BackupFolder))
+            if (Directory.Exists(txtFolder.Text) == false)
             {
-                Directory.CreateDirectory(BackupFolder);
-            }
-            lblBackupsTitle.Text = "Доступные копии в папке: " + BackupFolder;
-
-            autoBackupTimer = new Timer();
-            autoBackupTimer.Interval = 1000;
-            autoBackupTimer.Tick += autoBackupTimer_Tick;
-
-            clbTables.Items.Clear();
-            foreach (string t in TablesInOrder)
-            {
-                clbTables.Items.Add(t);
+                Directory.CreateDirectory(txtFolder.Text);
             }
 
-            LoadAutoBackupSettings();
-            LoadBackupsList();
-            Log("Готово. Выберите таблицы и папку.");
+            int count = 0;
+            foreach (var item in clbTables.CheckedItems)
+            {
+                string tableName = item.ToString();
+                try
+                {
+                    using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                    {
+                        conn.Open();
+                        string sql = "SELECT * FROM `" + tableName + "`";
+                        MySqlDataAdapter da = new MySqlDataAdapter(sql, conn);
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+
+                        string filePath = Path.Combine(txtFolder.Text, tableName + "_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".csv");
+
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < dt.Columns.Count; i++)
+                        {
+                            sb.Append(dt.Columns[i].ColumnName);
+                            if (i < dt.Columns.Count - 1) sb.Append(";");
+                        }
+                        sb.AppendLine();
+
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            for (int i = 0; i < dt.Columns.Count; i++)
+                            {
+                                sb.Append(row[i].ToString().Replace(";", ","));
+                                if (i < dt.Columns.Count - 1) sb.Append(";");
+                            }
+                            sb.AppendLine();
+                        }
+
+                        File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
+                        count++;
+                        Log("Экспортирована таблица: " + tableName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log("Ошибка экспорта " + tableName + ": " + ex.Message);
+                }
+            }
+            MessageBox.Show("Экспортировано таблиц: " + count, "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void Log(string text)
+        private void btnImportCSV_Click(object sender, EventArgs e)
         {
-            if (!txtLog.Visible) return; // Если лог скрыт (не админ), ничего не пишем
-
-            string line = "[" + DateTime.Now.ToString("HH:mm:ss") + "] " + text + "\r\n";
-            txtLog.AppendText(line);
-            txtLog.SelectionStart = txtLog.TextLength;
-            txtLog.ScrollToCaret();
+            MessageBox.Show("Импорт из CSV пока в разработке. Используйте восстановление БД.", "Инфо", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        // ==================== СПИСОК БЭКАПОВ ====================
-
-        private void LoadBackupsList()
+        private void RefreshBackupsList()
         {
-            if (CurrentUser.Role != "Администратор") return;
-            if (!Directory.Exists(BackupFolder)) Directory.CreateDirectory(BackupFolder);
+            string folder = txtFolder.Text;
+            if (Directory.Exists(folder) == false)
+            {
+                dgvBackups.DataSource = null;
+                return;
+            }
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Имя файла", typeof(string));
+            dt.Columns.Add("Дата создания", typeof(string));
+            dt.Columns.Add("Размер", typeof(string));
+
+            string[] files = Directory.GetFiles(folder, "*.sql");
+            Array.Sort(files);
+            Array.Reverse(files);
+
+            foreach (string file in files)
+            {
+                FileInfo fi = new FileInfo(file);
+                dt.Rows.Add(fi.Name, fi.CreationTime.ToString("dd.MM.yyyy HH:mm"), (fi.Length / 1024) + " КБ");
+            }
+
+            dgvBackups.DataSource = dt;
+        }
+
+        private void btnBackupManual_Click(object sender, EventArgs e)
+        {
+            if (Directory.Exists(txtFolder.Text) == false)
+            {
+                Directory.CreateDirectory(txtFolder.Text);
+            }
+
+            string fileName = "backup_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".sql";
+            string filePath = Path.Combine(txtFolder.Text, fileName);
 
             try
             {
-                var files = Directory.GetFiles(BackupFolder, "*.sql");
-
-                dgvBackups.DataSource = null;
-                dgvBackups.Rows.Clear();
-                dgvBackups.Columns.Clear();
-
-                DataTable dt = new DataTable();
-                dt.Columns.Add("Имя файла", typeof(string));
-                dt.Columns.Add("Дата создания", typeof(string));
-                dt.Columns.Add("Размер", typeof(string));
-                dt.Columns.Add("FullPath", typeof(string));
-
-                foreach (var file in files)
+                string mysqldumpPath = FindMysqldumpPath();
+                if (string.IsNullOrEmpty(mysqldumpPath))
                 {
-                    FileInfo fi = new FileInfo(file);
-                    dt.Rows.Add(fi.Name, fi.CreationTime.ToString("dd.MM.yyyy HH:mm"),
-                        Math.Ceiling(fi.Length / 1024.0) + " KB", fi.FullName);
+                    MessageBox.Show("Не найден mysqldump.exe.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
 
-                dgvBackups.DataSource = dt;
+                string args = "-u" + DbConfig.User + " ";
+                if (string.IsNullOrEmpty(DbConfig.Password) == false)
+                {
+                    args += "-p" + DbConfig.Password + " ";
+                }
+                args += "--databases " + DbConfig.Database + " --result-file=\"" + filePath + "\"";
 
-                if (dgvBackups.Columns.Contains("FullPath"))
-                    dgvBackups.Columns["FullPath"].Visible = false;
+                ProcessStartInfo psi = new ProcessStartInfo();
+                psi.FileName = mysqldumpPath;
+                psi.Arguments = args;
+                psi.UseShellExecute = false;
+                psi.CreateNoWindow = true;
+                psi.RedirectStandardError = true;
 
-                dgvBackups.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                using (Process process = Process.Start(psi))
+                {
+                    process.WaitForExit();
+                    if (process.ExitCode == 0)
+                    {
+                        Log("Создан бэкап: " + fileName);
+                        MessageBox.Show("Бэкап успешно создан!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        RefreshBackupsList();
+                    }
+                    else
+                    {
+                        string err = process.StandardError.ReadToEnd();
+                        Log("Ошибка бэкапа: " + err);
+                        MessageBox.Show("Ошибка: " + err, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
             catch (Exception ex)
             {
-                Log("Ошибка чтения папки с бэкапами: " + ex.Message);
+                Log("Ошибка бэкапа: " + ex.Message);
+                MessageBox.Show("Ошибка: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void btnRefreshBackups_Click(object sender, EventArgs e)
-        {
-            LoadBackupsList();
-            Log("Список бэкапов обновлен.");
         }
 
         private void btnRestore_Click(object sender, EventArgs e)
         {
             if (dgvBackups.CurrentRow == null)
             {
-                MessageHelper.ShowWarning("Выберите файл бэкапа из списка");
+                MessageBox.Show("Выберите бэкап из списка!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string filePath = dgvBackups.CurrentRow.Cells["FullPath"].Value.ToString();
-            string fileName = dgvBackups.CurrentRow.Cells["Имя файла"].Value.ToString();
+            string fileName = dgvBackups.CurrentRow.Cells[0].Value.ToString();
+            string filePath = Path.Combine(txtFolder.Text, fileName);
 
-            if (!MessageHelper.AskConfirm($"ВНИМАНИЕ!\nВы собираетесь восстановить базу данных из файла:\n{fileName}\n\nВсе текущие данные будут УДАЛЕНЫ и заменены данными из копии. Продолжить?"))
-            {
-                return;
-            }
-
-            Log("=== ВОССТАНОВЛЕНИЕ ИЗ БЭКАПА ===");
-            Log("Файл: " + fileName);
+            DialogResult result = MessageBox.Show("Восстановить базу из файла?\n" + fileName, "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result != DialogResult.Yes) return;
 
             try
             {
-                string script = File.ReadAllText(filePath, Encoding.UTF8);
+                string serverConn = "server=" + DbConfig.Server + ";port=" + DbConfig.Port + ";user=" + DbConfig.User + ";password=" + DbConfig.Password + ";charset=utf8mb4;AllowPublicKeyRetrieval=True;";
 
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                using (MySqlConnection conn = new MySqlConnection(serverConn))
                 {
                     conn.Open();
-                    MySqlScript mySqlScript = new MySqlScript(conn, script);
-                    mySqlScript.Execute();
-                }
+                    MySqlCommand cmdCreate = new MySqlCommand("CREATE DATABASE IF NOT EXISTS `" + DbConfig.Database + "`", conn);
+                    cmdCreate.ExecuteNonQuery();
+                    conn.ChangeDatabase(DbConfig.Database);
 
-                Log("УСПЕХ: База данных успешно восстановлена.");
-                MessageHelper.ShowInfo("База данных успешно восстановлена!");
+                    string script = File.ReadAllText(filePath);
+                    MySqlScript scriptExec = new MySqlScript(conn, script);
+                    scriptExec.Execute();
+
+                    Log("База восстановлена из " + fileName);
+                    MessageBox.Show("База данных успешно восстановлена!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (Exception ex)
             {
-                Log("ОШИБКА ВОССТАНОВЛЕНИЯ: " + ex.Message);
-                MessageHelper.ShowError("Ошибка восстановления:\n" + ex.Message);
+                Log("Ошибка восстановления: " + ex.Message);
+                MessageBox.Show("Ошибка восстановления: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        // ==================== НАСТРОЙКИ АВТОРЕЗЕРВА ====================
-
-        private void LoadAutoBackupSettings()
-        {
-            try
-            {
-                if (File.Exists(SettingsPath))
-                {
-                    string[] lines = File.ReadAllLines(SettingsPath);
-                    if (lines.Length >= 3)
-                    {
-                        nudInterval.Value = Convert.ToInt32(lines[1]);
-                        if (!string.IsNullOrWhiteSpace(lines[2])) txtFolder.Text = lines[2];
-                        chkBackupAuto.Checked = lines[0] == "1";
-                    }
-                }
-            }
-            catch { }
-        }
-
-        private void SaveAutoBackupSettings()
-        {
-            try
-            {
-                string[] lines = new string[]
-                {
-                    chkBackupAuto.Checked ? "1" : "0",
-                    ((int)nudInterval.Value).ToString(),
-                    txtFolder.Text
-                };
-                File.WriteAllLines(SettingsPath, lines);
-            }
-            catch (Exception ex)
-            {
-                Log("Ошибка сохранения настроек: " + ex.Message);
-            }
-        }
-
-        private void chkBackupAuto_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkBackupAuto.Checked)
-            {
-                lastBackupTime = DateTime.Now;
-                autoBackupTimer.Start();
-                Log("Авторезерв ВКЛЮЧЁН. Интервал: " + nudInterval.Value + " ч.");
-            }
-            else
-            {
-                autoBackupTimer.Stop();
-                Log("Авторезерв ВЫКЛЮЧЕН.");
-            }
-            SaveAutoBackupSettings();
-        }
-
-        private void nudInterval_ValueChanged(object sender, EventArgs e)
-        {
-            SaveAutoBackupSettings();
-        }
-
-        private void autoBackupTimer_Tick(object sender, EventArgs e)
-        {
-            double hoursPassed = (DateTime.Now - lastBackupTime).TotalHours;
-
-            if (hoursPassed >= (double)nudInterval.Value)
-            {
-                lastBackupTime = DateTime.Now;
-                Log("=== АВТОРЕЗЕРВ ===");
-
-                try
-                {
-                    string file = Path.Combine(BackupFolder, "autobackup_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".sql");
-                    MakeBackup(file);
-                    Log("Автобэкап создан: " + Path.GetFileName(file));
-                    LoadBackupsList();
-                }
-                catch (Exception ex)
-                {
-                    Log("Ошибка авторезерва: " + ex.Message);
-                }
-            }
-        }
-
-        private void btnBrowse_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.Description = "Выберите папку для экспорта/импорта CSV";
-
-            if (fbd.ShowDialog() == DialogResult.OK)
-            {
-                txtFolder.Text = fbd.SelectedPath;
-                Log("Папка для CSV: " + fbd.SelectedPath);
-                SaveAutoBackupSettings();
-            }
-        }
-
-        private void btnSelectAll_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < clbTables.Items.Count; i++) clbTables.SetItemChecked(i, true);
-        }
-
-        private void btnDeselectAll_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < clbTables.Items.Count; i++) clbTables.SetItemChecked(i, false);
-        }
-
-        private List<string> GetSelectedTables()
-        {
-            HashSet<string> checkedSet = new HashSet<string>();
-            foreach (var item in clbTables.CheckedItems) checkedSet.Add(item.ToString());
-
-            List<string> result = new List<string>();
-            foreach (string t in TablesInOrder)
-            {
-                if (checkedSet.Contains(t)) result.Add(t);
-            }
-            return result;
-        }
-
-        // ==================== ЭКСПОРТ / ИМПОРТ CSV ====================
-
-        private void btnExportSelected_Click(object sender, EventArgs e)
-        {
-            List<string> tables = GetSelectedTables();
-            if (tables.Count == 0) { MessageHelper.ShowWarning("Выберите хотя бы одну таблицу"); return; }
-
-            string folder = txtFolder.Text;
-            if (string.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder)) { MessageHelper.ShowWarning("Сначала выберите папку"); return; }
-
-            Log("=== ЭКСПОРТ CSV ===");
-            int ok = 0, errors = 0;
-
-            foreach (string table in tables)
-            {
-                try
-                {
-                    string path = Path.Combine(folder, table + ".csv");
-                    int rows = ExportTable(table, path);
-                    Log("  OK " + table + " -> " + Path.GetFileName(path) + " (" + rows + " записей)");
-                    ok++;
-                }
-                catch (Exception ex)
-                {
-                    Log("  ОШИБКА " + table + " -> " + ex.Message);
-                    errors++;
-                }
-            }
-            MessageHelper.ShowInfo("Экспорт завершён\nУспешно: " + ok + "\nОшибок: " + errors);
-        }
-
-        private int ExportTable(string table, string path)
-        {
-            int rows = 0;
-            using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-            {
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT * FROM " + table, conn);
-
-                using (var reader = cmd.ExecuteReader())
-                using (StreamWriter writer = new StreamWriter(path, false, new UTF8Encoding(true)))
-                {
-                    for (int i = 0; i < reader.FieldCount; i++)
-                    {
-                        writer.Write(reader.GetName(i));
-                        if (i < reader.FieldCount - 1) writer.Write(";");
-                    }
-                    writer.WriteLine();
-
-                    while (reader.Read())
-                    {
-                        for (int i = 0; i < reader.FieldCount; i++)
-                        {
-                            string val = reader.IsDBNull(i) ? "" : reader.GetValue(i).ToString();
-                            if (val.Contains(";") || val.Contains("\"") || val.Contains("\n") || val.Contains("\r"))
-                                val = "\"" + val.Replace("\"", "\"\"") + "\"";
-                            writer.Write(val);
-                            if (i < reader.FieldCount - 1) writer.Write(";");
-                        }
-                        writer.WriteLine();
-                        rows++;
-                    }
-                }
-            }
-            return rows;
-        }
-
-        private void btnImportSelected_Click(object sender, EventArgs e)
-        {
-            List<string> tables = GetSelectedTables();
-            if (tables.Count == 0) { MessageHelper.ShowWarning("Выберите хотя бы одну таблицу"); return; }
-
-            string folder = txtFolder.Text;
-            if (string.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder)) { MessageHelper.ShowWarning("Сначала выберите папку"); return; }
-            if (!MessageHelper.AskConfirm("Импорт добавит данные в существующие таблицы. Продолжить?")) return;
-
-            Log("=== ИМПОРТ CSV ===");
-            int ok = 0, errors = 0;
-
-            foreach (string table in tables)
-            {
-                string path = Path.Combine(folder, table + ".csv");
-                if (!File.Exists(path))
-                {
-                    Log("  ОШИБКА: файл не найден " + path);
-                    errors++;
-                    continue;
-                }
-
-                try
-                {
-                    int rows = ImportTable(table, path);
-                    Log("  OK " + Path.GetFileName(path) + " -> " + table + " (" + rows + " записей)");
-                    ok++;
-                }
-                catch (Exception ex)
-                {
-                    Log("  ОШИБКА " + table + " -> " + ex.Message);
-                    errors++;
-                }
-            }
-            MessageHelper.ShowInfo("Импорт завершён\nУспешно: " + ok + "\nОшибок: " + errors);
-        }
-
-        private int ImportTable(string table, string path)
-        {
-            int inserted = 0;
-            string[] lines = File.ReadAllLines(path, Encoding.UTF8);
-            if (lines.Length < 2) return 0;
-
-            string[] csvColumns = SplitCsvLine(lines[0]);
-            List<string> realColumns = GetTableColumns(table);
-            List<string> validColumns = new List<string>();
-            List<int> validIndexes = new List<int>();
-
-            for (int i = 0; i < csvColumns.Length; i++)
-            {
-                if (realColumns.Contains(csvColumns[i]))
-                {
-                    validColumns.Add(csvColumns[i]);
-                    validIndexes.Add(i);
-                }
-            }
-
-            if (validColumns.Count == 0) return 0;
-
-            string colList = string.Join(", ", validColumns);
-            string paramList = "@p" + string.Join(", @p", Enumerable.Range(0, validColumns.Count));
-            string sql = "INSERT IGNORE INTO " + table + " (" + colList + ") VALUES (" + paramList + ")";
-
-            using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-            {
-                conn.Open();
-                new MySqlCommand("SET FOREIGN_KEY_CHECKS=0", conn).ExecuteNonQuery();
-                try
-                {
-                    for (int i = 1; i < lines.Length; i++)
-                    {
-                        if (string.IsNullOrWhiteSpace(lines[i])) continue;
-                        string[] values = SplitCsvLine(lines[i]);
-                        if (values.Length != csvColumns.Length) continue;
-
-                        using (MySqlCommand cmd = new MySqlCommand(sql, conn))
-                        {
-                            for (int k = 0; k < validColumns.Count; k++)
-                            {
-                                int csvIndex = validIndexes[k];
-                                string v = values[csvIndex];
-                                cmd.Parameters.AddWithValue("@p" + k, string.IsNullOrEmpty(v) ? (object)DBNull.Value : v);
-                            }
-                            inserted += cmd.ExecuteNonQuery();
-                        }
-                    }
-                }
-                finally
-                {
-                    new MySqlCommand("SET FOREIGN_KEY_CHECKS=1", conn).ExecuteNonQuery();
-                }
-            }
-            return inserted;
-        }
-
-        private List<string> GetTableColumns(string table)
-        {
-            List<string> columns = new List<string>();
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                {
-                    conn.Open();
-                    using (var reader = new MySqlCommand("SHOW COLUMNS FROM " + table, conn).ExecuteReader())
-                    {
-                        while (reader.Read()) columns.Add(reader["Field"].ToString());
-                    }
-                }
-            }
-            catch { }
-            return columns;
-        }
-
-        private string[] SplitCsvLine(string line)
-        {
-            List<string> result = new List<string>();
-            bool inQuotes = false;
-            StringBuilder sb = new StringBuilder();
-
-            for (int i = 0; i < line.Length; i++)
-            {
-                char c = line[i];
-                if (inQuotes)
-                {
-                    if (c == '"')
-                    {
-                        if (i + 1 < line.Length && line[i + 1] == '"') { sb.Append('"'); i++; }
-                        else inQuotes = false;
-                    }
-                    else sb.Append(c);
-                }
-                else
-                {
-                    if (c == '"') inQuotes = true;
-                    else if (c == ';') { result.Add(sb.ToString()); sb.Clear(); }
-                    else sb.Append(c);
-                }
-            }
-            result.Add(sb.ToString());
-            return result.ToArray();
-        }
-
-        // ==================== БЭКАП ====================
-
-        private void btnBackupManual_Click(object sender, EventArgs e)
-        {
-            string fileName = "backup_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".sql";
-            string fullPath = Path.Combine(BackupFolder, fileName);
-
-            Log("=== РУЧНОЙ БЭКАП ===");
-            try
-            {
-                MakeBackup(fullPath);
-                Log("Готово: " + fileName);
-                MessageHelper.ShowInfo("Резервная копия успешно создана!\n" + fullPath);
-                LoadBackupsList();
-            }
-            catch (Exception ex)
-            {
-                Log("Ошибка: " + ex.Message);
-                MessageHelper.ShowError("Ошибка создания бэкапа: " + ex.Message);
-            }
-        }
-
-        private void MakeBackup(string path)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine("SET FOREIGN_KEY_CHECKS=0;");
-            sb.AppendLine("USE board_game_store;");
-            sb.AppendLine();
-
-            foreach (string table in TablesInOrder)
-            {
-                sb.AppendLine("DELETE FROM " + table + ";");
-
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT * FROM " + table, conn);
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        int rows = 0;
-                        while (reader.Read())
-                        {
-                            sb.Append("INSERT INTO " + table + " VALUES (");
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                if (reader.IsDBNull(i)) sb.Append("NULL");
-                                else
-                                {
-                                    object v = reader.GetValue(i);
-                                    if (v is string || v is DateTime) sb.Append("'" + v.ToString().Replace("'", "''") + "'");
-                                    else sb.Append(v.ToString().Replace(",", "."));
-                                }
-                                if (i < reader.FieldCount - 1) sb.Append(", ");
-                            }
-                            sb.AppendLine(");");
-                            rows++;
-                        }
-                        Log("  OK " + table + " (" + rows + " записей)");
-                    }
-                }
-                sb.AppendLine();
-            }
-            sb.AppendLine("SET FOREIGN_KEY_CHECKS=1;");
-            File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
-        }
-
-        // ==================== ОТЧЕТЫ ====================
 
         private void btnExcel_Click(object sender, EventArgs e)
         {
             try
             {
-                string path = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                    "Отчёт_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".csv");
-
                 using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
                 {
                     conn.Open();
-                    string sql = "SELECT o.order_id, c.full_name, o.order_date, s.status_name, o.total_amount FROM orders o " +
-                                 "JOIN customers c ON o.customer_id=c.customer_id " +
-                                 "JOIN statuses s ON o.status_id=s.status_id " +
-                                 "WHERE o.order_date >= @f AND o.order_date <= @t ORDER BY o.order_date";
+                    string sql = "SELECT o.order_id, c.full_name, o.order_date, o.total_amount " +
+                                 "FROM orders o JOIN customers c ON o.customer_id = c.customer_id " +
+                                 "WHERE o.order_date >= @df AND o.order_date < @dt " +
+                                 "ORDER BY o.order_date ASC";
 
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@f", dtpFrom.Value.Date);
-                    cmd.Parameters.AddWithValue("@t", dtpTo.Value.Date.AddDays(1));
+                    cmd.Parameters.AddWithValue("@df", dtpFrom.Value.Date);
+                    cmd.Parameters.AddWithValue("@dt", dtpTo.Value.Date.AddDays(1));
 
-                    using (var r = cmd.ExecuteReader())
-                    using (StreamWriter w = new StreamWriter(path, false, new UTF8Encoding(true)))
+                    MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    if (dt.Rows.Count == 0)
                     {
-                        w.WriteLine("МАГАЗИН НАСТОЛЬНЫХ ИГР");
-                        w.WriteLine("Отчёт по заказам");
-                        w.WriteLine("Период: " + dtpFrom.Value.ToShortDateString() + " - " + dtpTo.Value.ToShortDateString());
-                        w.WriteLine("Дата формирования: " + DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
-                        w.WriteLine();
-                        w.WriteLine("Номер;Клиент;Дата;Статус;Сумма");
-
-                        while (r.Read())
-                        {
-                            w.WriteLine(r["order_id"] + ";" + r["full_name"] + ";" +
-                                        Convert.ToDateTime(r["order_date"]).ToShortDateString() + ";" +
-                                        r["status_name"] + ";" + r["total_amount"]);
-                        }
+                        MessageBox.Show("За выбранный период нет данных.", "Инфо", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
                     }
 
-                    MySqlCommand cmdTotal = new MySqlCommand("SELECT COUNT(*) AS c, IFNULL(SUM(total_amount), 0) AS s, IFNULL(AVG(total_amount), 0) AS avg_sum, IFNULL(MAX(total_amount), 0) AS max_sum FROM orders WHERE order_date >= @f AND order_date <= @t", conn);
-                    cmdTotal.Parameters.AddWithValue("@f", dtpFrom.Value.Date);
-                    cmdTotal.Parameters.AddWithValue("@t", dtpTo.Value.Date.AddDays(1));
-
-                    using (var r = cmdTotal.ExecuteReader())
-                    using (StreamWriter w = new StreamWriter(path, true, new UTF8Encoding(true)))
+                    decimal totalSum = 0;
+                    foreach (DataRow row in dt.Rows)
                     {
-                        if (r.Read())
+                        totalSum += Convert.ToDecimal(row["total_amount"]);
+                    }
+
+                    StringBuilder csv = new StringBuilder();
+
+                    // МАГИЧЕСКАЯ СТРОКА ДЛЯ EXCEL (разбивает по точкам с запятой)
+                    csv.AppendLine("sep=;");
+
+                    // Заголовки
+                    csv.AppendLine("Номер заказа;Клиент;Дата оформления;Сумма");
+
+                    // Данные
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        csv.AppendLine(row["order_id"].ToString() + ";" +
+                                       row["full_name"].ToString() + ";" +
+                                       Convert.ToDateTime(row["order_date"]).ToString("dd.MM.yyyy HH:mm") + ";" +
+                                       Convert.ToDecimal(row["total_amount"]).ToString("0.00"));
+                    }
+
+                    // Итог
+                    csv.AppendLine(";;ИТОГО ЗА ПЕРИОД:;" + totalSum.ToString("0.00"));
+
+                    using (SaveFileDialog sfd = new SaveFileDialog())
+                    {
+                        sfd.Filter = "Excel документ (*.csv)|*.csv";
+                        sfd.FileName = "Отчет_с_" + dtpFrom.Value.ToString("ddMMyyyy") + "_по_" + dtpTo.Value.ToString("ddMMyyyy") + ".csv";
+
+                        if (sfd.ShowDialog() == DialogResult.OK)
                         {
-                            w.WriteLine();
-                            w.WriteLine("========================================");
-                            w.WriteLine("ИТОГИ ЗА ПЕРИОД:");
-                            w.WriteLine("Количество заказов: " + r["c"]);
-                            w.WriteLine("Общая выручка: " + Convert.ToDecimal(r["s"]).ToString("0.00") + " руб.");
-                            w.WriteLine("Средний чек: " + Convert.ToDecimal(r["avg_sum"]).ToString("0.00") + " руб.");
-                            w.WriteLine("Максимальный чек: " + Convert.ToDecimal(r["max_sum"]).ToString("0.00") + " руб.");
-                            w.WriteLine("========================================");
-                            w.WriteLine();
-                            w.WriteLine("Отчёт сформирован: " + CurrentUser.FullName);
+                            File.WriteAllText(sfd.FileName, csv.ToString(), Encoding.UTF8);
+                            MessageBox.Show("Отчет успешно сохранен!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            Process.Start(sfd.FileName);
                         }
                     }
                 }
-                MessageHelper.ShowInfo("Отчёт сохранён:\n" + path);
             }
-            catch (Exception ex) { MessageHelper.ShowError("Ошибка отчёта: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка отчета: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Log(string message)
+        {
+            txtLog.AppendText(DateTime.Now.ToString("HH:mm:ss") + " - " + message + Environment.NewLine);
+        }
+
+        private string FindMysqldumpPath()
+        {
+            string[] paths = new string[]
+            {
+                @"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqldump.exe",
+                @"C:\Program Files\MySQL\MySQL Server 5.7\bin\mysqldump.exe",
+                @"C:\xampp\mysql\bin\mysqldump.exe"
+            };
+
+            for (int i = 0; i < paths.Length; i++)
+            {
+                if (File.Exists(paths[i]) == true)
+                {
+                    return paths[i];
+                }
+            }
+            return null;
         }
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            if (autoBackupTimer != null)
-                autoBackupTimer.Stop();
             this.Close();
         }
     }

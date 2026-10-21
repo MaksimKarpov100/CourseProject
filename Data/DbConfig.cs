@@ -9,7 +9,7 @@ namespace BoardGame_Store
         public static int Port = 3306;
         public static string Database = "board_game_store";
         public static string User = "root";
-        public static string Password = "";  
+        public static string Password = "";
 
         private static string SettingsPath
         {
@@ -21,42 +21,48 @@ namespace BoardGame_Store
 
         public static string BuildConnectionString()
         {
-            return "Server=" + Server + ";" +
-                   "Port=" + Port + ";" +
-                   "Database=" + Database + ";" +
-                   "Uid=" + User + ";" +
-                   "Pwd=" + Password + ";" +
-                   "CharSet=utf8mb4;" +
-                   "AllowPublicKeyRetrieval=True;";
+            string connectionString = "";
+            connectionString += "Server=" + Server + ";";
+            connectionString += "Port=" + Port + ";";
+            connectionString += "Database=" + Database + ";";
+            connectionString += "Uid=" + User + ";";
+            connectionString += "Pwd=" + Password + ";";
+            connectionString += "CharSet=utf8mb4;";
+            connectionString += "AllowPublicKeyRetrieval=True;";
+
+            return connectionString;
         }
 
         public static string BuildServerOnlyConnectionString()
         {
-            return "Server=" + Server + ";" +
-                   "Port=" + Port + ";" +
-                   "Uid=" + User + ";" +
-                   "Pwd=" + Password + ";" +
-                   "CharSet=utf8mb4;" +
-                   "AllowPublicKeyRetrieval=True;";
+            string connectionString = "";
+            connectionString += "Server=" + Server + ";";
+            connectionString += "Port=" + Port + ";";
+            connectionString += "Uid=" + User + ";";
+            connectionString += "Pwd=" + Password + ";";
+            connectionString += "CharSet=utf8mb4;";
+            connectionString += "AllowPublicKeyRetrieval=True;";
+
+            return connectionString;
         }
 
         public static void Save()
         {
             try
             {
-                string[] lines = new string[]
-                {
-                    Server,
-                    Port.ToString(),
-                    Database,
-                    User,
-                    Password
-                };
+                string[] lines = new string[5];
+
+                lines[0] = Server;
+                lines[1] = Port.ToString();
+                lines[2] = Database;
+                lines[3] = User;
+                lines[4] = Password;
 
                 File.WriteAllLines(SettingsPath, lines);
             }
             catch
             {
+              
             }
         }
 
@@ -64,9 +70,9 @@ namespace BoardGame_Store
         {
             try
             {
-                if (!File.Exists(SettingsPath))
+                if (File.Exists(SettingsPath) == false)
                 {
-                    return;
+                    return; 
                 }
 
                 string[] lines = File.ReadAllLines(SettingsPath);
@@ -82,6 +88,7 @@ namespace BoardGame_Store
             }
             catch
             {
+
             }
         }
     }

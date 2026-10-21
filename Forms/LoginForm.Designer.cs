@@ -1,17 +1,25 @@
-﻿using System.Windows.Forms;
-
-namespace BoardGame_Store
+﻿namespace BoardGame_Store
 {
     partial class LoginForm
     {
         private System.ComponentModel.IContainer components = null;
-        protected override void Dispose(bool disposing) { if (disposing && (components != null)) components.Dispose(); base.Dispose(disposing); }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
         private void InitializeComponent()
         {
             this.pnlCard = new System.Windows.Forms.Panel();
             this.btnExitApp = new System.Windows.Forms.Button();
+            this.btnSettings = new System.Windows.Forms.Button();
             this.btnLogin = new System.Windows.Forms.Button();
+            this.lblError = new System.Windows.Forms.Label();
             this.lblTimer = new System.Windows.Forms.Label();
             this.lblCaptchaHint = new System.Windows.Forms.Label();
             this.txtCaptcha = new System.Windows.Forms.TextBox();
@@ -23,8 +31,8 @@ namespace BoardGame_Store
             this.txtLogin = new System.Windows.Forms.TextBox();
             this.lblLogin = new System.Windows.Forms.Label();
             this.lblSubtitle = new System.Windows.Forms.Label();
-            this.pbLogo = new System.Windows.Forms.PictureBox();
             this.lblTitle = new System.Windows.Forms.Label();
+            this.pbLogo = new System.Windows.Forms.PictureBox();
             this.pnlCard.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCaptcha)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
@@ -34,7 +42,9 @@ namespace BoardGame_Store
             // 
             this.pnlCard.BackColor = System.Drawing.Color.White;
             this.pnlCard.Controls.Add(this.btnExitApp);
+            this.pnlCard.Controls.Add(this.btnSettings);
             this.pnlCard.Controls.Add(this.btnLogin);
+            this.pnlCard.Controls.Add(this.lblError);
             this.pnlCard.Controls.Add(this.lblTimer);
             this.pnlCard.Controls.Add(this.lblCaptchaHint);
             this.pnlCard.Controls.Add(this.txtCaptcha);
@@ -47,24 +57,38 @@ namespace BoardGame_Store
             this.pnlCard.Controls.Add(this.lblLogin);
             this.pnlCard.Controls.Add(this.lblSubtitle);
             this.pnlCard.Controls.Add(this.lblTitle);
-            this.pnlCard.Location = new System.Drawing.Point(349, 2);
+            this.pnlCard.Location = new System.Drawing.Point(355, 0);
             this.pnlCard.Name = "pnlCard";
-            this.pnlCard.Size = new System.Drawing.Size(438, 629);
+            this.pnlCard.Size = new System.Drawing.Size(435, 631);
             this.pnlCard.TabIndex = 0;
             // 
             // btnExitApp
             // 
             this.btnExitApp.FlatAppearance.BorderSize = 0;
             this.btnExitApp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExitApp.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnExitApp.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnExitApp.ForeColor = System.Drawing.Color.Gray;
-            this.btnExitApp.Location = new System.Drawing.Point(71, 551);
+            this.btnExitApp.Location = new System.Drawing.Point(235, 571);
             this.btnExitApp.Name = "btnExitApp";
-            this.btnExitApp.Size = new System.Drawing.Size(300, 43);
-            this.btnExitApp.TabIndex = 15;
+            this.btnExitApp.Size = new System.Drawing.Size(135, 30);
+            this.btnExitApp.TabIndex = 16;
             this.btnExitApp.Text = "Выйти";
             this.btnExitApp.UseVisualStyleBackColor = true;
             this.btnExitApp.Click += new System.EventHandler(this.btnExitApp_Click);
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.FlatAppearance.BorderSize = 0;
+            this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSettings.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnSettings.ForeColor = System.Drawing.Color.Gray;
+            this.btnSettings.Location = new System.Drawing.Point(65, 571);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(135, 30);
+            this.btnSettings.TabIndex = 15;
+            this.btnSettings.Text = "Настройки БД";
+            this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
             // btnLogin
             // 
@@ -73,22 +97,31 @@ namespace BoardGame_Store
             this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogin.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.btnLogin.ForeColor = System.Drawing.Color.White;
-            this.btnLogin.Location = new System.Drawing.Point(71, 491);
+            this.btnLogin.Location = new System.Drawing.Point(65, 490);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(300, 50);
+            this.btnLogin.Size = new System.Drawing.Size(305, 50);
             this.btnLogin.TabIndex = 14;
-            this.btnLogin.Text = "Войти ➡";
+            this.btnLogin.Text = "ВОЙТИ";
             this.btnLogin.UseVisualStyleBackColor = false;
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
-            this.btnLogin.MouseEnter += new System.EventHandler(this.btnLogin_MouseEnter);
-            this.btnLogin.MouseLeave += new System.EventHandler(this.btnLogin_MouseLeave);
+            // 
+            // lblError
+            // 
+            this.lblError.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblError.ForeColor = System.Drawing.Color.Red;
+            this.lblError.Location = new System.Drawing.Point(65, 445);
+            this.lblError.Name = "lblError";
+            this.lblError.Size = new System.Drawing.Size(305, 20);
+            this.lblError.TabIndex = 17;
+            this.lblError.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblError.Visible = false;
             // 
             // lblTimer
             // 
             this.lblTimer.AutoSize = true;
             this.lblTimer.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblTimer.ForeColor = System.Drawing.Color.Red;
-            this.lblTimer.Location = new System.Drawing.Point(50, 437);
+            this.lblTimer.Location = new System.Drawing.Point(65, 410);
             this.lblTimer.Name = "lblTimer";
             this.lblTimer.Size = new System.Drawing.Size(50, 21);
             this.lblTimer.TabIndex = 12;
@@ -100,7 +133,7 @@ namespace BoardGame_Store
             this.lblCaptchaHint.AutoSize = true;
             this.lblCaptchaHint.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
             this.lblCaptchaHint.ForeColor = System.Drawing.Color.Gray;
-            this.lblCaptchaHint.Location = new System.Drawing.Point(207, 437);
+            this.lblCaptchaHint.Location = new System.Drawing.Point(215, 415);
             this.lblCaptchaHint.Name = "lblCaptchaHint";
             this.lblCaptchaHint.Size = new System.Drawing.Size(158, 13);
             this.lblCaptchaHint.TabIndex = 11;
@@ -112,7 +145,7 @@ namespace BoardGame_Store
             this.txtCaptcha.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.txtCaptcha.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtCaptcha.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.txtCaptcha.Location = new System.Drawing.Point(50, 407);
+            this.txtCaptcha.Location = new System.Drawing.Point(65, 375);
             this.txtCaptcha.Name = "txtCaptcha";
             this.txtCaptcha.Size = new System.Drawing.Size(140, 25);
             this.txtCaptcha.TabIndex = 10;
@@ -122,9 +155,9 @@ namespace BoardGame_Store
             // 
             this.pbCaptcha.BackColor = System.Drawing.Color.White;
             this.pbCaptcha.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbCaptcha.Location = new System.Drawing.Point(210, 360);
+            this.pbCaptcha.Location = new System.Drawing.Point(220, 330);
             this.pbCaptcha.Name = "pbCaptcha";
-            this.pbCaptcha.Size = new System.Drawing.Size(140, 74);
+            this.pbCaptcha.Size = new System.Drawing.Size(150, 70);
             this.pbCaptcha.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbCaptcha.TabIndex = 9;
             this.pbCaptcha.TabStop = false;
@@ -136,7 +169,7 @@ namespace BoardGame_Store
             this.lblCaptcha.AutoSize = true;
             this.lblCaptcha.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblCaptcha.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblCaptcha.Location = new System.Drawing.Point(50, 318);
+            this.lblCaptcha.Location = new System.Drawing.Point(65, 300);
             this.lblCaptcha.Name = "lblCaptcha";
             this.lblCaptcha.Size = new System.Drawing.Size(181, 19);
             this.lblCaptcha.TabIndex = 8;
@@ -148,7 +181,7 @@ namespace BoardGame_Store
             this.btnShowPassword.FlatAppearance.BorderSize = 0;
             this.btnShowPassword.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnShowPassword.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.btnShowPassword.Location = new System.Drawing.Point(348, 285);
+            this.btnShowPassword.Location = new System.Drawing.Point(330, 260);
             this.btnShowPassword.Name = "btnShowPassword";
             this.btnShowPassword.Size = new System.Drawing.Size(40, 35);
             this.btnShowPassword.TabIndex = 7;
@@ -161,10 +194,10 @@ namespace BoardGame_Store
             this.txtPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtPassword.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.txtPassword.Location = new System.Drawing.Point(50, 290);
+            this.txtPassword.Location = new System.Drawing.Point(65, 265);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '●';
-            this.txtPassword.Size = new System.Drawing.Size(300, 25);
+            this.txtPassword.Size = new System.Drawing.Size(260, 25);
             this.txtPassword.TabIndex = 6;
             // 
             // lblPassword
@@ -172,7 +205,7 @@ namespace BoardGame_Store
             this.lblPassword.AutoSize = true;
             this.lblPassword.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblPassword.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblPassword.Location = new System.Drawing.Point(50, 260);
+            this.lblPassword.Location = new System.Drawing.Point(65, 235);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(97, 21);
             this.lblPassword.TabIndex = 5;
@@ -183,9 +216,9 @@ namespace BoardGame_Store
             this.txtLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.txtLogin.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtLogin.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.txtLogin.Location = new System.Drawing.Point(50, 210);
+            this.txtLogin.Location = new System.Drawing.Point(65, 185);
             this.txtLogin.Name = "txtLogin";
-            this.txtLogin.Size = new System.Drawing.Size(300, 25);
+            this.txtLogin.Size = new System.Drawing.Size(305, 25);
             this.txtLogin.TabIndex = 4;
             // 
             // lblLogin
@@ -193,7 +226,7 @@ namespace BoardGame_Store
             this.lblLogin.AutoSize = true;
             this.lblLogin.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblLogin.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblLogin.Location = new System.Drawing.Point(50, 180);
+            this.lblLogin.Location = new System.Drawing.Point(65, 155);
             this.lblLogin.Name = "lblLogin";
             this.lblLogin.Size = new System.Drawing.Size(86, 21);
             this.lblLogin.TabIndex = 3;
@@ -203,12 +236,23 @@ namespace BoardGame_Store
             // 
             this.lblSubtitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Italic);
             this.lblSubtitle.ForeColor = System.Drawing.Color.Gray;
-            this.lblSubtitle.Location = new System.Drawing.Point(21, 113);
+            this.lblSubtitle.Location = new System.Drawing.Point(15, 110);
             this.lblSubtitle.Name = "lblSubtitle";
             this.lblSubtitle.Size = new System.Drawing.Size(400, 20);
             this.lblSubtitle.TabIndex = 2;
             this.lblSubtitle.Text = "Авторизуйтесь в системе";
             this.lblSubtitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.lblTitle.Location = new System.Drawing.Point(15, 60);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(400, 40);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "Магазин настольных игр";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pbLogo
             // 
@@ -220,17 +264,6 @@ namespace BoardGame_Store
             this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbLogo.TabIndex = 1;
             this.pbLogo.TabStop = false;
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.lblTitle.Location = new System.Drawing.Point(21, 63);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(400, 40);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "Магазин настольных игр";
-            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // LoginForm
             // 
@@ -269,7 +302,9 @@ namespace BoardGame_Store
         private System.Windows.Forms.TextBox txtCaptcha;
         private System.Windows.Forms.Label lblCaptchaHint;
         private System.Windows.Forms.Label lblTimer;
+        private System.Windows.Forms.Label lblError;
         private System.Windows.Forms.Button btnLogin;
+        private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Button btnExitApp;
     }
 }

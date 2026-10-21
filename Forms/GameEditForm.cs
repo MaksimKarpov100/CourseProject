@@ -16,13 +16,17 @@ namespace BoardGame_Store
         {
             InitializeComponent();
             lblTitle.Text = "Добавление товара";
+            txtPrice.KeyPress += txtPrice_KeyPress;
+            txtStock.KeyPress += txtStock_KeyPress;
         }
 
-        public GameEditForm(int id)
+        public GameEditForm(int gameId)
         {
             InitializeComponent();
-            _gameId = id;
+            _gameId = gameId;
             lblTitle.Text = "Редактирование товара";
+            txtPrice.KeyPress += txtPrice_KeyPress;
+            txtStock.KeyPress += txtStock_KeyPress;
         }
 
         private void GameEditForm_Load(object sender, EventArgs e)
@@ -46,7 +50,7 @@ namespace BoardGame_Store
                     cmbCategory.ValueMember = "category_id";
                 }
             }
-            catch (Exception ex) { ValidationHelper.ShowError("Ошибка категорий: " + ex.Message); }
+            catch (Exception ex) { MessageBox.Show("Ошибка категорий: " + ex.Message); }
         }
 
         private void LoadGameData()
@@ -58,6 +62,7 @@ namespace BoardGame_Store
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT title, price, stock_quantity, category_id, image_data FROM board_games WHERE game_id=@id", conn);
                     cmd.Parameters.AddWithValue("@id", _gameId);
+
                     using (var r = cmd.ExecuteReader())
                     {
                         if (r.Read())
@@ -70,13 +75,28 @@ namespace BoardGame_Store
                             if (r["image_data"] != DBNull.Value)
                             {
                                 _imageBytes = (byte[])r["image_data"];
-                                using (MemoryStream ms = new MemoryStream(_imageBytes)) pbImage.Image = Image.FromStream(ms);
+                                using (MemoryStream ms = new MemoryStream(_imageBytes)) { pbImage.Image = Image.FromStream(ms); }
+                            }
+                            else
+                            {
+                                try { pbImage.Image = Image.FromFile("Resources/picture.png"); } catch { }
                             }
                         }
                     }
                 }
             }
-            catch (Exception ex) { ValidationHelper.ShowError("Ошибка загрузки: " + ex.Message); }
+            catch (Exception ex) { MessageBox.Show("Ошибка загрузки: " + ex.Message); }
+        }
+
+        private void txtPrice_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != ',' && e.KeyChar != '.' && !char.IsControl(e.KeyChar)) e.Handled = true;
+            if ((e.KeyChar == ',' || e.KeyChar == '.') && (txtPrice.Text.Contains(",") || txtPrice.Text.Contains("."))) e.Handled = true;
+        }
+
+        private void txtStock_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar)) e.Handled = true;
         }
 
         private void btnLoadImage_Click(object sender, EventArgs e)
@@ -86,66 +106,64 @@ namespace BoardGame_Store
                 ofd.Filter = "Images|*.jpg;*.jpeg;*.png";
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    pbImage.Image = Image.FromFile(ofd.FileName);
-                    _imageBytes = File.ReadAllBytes(ofd.FileName);
+                    try
+                    {
+                        _imageBytes = File.ReadAllBytes(ofd.FileName);
+                        using (MemoryStream ms = new MemoryStream(_imageBytes)) { pbImage.Image = Image.FromStream(ms); }
+                    }
+                    catch (Exception ex) { MessageBox.Show("Ошибка картинки: " + ex.Message); }
                 }
             }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // Умные проверки
-            if (string.IsNullOrWhiteSpace(txtName.Text)) { ValidationHelper.ShowWarning("Введите название!"); return; }
-            if (txtName.Text.Length > 200) { ValidationHelper.ShowWarning("Название слишком длинное (макс 200)!"); return; }
-            if (!ValidationHelper.IsRussianText(txtName.Text)) { ValidationHelper.ShowWarning("Название: только русские буквы!"); return; }
+            if (string.IsNullOrWhiteSpace(txtName.Text))
+            {
+                MessageBox.Show("Введите название!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            if (!ValidationHelper.IsDigitsOnly(txtPrice.Text)) { ValidationHelper.ShowWarning("Цена должна быть числом!"); return; }
-            decimal price = Convert.ToDecimal(txtPrice.Text);
-            if (price > 10000) { ValidationHelper.ShowWarning("Цена не может быть больше 10 000!"); return; }
-
-            if (!ValidationHelper.IsDigitsOnly(txtStock.Text)) { ValidationHelper.ShowWarning("Остаток должен быть числом!"); return; }
-            int stock = Convert.ToInt32(txtStock.Text);
-            if (stock > 1000) { ValidationHelper.ShowWarning("Остаток не может быть больше 1000!"); return; }
-
-            if (cmbCategory.SelectedIndex == -1) { ValidationHelper.ShowWarning("Выберите категорию!"); return; }
+            decimal price = 0;
+            decimal.TryParse(txtPrice.Text, out price);
+            int stock = 0;
+            int.TryParse(txtStock.Text, out stock);
 
             try
             {
                 using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
                 {
                     conn.Open();
-                    string sql = _gameId == 0
-                        ? "INSERT INTO board_games (title, price, stock_quantity, category_id, image_data) VALUES (@t, @p, @s, @c, @img)"
-                        : "UPDATE board_games SET title=@t, price=@p, stock_quantity=@s, category_id=@c, image_data=@img WHERE game_id=@id";
+                    string sql;
+
+                    if (_gameId == 0)
+                        sql = "INSERT INTO board_games (title, price, stock_quantity, category_id, image_data) VALUES (@t, @p, @s, @c, @img)";
+                    else
+                        sql = "UPDATE board_games SET title=@t, price=@p, stock_quantity=@s, category_id=@c, image_data=@img WHERE game_id=@id";
 
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@t", txtName.Text);
+                    cmd.Parameters.AddWithValue("@t", txtName.Text.Trim());
                     cmd.Parameters.AddWithValue("@p", price);
                     cmd.Parameters.AddWithValue("@s", stock);
                     cmd.Parameters.AddWithValue("@c", cmbCategory.SelectedValue);
-                    cmd.Parameters.AddWithValue("@img", _imageBytes ?? (object)DBNull.Value);
+
+                    if (_imageBytes != null)
+                        cmd.Parameters.AddWithValue("@img", _imageBytes);
+                    else
+                        cmd.Parameters.AddWithValue("@img", DBNull.Value);
+
                     if (_gameId > 0) cmd.Parameters.AddWithValue("@id", _gameId);
+
                     cmd.ExecuteNonQuery();
                 }
-                ValidationHelper.ShowSuccess("Сохранено!");
+
+                MessageBox.Show("Сохранено!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
-            catch (Exception ex) { ValidationHelper.ShowError("Ошибка: " + ex.Message); }
+            catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
         private void btnCancel_Click(object sender, EventArgs e) { this.Close(); }
-
-        // Привязка: выдели txtPrice в дизайнере -> события (молния) -> KeyPress
-        private void txtPrice_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsDigit(e.KeyChar) && e.KeyChar != ',' && e.KeyChar != (char)Keys.Back) e.Handled = true;
-        }
-
-        // Привязка: выдели txtStock в дизайнере -> события (молния) -> KeyPress
-        private void txtStock_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back) e.Handled = true;
-        }
     }
 }

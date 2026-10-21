@@ -163,12 +163,6 @@
     <Compile Include="Forms\SpecialForm.Designer.cs">
       <DependentUpon>SpecialForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\UserProfileForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\UserProfileForm.Designer.cs">
-      <DependentUpon>UserProfileForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\UsersForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,9 +217,6 @@
     <EmbeddedResource Include="Forms\UserEditForm.resx">
       <DependentUpon>UserEditForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\UserProfileForm.resx">
-      <DependentUpon>UserProfileForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -273,6 +264,8 @@
     <Content Include="db\board_game_store_users.sql" />
     <Content Include="db\import_all.sql" />
     <Content Include="Resources\ER.png" />
+    <Content Include="Resources\logo.png" />
+    <Content Include="Resources\picture.png" />
     <None Include="Resources\images.jpg" />
   </ItemGroup>
   <ItemGroup />

@@ -3,7 +3,15 @@
     partial class GameEditForm
     {
         private System.ComponentModel.IContainer components = null;
-        protected override void Dispose(bool disposing) { if (disposing && (components != null)) components.Dispose(); base.Dispose(disposing); }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
         private void InitializeComponent()
         {
@@ -29,7 +37,7 @@
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(600, 50);
+            this.lblTitle.Size = new System.Drawing.Size(500, 50);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Добавление товара";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -40,14 +48,14 @@
             this.lblName.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblName.Location = new System.Drawing.Point(30, 70);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(72, 19);
+            this.lblName.Size = new System.Drawing.Size(111, 19);
             this.lblName.TabIndex = 1;
-            this.lblName.Text = "Название:";
+            this.lblName.Text = "Название игры:";
             // 
             // txtName
             // 
             this.txtName.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtName.Location = new System.Drawing.Point(30, 95);
+            this.txtName.Location = new System.Drawing.Point(150, 67);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(300, 27);
             this.txtName.TabIndex = 2;
@@ -56,43 +64,43 @@
             // 
             this.lblPrice.AutoSize = true;
             this.lblPrice.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblPrice.Location = new System.Drawing.Point(30, 140);
+            this.lblPrice.Location = new System.Drawing.Point(30, 120);
             this.lblPrice.Name = "lblPrice";
-            this.lblPrice.Size = new System.Drawing.Size(44, 19);
+            this.lblPrice.Size = new System.Drawing.Size(48, 19);
             this.lblPrice.TabIndex = 3;
             this.lblPrice.Text = "Цена:";
             // 
             // txtPrice
             // 
             this.txtPrice.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtPrice.Location = new System.Drawing.Point(30, 165);
+            this.txtPrice.Location = new System.Drawing.Point(150, 117);
             this.txtPrice.Name = "txtPrice";
-            this.txtPrice.Size = new System.Drawing.Size(140, 27);
+            this.txtPrice.Size = new System.Drawing.Size(150, 27);
             this.txtPrice.TabIndex = 4;
             // 
             // lblStock
             // 
             this.lblStock.AutoSize = true;
             this.lblStock.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblStock.Location = new System.Drawing.Point(190, 140);
+            this.lblStock.Location = new System.Drawing.Point(30, 170);
             this.lblStock.Name = "lblStock";
-            this.lblStock.Size = new System.Drawing.Size(63, 19);
+            this.lblStock.Size = new System.Drawing.Size(69, 19);
             this.lblStock.TabIndex = 5;
             this.lblStock.Text = "Остаток:";
             // 
             // txtStock
             // 
             this.txtStock.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtStock.Location = new System.Drawing.Point(190, 165);
+            this.txtStock.Location = new System.Drawing.Point(150, 167);
             this.txtStock.Name = "txtStock";
-            this.txtStock.Size = new System.Drawing.Size(140, 27);
+            this.txtStock.Size = new System.Drawing.Size(150, 27);
             this.txtStock.TabIndex = 6;
             // 
             // lblCategory
             // 
             this.lblCategory.AutoSize = true;
             this.lblCategory.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblCategory.Location = new System.Drawing.Point(30, 210);
+            this.lblCategory.Location = new System.Drawing.Point(30, 220);
             this.lblCategory.Name = "lblCategory";
             this.lblCategory.Size = new System.Drawing.Size(76, 19);
             this.lblCategory.TabIndex = 7;
@@ -103,7 +111,7 @@
             this.cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCategory.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.cmbCategory.FormattingEnabled = true;
-            this.cmbCategory.Location = new System.Drawing.Point(30, 235);
+            this.cmbCategory.Location = new System.Drawing.Point(150, 217);
             this.cmbCategory.Name = "cmbCategory";
             this.cmbCategory.Size = new System.Drawing.Size(300, 28);
             this.cmbCategory.TabIndex = 8;
@@ -111,7 +119,7 @@
             // pbImage
             // 
             this.pbImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbImage.Location = new System.Drawing.Point(370, 70);
+            this.pbImage.Location = new System.Drawing.Point(30, 270);
             this.pbImage.Name = "pbImage";
             this.pbImage.Size = new System.Drawing.Size(200, 200);
             this.pbImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -120,24 +128,29 @@
             // 
             // btnLoadImage
             // 
-            this.btnLoadImage.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnLoadImage.Location = new System.Drawing.Point(370, 280);
+            this.btnLoadImage.BackColor = System.Drawing.Color.DimGray;
+            this.btnLoadImage.FlatAppearance.BorderSize = 0;
+            this.btnLoadImage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLoadImage.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnLoadImage.ForeColor = System.Drawing.Color.White;
+            this.btnLoadImage.Location = new System.Drawing.Point(250, 270);
             this.btnLoadImage.Name = "btnLoadImage";
-            this.btnLoadImage.Size = new System.Drawing.Size(200, 35);
+            this.btnLoadImage.Size = new System.Drawing.Size(200, 40);
             this.btnLoadImage.TabIndex = 10;
             this.btnLoadImage.Text = "Загрузить картинку";
-            this.btnLoadImage.UseVisualStyleBackColor = true;
+            this.btnLoadImage.UseVisualStyleBackColor = false;
             this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
             // 
             // btnSave
             // 
-            this.btnSave.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnSave.BackColor = System.Drawing.Color.SeaGreen;
+            this.btnSave.FlatAppearance.BorderSize = 0;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(30, 330);
+            this.btnSave.Location = new System.Drawing.Point(30, 500);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(150, 40);
+            this.btnSave.Size = new System.Drawing.Size(200, 45);
             this.btnSave.TabIndex = 11;
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = false;
@@ -145,13 +158,14 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnCancel.BackColor = System.Drawing.Color.Gray;
+            this.btnCancel.FlatAppearance.BorderSize = 0;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(180, 330);
+            this.btnCancel.Location = new System.Drawing.Point(250, 500);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(150, 40);
+            this.btnCancel.Size = new System.Drawing.Size(200, 45);
             this.btnCancel.TabIndex = 12;
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = false;
@@ -161,8 +175,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(600, 400);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(251)))), ((int)(((byte)(247)))));
+            this.ClientSize = new System.Drawing.Size(500, 570);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnLoadImage);
@@ -187,8 +201,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
+
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.TextBox txtName;

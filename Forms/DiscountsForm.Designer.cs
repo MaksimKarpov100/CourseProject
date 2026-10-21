@@ -44,13 +44,13 @@
             this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.lblTitle.Location = new System.Drawing.Point(280, 15);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(214, 37);
+            this.lblTitle.Size = new System.Drawing.Size(228, 37);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Система скидок";
             // 
             // grpBySum
             // 
-            this.grpBySum.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.grpBySum.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpBySum.BackColor = System.Drawing.Color.WhiteSmoke;
             this.grpBySum.Controls.Add(this.lblSum3);
@@ -72,7 +72,7 @@
             this.lblSum3.ForeColor = System.Drawing.Color.Black;
             this.lblSum3.Location = new System.Drawing.Point(25, 85);
             this.lblSum3.Name = "lblSum3";
-            this.lblSum3.Size = new System.Drawing.Size(310, 20);
+            this.lblSum3.Size = new System.Drawing.Size(294, 20);
             this.lblSum3.TabIndex = 2;
             this.lblSum3.Text = "• Сумма заказа от 10 000 ₽ — скидка 15%";
             // 
@@ -83,7 +83,7 @@
             this.lblSum2.ForeColor = System.Drawing.Color.Black;
             this.lblSum2.Location = new System.Drawing.Point(25, 55);
             this.lblSum2.Name = "lblSum2";
-            this.lblSum2.Size = new System.Drawing.Size(294, 20);
+            this.lblSum2.Size = new System.Drawing.Size(286, 20);
             this.lblSum2.TabIndex = 1;
             this.lblSum2.Text = "• Сумма заказа от 5 000 ₽ — скидка 10%";
             // 
@@ -94,13 +94,13 @@
             this.lblSum1.ForeColor = System.Drawing.Color.Black;
             this.lblSum1.Location = new System.Drawing.Point(25, 25);
             this.lblSum1.Name = "lblSum1";
-            this.lblSum1.Size = new System.Drawing.Size(286, 20);
+            this.lblSum1.Size = new System.Drawing.Size(278, 20);
             this.lblSum1.TabIndex = 0;
             this.lblSum1.Text = "• Сумма заказа от 2 000 ₽ — скидка 5%";
             // 
             // grpSeason
             // 
-            this.grpSeason.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.grpSeason.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpSeason.BackColor = System.Drawing.Color.WhiteSmoke;
             this.grpSeason.Controls.Add(this.lblSeason2);
@@ -121,7 +121,7 @@
             this.lblSeason2.ForeColor = System.Drawing.Color.Black;
             this.lblSeason2.Location = new System.Drawing.Point(25, 55);
             this.lblSeason2.Name = "lblSeason2";
-            this.lblSeason2.Size = new System.Drawing.Size(295, 20);
+            this.lblSeason2.Size = new System.Drawing.Size(300, 20);
             this.lblSeason2.TabIndex = 1;
             this.lblSeason2.Text = "• Скидка к 8 марта — 10% (с 7 по 9 марта)";
             // 
@@ -132,13 +132,13 @@
             this.lblSeason1.ForeColor = System.Drawing.Color.Black;
             this.lblSeason1.Location = new System.Drawing.Point(25, 25);
             this.lblSeason1.Name = "lblSeason1";
-            this.lblSeason1.Size = new System.Drawing.Size(356, 20);
+            this.lblSeason1.Size = new System.Drawing.Size(349, 20);
             this.lblSeason1.TabIndex = 0;
             this.lblSeason1.Text = "• Новогодняя скидка — 15% (с 20 по 31 декабря)";
             // 
             // grpRules
             // 
-            this.grpRules.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.grpRules.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpRules.BackColor = System.Drawing.Color.WhiteSmoke;
             this.grpRules.Controls.Add(this.lblRule4);
@@ -161,7 +161,7 @@
             this.lblRule4.ForeColor = System.Drawing.Color.Black;
             this.lblRule4.Location = new System.Drawing.Point(25, 105);
             this.lblRule4.Name = "lblRule4";
-            this.lblRule4.Size = new System.Drawing.Size(398, 19);
+            this.lblRule4.Size = new System.Drawing.Size(371, 19);
             this.lblRule4.TabIndex = 3;
             this.lblRule4.Text = "4. Все скидки сохраняются в БД для отчётов по выручке.";
             // 
@@ -172,7 +172,7 @@
             this.lblRule3.ForeColor = System.Drawing.Color.Black;
             this.lblRule3.Location = new System.Drawing.Point(25, 78);
             this.lblRule3.Name = "lblRule3";
-            this.lblRule3.Size = new System.Drawing.Size(394, 19);
+            this.lblRule3.Size = new System.Drawing.Size(380, 19);
             this.lblRule3.TabIndex = 2;
             this.lblRule3.Text = "3. Если ни одно правило не подходит — скидка равна 0%.";
             // 
@@ -183,7 +183,7 @@
             this.lblRule2.ForeColor = System.Drawing.Color.Black;
             this.lblRule2.Location = new System.Drawing.Point(25, 51);
             this.lblRule2.Name = "lblRule2";
-            this.lblRule2.Size = new System.Drawing.Size(488, 19);
+            this.lblRule2.Size = new System.Drawing.Size(470, 19);
             this.lblRule2.TabIndex = 1;
             this.lblRule2.Text = "2. Если подходит несколько правил — применяется наибольшая скидка.";
             // 
@@ -194,13 +194,13 @@
             this.lblRule1.ForeColor = System.Drawing.Color.Black;
             this.lblRule1.Location = new System.Drawing.Point(25, 24);
             this.lblRule1.Name = "lblRule1";
-            this.lblRule1.Size = new System.Drawing.Size(448, 19);
+            this.lblRule1.Size = new System.Drawing.Size(433, 19);
             this.lblRule1.TabIndex = 0;
             this.lblRule1.Text = "1. Скидка рассчитывается автоматически при оформлении заказа.";
             // 
             // grpExample
             // 
-            this.grpExample.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.grpExample.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpExample.BackColor = System.Drawing.Color.LightYellow;
             this.grpExample.Controls.Add(this.lblExample);
@@ -208,7 +208,7 @@
             this.grpExample.ForeColor = System.Drawing.Color.Orange;
             this.grpExample.Location = new System.Drawing.Point(25, 450);
             this.grpExample.Name = "grpExample";
-            this.grpExample.Size = new System.Drawing.Size(744, 80);
+            this.grpExample.Size = new System.Drawing.Size(744, 121);
             this.grpExample.TabIndex = 5;
             this.grpExample.TabStop = false;
             this.grpExample.Text = "💡 Пример расчёта";
@@ -220,7 +220,7 @@
             this.lblExample.ForeColor = System.Drawing.Color.Black;
             this.lblExample.Location = new System.Drawing.Point(25, 30);
             this.lblExample.Name = "lblExample";
-            this.lblExample.Size = new System.Drawing.Size(560, 19);
+            this.lblExample.Size = new System.Drawing.Size(536, 19);
             this.lblExample.TabIndex = 0;
             this.lblExample.Text = "Пример: заказ на 6 000 ₽ в декабре. Скидка 15% = 900 ₽. Итого к оплате: 5 100 ₽.";
             // 
@@ -229,7 +229,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(794, 550);
+            this.ClientSize = new System.Drawing.Size(794, 608);
             this.Controls.Add(this.grpExample);
             this.Controls.Add(this.grpRules);
             this.Controls.Add(this.grpSeason);
@@ -249,6 +249,7 @@
             this.grpExample.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.Label lblTitle;

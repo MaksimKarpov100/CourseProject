@@ -27,7 +27,6 @@
             this.tabCatalogs = new System.Windows.Forms.TabPage();
             this.tabDiscounts = new System.Windows.Forms.TabPage();
             this.tabSpecial = new System.Windows.Forms.TabPage();
-            this.tabProfile = new System.Windows.Forms.TabPage();
             this.panelTop.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.SuspendLayout();
@@ -88,7 +87,6 @@
             this.tabMain.Controls.Add(this.tabCatalogs);
             this.tabMain.Controls.Add(this.tabDiscounts);
             this.tabMain.Controls.Add(this.tabSpecial);
-            this.tabMain.Controls.Add(this.tabProfile);
             this.tabMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabMain.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.tabMain.Location = new System.Drawing.Point(0, 60);
@@ -111,7 +109,7 @@
             // 
             this.tabGames.Location = new System.Drawing.Point(4, 26);
             this.tabGames.Name = "tabGames";
-            this.tabGames.Size = new System.Drawing.Size(976, 670);
+            this.tabGames.Size = new System.Drawing.Size(1116, 730);
             this.tabGames.TabIndex = 1;
             this.tabGames.Text = "🎮 Товары";
             // 
@@ -127,7 +125,7 @@
             // 
             this.tabCatalogs.Location = new System.Drawing.Point(4, 26);
             this.tabCatalogs.Name = "tabCatalogs";
-            this.tabCatalogs.Size = new System.Drawing.Size(976, 670);
+            this.tabCatalogs.Size = new System.Drawing.Size(1116, 730);
             this.tabCatalogs.TabIndex = 3;
             this.tabCatalogs.Text = "🏷️ Справочники";
             // 
@@ -135,7 +133,7 @@
             // 
             this.tabDiscounts.Location = new System.Drawing.Point(4, 26);
             this.tabDiscounts.Name = "tabDiscounts";
-            this.tabDiscounts.Size = new System.Drawing.Size(976, 670);
+            this.tabDiscounts.Size = new System.Drawing.Size(1116, 730);
             this.tabDiscounts.TabIndex = 4;
             this.tabDiscounts.Text = "💰 Скидки";
             // 
@@ -143,17 +141,9 @@
             // 
             this.tabSpecial.Location = new System.Drawing.Point(4, 26);
             this.tabSpecial.Name = "tabSpecial";
-            this.tabSpecial.Size = new System.Drawing.Size(976, 670);
+            this.tabSpecial.Size = new System.Drawing.Size(1116, 730);
             this.tabSpecial.TabIndex = 5;
             this.tabSpecial.Text = "⚙️ Специальные возможности";
-            // 
-            // tabProfile
-            // 
-            this.tabProfile.Location = new System.Drawing.Point(4, 26);
-            this.tabProfile.Name = "tabProfile";
-            this.tabProfile.Size = new System.Drawing.Size(976, 670);
-            this.tabProfile.TabIndex = 6;
-            this.tabProfile.Text = "👤 Профиль";
             // 
             // MainFormAdmin
             // 
@@ -185,6 +175,5 @@
         private System.Windows.Forms.TabPage tabCatalogs;
         private System.Windows.Forms.TabPage tabDiscounts;
         private System.Windows.Forms.TabPage tabSpecial;
-        private System.Windows.Forms.TabPage tabProfile;
     }
 }
