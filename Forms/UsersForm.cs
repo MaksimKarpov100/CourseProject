@@ -21,10 +21,9 @@ namespace BoardGame_Store
             cmbSort.SelectedIndex = 0;
         }
 
-        private void UsersForm_Load(object sender, EventArgs e)
-        {
-            LoadUsers();
-        }
+        public void RefreshData() { LoadUsers(); }
+
+        private void UsersForm_Load(object sender, EventArgs e) { LoadUsers(); }
 
         private void LoadUsers()
         {
@@ -35,13 +34,13 @@ namespace BoardGame_Store
                     conn.Open();
 
                     string where = " WHERE 1=1 ";
-                    if (!string.IsNullOrWhiteSpace(txtSearch.Text))
+                    if (!string.IsNullOrWhiteSpace(txtSearch.Text) && txtSearch.Text != "Поиск...")
                         where += " AND (full_name LIKE @search OR login LIKE @search) ";
                     if (cmbRoleFilter.SelectedIndex > 0)
                         where += " AND role = @role ";
 
                     MySqlCommand cmdCount = new MySqlCommand("SELECT COUNT(*) FROM users " + where, conn);
-                    if (!string.IsNullOrWhiteSpace(txtSearch.Text))
+                    if (!string.IsNullOrWhiteSpace(txtSearch.Text) && txtSearch.Text != "Поиск...")
                         cmdCount.Parameters.AddWithValue("@search", "%" + txtSearch.Text + "%");
                     if (cmbRoleFilter.SelectedIndex > 0)
                         cmdCount.Parameters.AddWithValue("@role", cmbRoleFilter.SelectedItem.ToString());
@@ -58,7 +57,7 @@ namespace BoardGame_Store
                     string sql = "SELECT user_id AS `ID`, full_name AS `ФИО`, login AS `Логин`, role AS `Роль`, phone AS `Телефон` FROM users " + where + orderBy + " LIMIT @offset, @pageSize";
 
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    if (!string.IsNullOrWhiteSpace(txtSearch.Text))
+                    if (!string.IsNullOrWhiteSpace(txtSearch.Text) && txtSearch.Text != "Поиск...")
                         cmd.Parameters.AddWithValue("@search", "%" + txtSearch.Text + "%");
                     if (cmbRoleFilter.SelectedIndex > 0)
                         cmd.Parameters.AddWithValue("@role", cmbRoleFilter.SelectedItem.ToString());
@@ -81,7 +80,7 @@ namespace BoardGame_Store
                 lblCount.Text = "Количество записей: " + totalRecords;
                 lblPageInfo.Text = $"Страница {currentPage} из {totalPages}";
             }
-            catch (Exception ex) { ValidationHelper.ShowError("Ошибка загрузки: " + ex.Message); }
+            catch (Exception ex) { MessageBox.Show("Ошибка загрузки: " + ex.Message); }
         }
 
         private string MaskName(string name)
@@ -99,6 +98,9 @@ namespace BoardGame_Store
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e) { currentPage = 1; LoadUsers(); }
+        private void txtSearch_Enter(object sender, EventArgs e) { if (txtSearch.Text == "Поиск...") { txtSearch.Text = ""; txtSearch.ForeColor = System.Drawing.Color.Black; } }
+        private void txtSearch_Leave(object sender, EventArgs e) { if (string.IsNullOrWhiteSpace(txtSearch.Text)) { txtSearch.Text = "Поиск..."; txtSearch.ForeColor = System.Drawing.Color.Gray; } }
+
         private void cmbRoleFilter_SelectedIndexChanged(object sender, EventArgs e) { currentPage = 1; LoadUsers(); }
         private void cmbSort_SelectedIndexChanged(object sender, EventArgs e) { LoadUsers(); }
         private void cmbPageSize_SelectedIndexChanged(object sender, EventArgs e) { pageSize = int.Parse(cmbPageSize.SelectedItem.ToString()); currentPage = 1; LoadUsers(); }
@@ -115,7 +117,7 @@ namespace BoardGame_Store
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            if (dgvUsers.CurrentRow == null) { ValidationHelper.ShowWarning("Выберите пользователя"); return; }
+            if (dgvUsers.CurrentRow == null) { MessageBox.Show("Выберите пользователя"); return; }
             int id = Convert.ToInt32(dgvUsers.CurrentRow.Cells["ID"].Value);
             UserEditForm form = new UserEditForm(id);
             if (form.ShowDialog() == DialogResult.OK) LoadUsers();
@@ -128,11 +130,11 @@ namespace BoardGame_Store
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (dgvUsers.CurrentRow == null) { ValidationHelper.ShowWarning("Выберите пользователя"); return; }
+            if (dgvUsers.CurrentRow == null) { MessageBox.Show("Выберите пользователя"); return; }
             int id = Convert.ToInt32(dgvUsers.CurrentRow.Cells["ID"].Value);
             string name = dgvUsers.CurrentRow.Cells["ФИО"].Value.ToString();
 
-            if (id == CurrentUser.UserId) { ValidationHelper.ShowWarning("Вы не можете удалить самого себя!"); return; }
+            if (id == CurrentUser.UserId) { MessageBox.Show("Вы не можете удалить самого себя!"); return; }
 
             if (MessageBox.Show($"Удалить пользователя '{name}'?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
@@ -149,8 +151,8 @@ namespace BoardGame_Store
                 }
                 catch (MySqlException ex)
                 {
-                    if (ex.Number == 1451) ValidationHelper.ShowWarning("Этого пользователя нельзя удалить, он оформлял заказы!");
-                    else ValidationHelper.ShowError("Ошибка: " + ex.Message);
+                    if (ex.Number == 1451) MessageBox.Show("Этого пользователя нельзя удалить, он оформлял заказы!");
+                    else MessageBox.Show("Ошибка: " + ex.Message);
                 }
             }
         }

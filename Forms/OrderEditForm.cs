@@ -60,7 +60,8 @@ namespace BoardGame_Store
                 {
                     conn.Open();
                     string sql = "SELECT c.full_name, o.shipping_address, o.status_id, o.discount, " +
-                                 "o.total_without_discount, o.total_with_discount, o.total_amount " +
+                                 "o.total_without_discount, o.total_with_discount, o.total_amount, " +
+                                 "o.order_date, o.completion_date " +
                                  "FROM orders o " +
                                  "JOIN customers c ON o.customer_id = c.customer_id " +
                                  "WHERE o.order_id = @id";
@@ -75,6 +76,12 @@ namespace BoardGame_Store
                             lblCustomerName.Text = r["full_name"].ToString();
                             txtAddress.Text = r["shipping_address"].ToString();
                             cmbStatus.SelectedValue = r["status_id"];
+
+                            dtpOrderDate.Value = Convert.ToDateTime(r["order_date"]);
+                            if (r["completion_date"] != DBNull.Value)
+                                dtpCompletionDate.Value = Convert.ToDateTime(r["completion_date"]);
+                            else
+                                dtpCompletionDate.Value = DateTime.Now;
 
                             decimal sumWithout = Convert.ToDecimal(r["total_without_discount"]);
                             decimal sumWith = Convert.ToDecimal(r["total_with_discount"]);
@@ -133,11 +140,16 @@ namespace BoardGame_Store
                 using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
                 {
                     conn.Open();
-                    string sql = "UPDATE orders SET status_id=@status, shipping_address=@addr WHERE order_id=@id";
+                    string sql = "UPDATE orders SET status_id=@status, shipping_address=@addr, " +
+                                 "order_date=@odate, completion_date=@cdate WHERE order_id=@id";
+
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@status", cmbStatus.SelectedValue);
                     cmd.Parameters.AddWithValue("@addr", txtAddress.Text);
+                    cmd.Parameters.AddWithValue("@odate", dtpOrderDate.Value);
+                    cmd.Parameters.AddWithValue("@cdate", dtpCompletionDate.Value);
                     cmd.Parameters.AddWithValue("@id", _orderId);
+
                     cmd.ExecuteNonQuery();
                 }
 

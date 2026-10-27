@@ -83,7 +83,6 @@ CREATE TABLE order_items (
         REFERENCES board_games(game_id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Фиксированные статусы (4 штуки, обязательны)
 INSERT INTO statuses (status_name) VALUES
 ('Новый'),
 ('Не готов'),

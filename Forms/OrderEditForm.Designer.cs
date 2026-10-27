@@ -17,6 +17,10 @@
         {
             this.lblTitle = new System.Windows.Forms.Label();
             this.panelTop = new System.Windows.Forms.Panel();
+            this.dtpCompletionDate = new System.Windows.Forms.DateTimePicker();
+            this.lblCompletionDate = new System.Windows.Forms.Label();
+            this.dtpOrderDate = new System.Windows.Forms.DateTimePicker();
+            this.lblOrderDate = new System.Windows.Forms.Label();
             this.lblCustomer = new System.Windows.Forms.Label();
             this.lblCustomerName = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
@@ -34,8 +38,8 @@
             this.txtSumWithout = new System.Windows.Forms.TextBox();
             this.lblSumWithout = new System.Windows.Forms.Label();
             this.panelBottom = new System.Windows.Forms.Panel();
-            this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.panelTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrderItems)).BeginInit();
             this.panelCalc.SuspendLayout();
@@ -55,6 +59,10 @@
             // 
             // panelTop
             // 
+            this.panelTop.Controls.Add(this.dtpCompletionDate);
+            this.panelTop.Controls.Add(this.lblCompletionDate);
+            this.panelTop.Controls.Add(this.dtpOrderDate);
+            this.panelTop.Controls.Add(this.lblOrderDate);
             this.panelTop.Controls.Add(this.lblCustomer);
             this.panelTop.Controls.Add(this.lblCustomerName);
             this.panelTop.Controls.Add(this.lblStatus);
@@ -64,8 +72,42 @@
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 40);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(800, 80);
+            this.panelTop.Size = new System.Drawing.Size(800, 110);
             this.panelTop.TabIndex = 1;
+            // 
+            // dtpCompletionDate
+            // 
+            this.dtpCompletionDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpCompletionDate.Location = new System.Drawing.Point(463, 50);
+            this.dtpCompletionDate.Name = "dtpCompletionDate";
+            this.dtpCompletionDate.Size = new System.Drawing.Size(130, 25);
+            this.dtpCompletionDate.TabIndex = 9;
+            // 
+            // lblCompletionDate
+            // 
+            this.lblCompletionDate.AutoSize = true;
+            this.lblCompletionDate.Location = new System.Drawing.Point(330, 50);
+            this.lblCompletionDate.Name = "lblCompletionDate";
+            this.lblCompletionDate.Size = new System.Drawing.Size(122, 19);
+            this.lblCompletionDate.TabIndex = 8;
+            this.lblCompletionDate.Text = "Дата завершения:";
+            // 
+            // dtpOrderDate
+            // 
+            this.dtpOrderDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpOrderDate.Location = new System.Drawing.Point(463, 15);
+            this.dtpOrderDate.Name = "dtpOrderDate";
+            this.dtpOrderDate.Size = new System.Drawing.Size(130, 25);
+            this.dtpOrderDate.TabIndex = 7;
+            // 
+            // lblOrderDate
+            // 
+            this.lblOrderDate.AutoSize = true;
+            this.lblOrderDate.Location = new System.Drawing.Point(330, 15);
+            this.lblOrderDate.Name = "lblOrderDate";
+            this.lblOrderDate.Size = new System.Drawing.Size(127, 19);
+            this.lblOrderDate.TabIndex = 6;
+            this.lblOrderDate.Text = "Дата оформления:";
             // 
             // lblCustomer
             // 
@@ -73,7 +115,7 @@
             this.lblCustomer.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblCustomer.Location = new System.Drawing.Point(20, 15);
             this.lblCustomer.Name = "lblCustomer";
-            this.lblCustomer.Size = new System.Drawing.Size(55, 19);
+            this.lblCustomer.Size = new System.Drawing.Size(63, 19);
             this.lblCustomer.TabIndex = 0;
             this.lblCustomer.Text = "Клиент:";
             // 
@@ -89,16 +131,16 @@
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(20, 50);
+            this.lblStatus.Location = new System.Drawing.Point(20, 85);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(94, 19);
+            this.lblStatus.Size = new System.Drawing.Size(97, 19);
             this.lblStatus.TabIndex = 2;
             this.lblStatus.Text = "Статус заказа:";
             // 
             // cmbStatus
             // 
             this.cmbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbStatus.Location = new System.Drawing.Point(120, 47);
+            this.cmbStatus.Location = new System.Drawing.Point(120, 82);
             this.cmbStatus.Name = "cmbStatus";
             this.cmbStatus.Size = new System.Drawing.Size(180, 25);
             this.cmbStatus.TabIndex = 3;
@@ -106,15 +148,15 @@
             // lblAddress
             // 
             this.lblAddress.AutoSize = true;
-            this.lblAddress.Location = new System.Drawing.Point(330, 50);
+            this.lblAddress.Location = new System.Drawing.Point(330, 85);
             this.lblAddress.Name = "lblAddress";
-            this.lblAddress.Size = new System.Drawing.Size(116, 19);
+            this.lblAddress.Size = new System.Drawing.Size(111, 19);
             this.lblAddress.TabIndex = 4;
             this.lblAddress.Text = "Адрес доставки:";
             // 
             // txtAddress
             // 
-            this.txtAddress.Location = new System.Drawing.Point(450, 47);
+            this.txtAddress.Location = new System.Drawing.Point(463, 81);
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.Size = new System.Drawing.Size(300, 25);
             this.txtAddress.TabIndex = 5;
@@ -123,25 +165,25 @@
             // 
             this.dgvOrderItems.AllowUserToAddRows = false;
             this.dgvOrderItems.AllowUserToDeleteRows = false;
-            this.dgvOrderItems.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dgvOrderItems.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvOrderItems.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvOrderItems.BackgroundColor = System.Drawing.Color.White;
             this.dgvOrderItems.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvOrderItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvOrderItems.Location = new System.Drawing.Point(20, 130);
+            this.dgvOrderItems.Location = new System.Drawing.Point(20, 160);
             this.dgvOrderItems.Name = "dgvOrderItems";
             this.dgvOrderItems.ReadOnly = true;
             this.dgvOrderItems.RowHeadersVisible = false;
             this.dgvOrderItems.RowTemplate.Height = 30;
             this.dgvOrderItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvOrderItems.Size = new System.Drawing.Size(530, 300);
+            this.dgvOrderItems.Size = new System.Drawing.Size(530, 270);
             this.dgvOrderItems.TabIndex = 2;
             // 
             // panelCalc
             // 
-            this.panelCalc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.panelCalc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelCalc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
             this.panelCalc.Controls.Add(this.txtTotal);
@@ -152,9 +194,9 @@
             this.panelCalc.Controls.Add(this.lblDiscountAmount);
             this.panelCalc.Controls.Add(this.txtSumWithout);
             this.panelCalc.Controls.Add(this.lblSumWithout);
-            this.panelCalc.Location = new System.Drawing.Point(570, 130);
+            this.panelCalc.Location = new System.Drawing.Point(570, 160);
             this.panelCalc.Name = "panelCalc";
-            this.panelCalc.Size = new System.Drawing.Size(210, 300);
+            this.panelCalc.Size = new System.Drawing.Size(210, 270);
             this.panelCalc.TabIndex = 3;
             // 
             // txtTotal
@@ -237,23 +279,9 @@
             this.panelBottom.Size = new System.Drawing.Size(800, 60);
             this.panelBottom.TabIndex = 4;
             // 
-            // btnSave
-            // 
-            this.btnSave.BackColor = System.Drawing.Color.Black;
-            this.btnSave.FlatAppearance.BorderSize = 0;
-            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(20, 10);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(200, 40);
-            this.btnSave.TabIndex = 0;
-            this.btnSave.Text = "Сохранить изменения";
-            this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
             // btnCancel
             // 
-            this.btnCancel.BackColor = System.Drawing.Color.Gray;
+            this.btnCancel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnCancel.FlatAppearance.BorderSize = 0;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.ForeColor = System.Drawing.Color.White;
@@ -264,6 +292,20 @@
             this.btnCancel.Text = "Закрыть";
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnSave.FlatAppearance.BorderSize = 0;
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(20, 10);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(200, 40);
+            this.btnSave.TabIndex = 0;
+            this.btnSave.Text = "Сохранить изменения";
+            this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // OrderEditForm
             // 
@@ -288,6 +330,7 @@
             this.panelCalc.PerformLayout();
             this.panelBottom.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         private System.Windows.Forms.Label lblTitle;
@@ -298,6 +341,10 @@
         private System.Windows.Forms.ComboBox cmbStatus;
         private System.Windows.Forms.Label lblAddress;
         private System.Windows.Forms.TextBox txtAddress;
+        private System.Windows.Forms.Label lblOrderDate;
+        private System.Windows.Forms.DateTimePicker dtpOrderDate;
+        private System.Windows.Forms.Label lblCompletionDate;
+        private System.Windows.Forms.DateTimePicker dtpCompletionDate;
         private System.Windows.Forms.DataGridView dgvOrderItems;
         private System.Windows.Forms.Panel panelCalc;
         private System.Windows.Forms.Label lblSumWithout;

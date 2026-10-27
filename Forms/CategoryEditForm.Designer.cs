@@ -3,7 +3,13 @@
     partial class CategoryEditForm
     {
         private System.ComponentModel.IContainer components = null;
-        protected override void Dispose(bool disposing) { if (disposing && (components != null)) components.Dispose(); base.Dispose(disposing); }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null)) components.Dispose();
+            base.Dispose(disposing);
+        }
+
         private void InitializeComponent()
         {
             this.lblTitle = new System.Windows.Forms.Label();
@@ -63,7 +69,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.BackColor = System.Drawing.Color.Black;
+            this.btnSave.BackColor = System.Drawing.Color.SeaGreen;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.Location = new System.Drawing.Point(30, 240);
@@ -76,7 +82,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.BackColor = System.Drawing.Color.Black;
+            this.btnCancel.BackColor = System.Drawing.Color.Gray;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.ForeColor = System.Drawing.Color.White;
             this.btnCancel.Location = new System.Drawing.Point(190, 240);
@@ -110,8 +116,8 @@
             this.Load += new System.EventHandler(this.CategoryEditForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
+
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.TextBox txtName;

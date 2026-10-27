@@ -61,28 +61,17 @@ namespace BoardGame_Store
         private void btnImportSql_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "SQL|*.sql|Все файлы|*.*";
-
-            if (ofd.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
+            ofd.Filter = "SQL|*.sql";
+            if (ofd.ShowDialog() != DialogResult.OK) return;
 
             try
             {
-                string sql = File.ReadAllText(ofd.FileName, System.Text.Encoding.UTF8);
-
-                string cs = "Server=" + txtServer.Text.Trim() + ";" +
-                            "Port=" + (int)nudPort.Value + ";" +
-                            "Uid=" + txtUser.Text.Trim() + ";" +
-                            "Pwd=" + txtPassword.Text + ";" +
-                            "CharSet=utf8mb4;" +
-                            "AllowPublicKeyRetrieval=True;";
+                string sql = System.IO.File.ReadAllText(ofd.FileName, System.Text.Encoding.UTF8);
+                string cs = "Server=" + txtServer.Text.Trim() + ";Port=" + (int)nudPort.Value + ";Uid=" + txtUser.Text.Trim() + ";Pwd=" + txtPassword.Text + ";CharSet=utf8mb4;AllowPublicKeyRetrieval=True;";
 
                 using (MySqlConnection conn = new MySqlConnection(cs))
                 {
                     conn.Open();
-
                     using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                     {
                         cmd.CommandTimeout = 300;
@@ -97,12 +86,11 @@ namespace BoardGame_Store
                 DbConfig.Password = txtPassword.Text;
                 DbConfig.Save();
 
-                MessageHelper.ShowInfo("Импорт БД завершён успешно\nБаза: " + DbConfig.Database);
+                try { DbInitializer.EnsureDefaultUsers(); } catch { }
+
+                MessageBox.Show("База восстановлена! Настройки сохранены.", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch (Exception ex)
-            {
-                MessageHelper.ShowError("Ошибка импорта:\n" + ex.Message);
-            }
+            catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message); }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

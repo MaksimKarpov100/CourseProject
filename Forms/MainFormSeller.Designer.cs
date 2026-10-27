@@ -6,10 +6,7 @@
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
+            if (disposing && (components != null)) components.Dispose();
             base.Dispose(disposing);
         }
 
@@ -104,7 +101,7 @@
             this.tabGames.Name = "tabGames";
             this.tabGames.Size = new System.Drawing.Size(976, 670);
             this.tabGames.TabIndex = 1;
-            this.tabGames.Text = "🎮 Товары (просмотр)";
+            this.tabGames.Text = "🎮 Товары";
             // 
             // tabCustomers
             // 

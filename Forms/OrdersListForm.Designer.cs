@@ -85,7 +85,7 @@
             // 
             // panelFilters
             // 
-            this.panelFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.panelFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelFilters.BackColor = System.Drawing.SystemColors.ControlLight;
             this.panelFilters.Controls.Add(this.lblOrderNumber);
@@ -119,7 +119,6 @@
             this.txtOrderNumber.Name = "txtOrderNumber";
             this.txtOrderNumber.Size = new System.Drawing.Size(90, 25);
             this.txtOrderNumber.TabIndex = 1;
-            this.txtOrderNumber.Text = "Поиск...";
             this.txtOrderNumber.TextChanged += new System.EventHandler(this.txtOrderNumber_TextChanged);
             // 
             // lblDateFrom
@@ -220,8 +219,8 @@
             // 
             this.dgvOrders.AllowUserToAddRows = false;
             this.dgvOrders.AllowUserToDeleteRows = false;
-            this.dgvOrders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dgvOrders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvOrders.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvOrders.BackgroundColor = System.Drawing.Color.White;
@@ -249,7 +248,7 @@
             // 
             // panelPagination
             // 
-            this.panelPagination.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.panelPagination.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPagination.Controls.Add(this.btnFirst);
             this.panelPagination.Controls.Add(this.btnPrev);
@@ -350,7 +349,7 @@
             // 
             this.dgvContent.AllowUserToAddRows = false;
             this.dgvContent.AllowUserToDeleteRows = false;
-            this.dgvContent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.dgvContent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvContent.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvContent.BackgroundColor = System.Drawing.Color.White;
@@ -472,7 +471,7 @@
             // 
             // panelButtons
             // 
-            this.panelButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.panelButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelButtons.Controls.Add(this.btnAdd);
             this.panelButtons.Controls.Add(this.btnEdit);
@@ -575,7 +574,7 @@
             this.lblLegNew.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblLegNew.Location = new System.Drawing.Point(650, 15);
             this.lblLegNew.Name = "lblLegNew";
-            this.lblLegNew.Size = new System.Drawing.Size(47, 15);
+            this.lblLegNew.Size = new System.Drawing.Size(45, 15);
             this.lblLegNew.TabIndex = 7;
             this.lblLegNew.Text = "Новый";
             // 
@@ -594,7 +593,7 @@
             this.lblLegReady.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblLegReady.Location = new System.Drawing.Point(720, 15);
             this.lblLegReady.Name = "lblLegReady";
-            this.lblLegReady.Size = new System.Drawing.Size(45, 15);
+            this.lblLegReady.Size = new System.Drawing.Size(38, 15);
             this.lblLegReady.TabIndex = 9;
             this.lblLegReady.Text = "Готов";
             // 
@@ -613,7 +612,7 @@
             this.lblLegCancel.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblLegCancel.Location = new System.Drawing.Point(790, 15);
             this.lblLegCancel.Name = "lblLegCancel";
-            this.lblLegCancel.Size = new System.Drawing.Size(64, 15);
+            this.lblLegCancel.Size = new System.Drawing.Size(56, 15);
             this.lblLegCancel.TabIndex = 11;
             this.lblLegCancel.Text = "Отменен";
             // 
@@ -650,6 +649,7 @@
             this.panelButtons.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.Label lblTitle;

@@ -14,12 +14,54 @@ namespace BoardGame_Store
         {
             InitializeComponent();
             LoadCaptcha();
+
+            UpdateLoginButtonState();
+        }
+
+        private void UpdateLoginButtonState()
+        {
+            bool isLoginFilled = txtLogin.Text.Trim() != "";
+            bool isPasswordFilled = txtPassword.Text.Trim() != "";
+            bool isCaptchaFilled = true;
+
+            if (pbCaptcha.Visible == true)
+            {
+                isCaptchaFilled = txtCaptcha.Text.Trim() != "";
+            }
+
+            if (isLoginFilled == true && isPasswordFilled == true && isCaptchaFilled == true)
+            {
+                btnLogin.Enabled = true;
+                btnLogin.BackColor = Color.FromArgb(211, 47, 47); 
+            }
+            else
+            {
+                btnLogin.Enabled = false;
+                btnLogin.BackColor = Color.Gray; 
+            }
         }
 
         private void LoadCaptcha()
         {
             pbCaptcha.Image = captchaGen.Generate();
             txtCaptcha.Clear();
+
+            UpdateLoginButtonState();
+        }
+
+        private void txtLogin_TextChanged(object sender, EventArgs e)
+        {
+            UpdateLoginButtonState();
+        }
+
+        private void txtPassword_TextChanged(object sender, EventArgs e)
+        {
+            UpdateLoginButtonState();
+        }
+
+        private void txtCaptcha_TextChanged(object sender, EventArgs e)
+        {
+            UpdateLoginButtonState();
         }
 
         private void pbCaptcha_Click(object sender, EventArgs e)
@@ -62,7 +104,7 @@ namespace BoardGame_Store
                 {
                     lblError.Text = "Неверная капча!";
                     lblError.Visible = true;
-                    LoadCaptcha();
+                    LoadCaptcha(); 
                     return;
                 }
             }
@@ -138,7 +180,7 @@ namespace BoardGame_Store
                     LoadCaptcha();
                 }
 
-                txtPassword.Clear();
+                txtPassword.Clear(); 
             }
         }
     }

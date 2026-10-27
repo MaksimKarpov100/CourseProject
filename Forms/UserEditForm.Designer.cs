@@ -34,7 +34,7 @@
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(400, 50);
+            this.lblTitle.Size = new System.Drawing.Size(409, 50);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Пользователь";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -45,7 +45,7 @@
             this.lblName.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblName.Location = new System.Drawing.Point(30, 70);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(40, 19);
+            this.lblName.Size = new System.Drawing.Size(43, 19);
             this.lblName.TabIndex = 1;
             this.lblName.Text = "ФИО:";
             // 
@@ -63,7 +63,7 @@
             this.lblLogin.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblLogin.Location = new System.Drawing.Point(30, 115);
             this.lblLogin.Name = "lblLogin";
-            this.lblLogin.Size = new System.Drawing.Size(49, 19);
+            this.lblLogin.Size = new System.Drawing.Size(50, 19);
             this.lblLogin.TabIndex = 3;
             this.lblLogin.Text = "Логин:";
             // 
@@ -81,7 +81,7 @@
             this.lblPassword.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblPassword.Location = new System.Drawing.Point(30, 160);
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(57, 19);
+            this.lblPassword.Size = new System.Drawing.Size(59, 19);
             this.lblPassword.TabIndex = 5;
             this.lblPassword.Text = "Пароль:";
             // 
@@ -91,7 +91,7 @@
             this.txtPassword.Location = new System.Drawing.Point(120, 157);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '●';
-            this.txtPassword.Size = new System.Drawing.Size(210, 25);
+            this.txtPassword.Size = new System.Drawing.Size(250, 25);
             this.txtPassword.TabIndex = 6;
             // 
             // btnShowPass
@@ -99,7 +99,7 @@
             this.btnShowPass.FlatAppearance.BorderSize = 0;
             this.btnShowPass.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnShowPass.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnShowPass.Location = new System.Drawing.Point(335, 155);
+            this.btnShowPass.Location = new System.Drawing.Point(374, 157);
             this.btnShowPass.Name = "btnShowPass";
             this.btnShowPass.Size = new System.Drawing.Size(35, 30);
             this.btnShowPass.TabIndex = 7;
@@ -113,7 +113,7 @@
             this.lblRole.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblRole.Location = new System.Drawing.Point(30, 205);
             this.lblRole.Name = "lblRole";
-            this.lblRole.Size = new System.Drawing.Size(39, 19);
+            this.lblRole.Size = new System.Drawing.Size(42, 19);
             this.lblRole.TabIndex = 8;
             this.lblRole.Text = "Роль:";
             // 
@@ -185,7 +185,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(251)))), ((int)(((byte)(247)))));
-            this.ClientSize = new System.Drawing.Size(400, 380);
+            this.ClientSize = new System.Drawing.Size(409, 380);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.mtxtPhone);
@@ -210,6 +210,7 @@
             this.Load += new System.EventHandler(this.UserEditForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.Label lblTitle;

@@ -92,7 +92,8 @@
             // 
             // btnLogin
             // 
-            this.btnLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(47)))), ((int)(((byte)(47)))));
+            this.btnLogin.BackColor = System.Drawing.Color.Gray; // Изначально серая
+            this.btnLogin.Enabled = false; // Изначально недоступна
             this.btnLogin.FlatAppearance.BorderSize = 0;
             this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogin.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
@@ -150,6 +151,7 @@
             this.txtCaptcha.Size = new System.Drawing.Size(140, 25);
             this.txtCaptcha.TabIndex = 10;
             this.txtCaptcha.Visible = false;
+            this.txtCaptcha.TextChanged += new System.EventHandler(this.txtCaptcha_TextChanged); // Привязка события
             // 
             // pbCaptcha
             // 
@@ -199,6 +201,7 @@
             this.txtPassword.PasswordChar = '●';
             this.txtPassword.Size = new System.Drawing.Size(260, 25);
             this.txtPassword.TabIndex = 6;
+            this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged); // Привязка события
             // 
             // lblPassword
             // 
@@ -220,6 +223,7 @@
             this.txtLogin.Name = "txtLogin";
             this.txtLogin.Size = new System.Drawing.Size(305, 25);
             this.txtLogin.TabIndex = 4;
+            this.txtLogin.TextChanged += new System.EventHandler(this.txtLogin_TextChanged); // Привязка события
             // 
             // lblLogin
             // 

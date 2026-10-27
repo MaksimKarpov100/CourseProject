@@ -6,10 +6,7 @@
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
+            if (disposing && (components != null)) components.Dispose();
             base.Dispose(disposing);
         }
 
@@ -157,7 +154,8 @@
             // 
             // btnExportSelected
             // 
-            this.btnExportSelected.BackColor = System.Drawing.Color.DarkOrange;
+            this.btnExportSelected.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnExportSelected.FlatAppearance.BorderSize = 0;
             this.btnExportSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExportSelected.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnExportSelected.ForeColor = System.Drawing.Color.White;
@@ -171,7 +169,8 @@
             // 
             // btnImportCSV
             // 
-            this.btnImportCSV.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnImportCSV.BackColor = System.Drawing.Color.SeaGreen;
+            this.btnImportCSV.FlatAppearance.BorderSize = 0;
             this.btnImportCSV.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnImportCSV.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnImportCSV.ForeColor = System.Drawing.Color.White;
@@ -210,6 +209,7 @@
             // btnBackupManual
             // 
             this.btnBackupManual.BackColor = System.Drawing.Color.SeaGreen;
+            this.btnBackupManual.FlatAppearance.BorderSize = 0;
             this.btnBackupManual.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBackupManual.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnBackupManual.ForeColor = System.Drawing.Color.White;
@@ -227,6 +227,7 @@
             this.dgvBackups.AllowUserToDeleteRows = false;
             this.dgvBackups.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvBackups.BackgroundColor = System.Drawing.Color.White;
+            this.dgvBackups.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvBackups.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBackups.Location = new System.Drawing.Point(15, 45);
             this.dgvBackups.Name = "dgvBackups";
@@ -239,6 +240,7 @@
             // btnRestore
             // 
             this.btnRestore.BackColor = System.Drawing.Color.Firebrick;
+            this.btnRestore.FlatAppearance.BorderSize = 0;
             this.btnRestore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRestore.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnRestore.ForeColor = System.Drawing.Color.White;
@@ -268,6 +270,7 @@
             // btnExcel
             // 
             this.btnExcel.BackColor = System.Drawing.Color.Black;
+            this.btnExcel.FlatAppearance.BorderSize = 0;
             this.btnExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExcel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnExcel.ForeColor = System.Drawing.Color.White;
@@ -342,6 +345,7 @@
             // btnBack
             // 
             this.btnBack.BackColor = System.Drawing.Color.Gray;
+            this.btnBack.FlatAppearance.BorderSize = 0;
             this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBack.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnBack.ForeColor = System.Drawing.Color.White;

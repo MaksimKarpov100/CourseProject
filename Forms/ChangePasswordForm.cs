@@ -11,10 +11,8 @@ namespace BoardGame_Store
             InitializeComponent();
         }
 
-        // ВОТ ЭТОТ МЕТОД НУЖНО БЫЛО ДОБАВИТЬ
         private void chkShowPassword_CheckedChanged(object sender, EventArgs e)
         {
-            // Если галочка стоит, показываем текст, иначе скрываем
             char passChar = chkShowPassword.Checked ? '\0' : '●';
             txtOldPass.PasswordChar = passChar;
             txtNewPass.PasswordChar = passChar;

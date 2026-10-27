@@ -50,7 +50,7 @@ namespace BoardGame_Store
                     cmbCategory.ValueMember = "category_id";
                 }
             }
-            catch (Exception ex) { MessageBox.Show("Ошибка категорий: " + ex.Message); }
+            catch (Exception ex) { MessageBox.Show("Ошибка загрузки категорий: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
         private void LoadGameData()
@@ -85,7 +85,7 @@ namespace BoardGame_Store
                     }
                 }
             }
-            catch (Exception ex) { MessageBox.Show("Ошибка загрузки: " + ex.Message); }
+            catch (Exception ex) { MessageBox.Show("Ошибка загрузки данных: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
         private void txtPrice_KeyPress(object sender, KeyPressEventArgs e)
@@ -111,7 +111,7 @@ namespace BoardGame_Store
                         _imageBytes = File.ReadAllBytes(ofd.FileName);
                         using (MemoryStream ms = new MemoryStream(_imageBytes)) { pbImage.Image = Image.FromStream(ms); }
                     }
-                    catch (Exception ex) { MessageBox.Show("Ошибка картинки: " + ex.Message); }
+                    catch (Exception ex) { MessageBox.Show("Ошибка загрузки картинки: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
                 }
             }
         }
@@ -120,14 +120,36 @@ namespace BoardGame_Store
         {
             if (string.IsNullOrWhiteSpace(txtName.Text))
             {
-                MessageBox.Show("Введите название!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Введите название игры!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (cmbCategory.SelectedIndex == -1)
+            {
+                MessageBox.Show("Выберите категорию!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            decimal price = 0;
-            decimal.TryParse(txtPrice.Text, out price);
-            int stock = 0;
-            int.TryParse(txtStock.Text, out stock);
+            if (!decimal.TryParse(txtPrice.Text, out decimal price))
+            {
+                MessageBox.Show("Введите корректную цену!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (!int.TryParse(txtStock.Text, out int stock))
+            {
+                MessageBox.Show("Введите корректное количество!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (price < 0 || price > 10000)
+            {
+                MessageBox.Show("Цена должна быть от 0 до 10 000!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (stock < 0 || stock > 1000)
+            {
+                MessageBox.Show("Количество на складе должно быть от 0 до 1 000!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             try
             {
@@ -135,7 +157,6 @@ namespace BoardGame_Store
                 {
                     conn.Open();
                     string sql;
-
                     if (_gameId == 0)
                         sql = "INSERT INTO board_games (title, price, stock_quantity, category_id, image_data) VALUES (@t, @p, @s, @c, @img)";
                     else
@@ -146,22 +167,16 @@ namespace BoardGame_Store
                     cmd.Parameters.AddWithValue("@p", price);
                     cmd.Parameters.AddWithValue("@s", stock);
                     cmd.Parameters.AddWithValue("@c", cmbCategory.SelectedValue);
-
-                    if (_imageBytes != null)
-                        cmd.Parameters.AddWithValue("@img", _imageBytes);
-                    else
-                        cmd.Parameters.AddWithValue("@img", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@img", _imageBytes != null ? (object)_imageBytes : DBNull.Value);
 
                     if (_gameId > 0) cmd.Parameters.AddWithValue("@id", _gameId);
-
                     cmd.ExecuteNonQuery();
                 }
-
                 MessageBox.Show("Сохранено!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
-            catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            catch (Exception ex) { MessageBox.Show("Ошибка базы данных: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
         private void btnCancel_Click(object sender, EventArgs e) { this.Close(); }

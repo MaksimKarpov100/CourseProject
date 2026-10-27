@@ -62,7 +62,7 @@
             // 
             // panelFilters
             // 
-            this.panelFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.panelFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelFilters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
             this.panelFilters.Controls.Add(this.lblSearch);
@@ -91,7 +91,6 @@
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(200, 25);
             this.txtSearch.TabIndex = 1;
-            this.txtSearch.Text = "Поиск...";
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // lblCategory
@@ -138,8 +137,8 @@
             // 
             this.dgvGames.AllowUserToAddRows = false;
             this.dgvGames.AllowUserToDeleteRows = false;
-            this.dgvGames.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dgvGames.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvGames.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvGames.BackgroundColor = System.Drawing.Color.White;
@@ -169,7 +168,7 @@
             // 
             // panelPagination
             // 
-            this.panelPagination.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.panelPagination.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPagination.Controls.Add(this.btnFirst);
             this.panelPagination.Controls.Add(this.btnPrev);
@@ -257,7 +256,7 @@
             // 
             // panelButtons
             // 
-            this.panelButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.panelButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelButtons.Controls.Add(this.btnAdd);
             this.panelButtons.Controls.Add(this.btnEdit);
@@ -275,7 +274,7 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.BackColor = System.Drawing.Color.SeaGreen;
+            this.btnAdd.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnAdd.ForeColor = System.Drawing.Color.White;
@@ -289,7 +288,7 @@
             // 
             // btnEdit
             // 
-            this.btnEdit.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnEdit.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnEdit.ForeColor = System.Drawing.Color.White;
@@ -303,7 +302,7 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.BackColor = System.Drawing.Color.Firebrick;
+            this.btnDelete.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnDelete.ForeColor = System.Drawing.Color.White;
@@ -330,7 +329,7 @@
             this.lblLegendGreen.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblLegendGreen.Location = new System.Drawing.Point(550, 15);
             this.lblLegendGreen.Name = "lblLegendGreen";
-            this.lblLegendGreen.Size = new System.Drawing.Size(53, 15);
+            this.lblLegendGreen.Size = new System.Drawing.Size(52, 15);
             this.lblLegendGreen.TabIndex = 4;
             this.lblLegendGreen.Text = "> 10 шт.";
             // 
@@ -349,7 +348,7 @@
             this.lblLegendYellow.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblLegendYellow.Location = new System.Drawing.Point(650, 15);
             this.lblLegendYellow.Name = "lblLegendYellow";
-            this.lblLegendYellow.Size = new System.Drawing.Size(60, 15);
+            this.lblLegendYellow.Size = new System.Drawing.Size(52, 15);
             this.lblLegendYellow.TabIndex = 6;
             this.lblLegendYellow.Text = "4-10 шт.";
             // 
@@ -368,7 +367,7 @@
             this.lblLegendRed.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblLegendRed.Location = new System.Drawing.Point(760, 15);
             this.lblLegendRed.Name = "lblLegendRed";
-            this.lblLegendRed.Size = new System.Drawing.Size(64, 15);
+            this.lblLegendRed.Size = new System.Drawing.Size(46, 15);
             this.lblLegendRed.TabIndex = 8;
             this.lblLegendRed.Text = "< 4 шт.";
             // 
@@ -397,6 +396,7 @@
             this.panelButtons.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.Label lblTitle;

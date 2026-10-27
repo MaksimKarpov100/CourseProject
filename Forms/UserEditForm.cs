@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
@@ -24,10 +24,7 @@ namespace BoardGame_Store
 
         private void UserEditForm_Load(object sender, EventArgs e)
         {
-            if (_userId > 0)
-            {
-                LoadUserData();
-            }
+            if (_userId > 0) LoadUserData();
         }
 
         private void LoadUserData()
@@ -39,7 +36,6 @@ namespace BoardGame_Store
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT full_name, login, role, phone FROM users WHERE user_id=@id", conn);
                     cmd.Parameters.AddWithValue("@id", _userId);
-
                     using (var r = cmd.ExecuteReader())
                     {
                         if (r.Read())
@@ -52,28 +48,50 @@ namespace BoardGame_Store
                     }
                 }
             }
-            catch (Exception ex) { MessageBox.Show("Ошибка загрузки: " + ex.Message); }
+            catch (Exception ex) { MessageBox.Show("Ошибка загрузки: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
         private void btnShowPass_Click(object sender, EventArgs e)
         {
-            if (txtPassword.PasswordChar == '●')
-            {
-                txtPassword.PasswordChar = '\0';
-                btnShowPass.Text = "🙈";
-            }
-            else
-            {
-                txtPassword.PasswordChar = '●';
-                btnShowPass.Text = "👁";
-            }
+            if (txtPassword.PasswordChar == '●') { txtPassword.PasswordChar = '\0'; btnShowPass.Text = "🙈"; }
+            else { txtPassword.PasswordChar = '●'; btnShowPass.Text = "👁"; }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtName.Text) || string.IsNullOrWhiteSpace(txtLogin.Text))
+            string login = txtLogin.Text.Trim();
+            string password = txtPassword.Text;
+            string name = txtName.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(name))
             {
-                MessageBox.Show("Заполните ФИО и Логин!", "Внимание");
+                MessageBox.Show("Введите ФИО!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (!Regex.IsMatch(name, @"^[А-Яа-яЁё\s\-]+$"))
+            {
+                MessageBox.Show("ФИО должно содержать только русские буквы и дефис!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (login.Length < 4 || login.Length > 32)
+            {
+                MessageBox.Show("Логин должен быть от 4 до 32 символов!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (_userId == 0 || !string.IsNullOrWhiteSpace(password))
+            {
+                if (password.Length < 8 || password.Length > 64)
+                {
+                    MessageBox.Show("Пароль должен быть от 8 до 64 символов!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
+            if (cmbRole.SelectedIndex == -1)
+            {
+                MessageBox.Show("Выберите роль!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -86,17 +104,12 @@ namespace BoardGame_Store
 
                     if (_userId == 0)
                     {
-                        if (string.IsNullOrWhiteSpace(txtPassword.Text))
-                        {
-                            MessageBox.Show("Введите пароль!", "Внимание");
-                            return;
-                        }
-                        string hash = PasswordHelper.GetHash(txtPassword.Text);
+                        string hash = PasswordHelper.GetHash(password);
                         sql = "INSERT INTO users (full_name, login, password_hash, role, phone) VALUES (@n, @l, @p, @r, @ph)";
                         MySqlCommand cmd = new MySqlCommand(sql, conn);
                         cmd.Parameters.AddWithValue("@p", hash);
-                        cmd.Parameters.AddWithValue("@n", txtName.Text);
-                        cmd.Parameters.AddWithValue("@l", txtLogin.Text);
+                        cmd.Parameters.AddWithValue("@n", name);
+                        cmd.Parameters.AddWithValue("@l", login);
                         cmd.Parameters.AddWithValue("@r", cmbRole.SelectedItem.ToString());
                         cmd.Parameters.AddWithValue("@ph", mtxtPhone.Text);
                         cmd.ExecuteNonQuery();
@@ -104,30 +117,31 @@ namespace BoardGame_Store
                     else
                     {
                         sql = "UPDATE users SET full_name=@n, login=@l, role=@r, phone=@ph";
-                        if (!string.IsNullOrWhiteSpace(txtPassword.Text))
-                        {
-                            sql += ", password_hash=@p";
-                        }
+                        if (!string.IsNullOrWhiteSpace(password)) sql += ", password_hash=@p";
                         sql += " WHERE user_id=@id";
 
                         MySqlCommand cmd = new MySqlCommand(sql, conn);
-                        cmd.Parameters.AddWithValue("@n", txtName.Text);
-                        cmd.Parameters.AddWithValue("@l", txtLogin.Text);
+                        cmd.Parameters.AddWithValue("@n", name);
+                        cmd.Parameters.AddWithValue("@l", login);
                         cmd.Parameters.AddWithValue("@r", cmbRole.SelectedItem.ToString());
                         cmd.Parameters.AddWithValue("@ph", mtxtPhone.Text);
                         cmd.Parameters.AddWithValue("@id", _userId);
 
-                        if (!string.IsNullOrWhiteSpace(txtPassword.Text))
-                            cmd.Parameters.AddWithValue("@p", PasswordHelper.GetHash(txtPassword.Text));
+                        if (!string.IsNullOrWhiteSpace(password))
+                            cmd.Parameters.AddWithValue("@p", PasswordHelper.GetHash(password));
 
                         cmd.ExecuteNonQuery();
                     }
                 }
-                MessageBox.Show("Сохранено!", "Успех");
+                MessageBox.Show("Сохранено!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
-            catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message); }
+            catch (MySqlException ex)
+            {
+                if (ex.Number == 1062) MessageBox.Show("Пользователь с таким логином уже существует!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else MessageBox.Show("Ошибка базы данных: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e) { this.Close(); }

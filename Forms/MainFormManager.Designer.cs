@@ -6,10 +6,7 @@
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
+            if (disposing && (components != null)) components.Dispose();
             base.Dispose(disposing);
         }
 
@@ -21,17 +18,10 @@
             this.btnExit = new System.Windows.Forms.Button();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabGames = new System.Windows.Forms.TabPage();
+            this.tabOrders = new System.Windows.Forms.TabPage();
             this.tabCatalogs = new System.Windows.Forms.TabPage();
-            this.tabSpecial = new System.Windows.Forms.TabPage();
-            this.lblReportTitle = new System.Windows.Forms.Label();
-            this.lblFrom = new System.Windows.Forms.Label();
-            this.dtpFrom = new System.Windows.Forms.DateTimePicker();
-            this.lblTo = new System.Windows.Forms.Label();
-            this.dtpTo = new System.Windows.Forms.DateTimePicker();
-            this.btnReport = new System.Windows.Forms.Button();
             this.panelTop.SuspendLayout();
             this.tabMain.SuspendLayout();
-            this.tabSpecial.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelTop
@@ -85,8 +75,8 @@
             // tabMain
             // 
             this.tabMain.Controls.Add(this.tabGames);
+            this.tabMain.Controls.Add(this.tabOrders);
             this.tabMain.Controls.Add(this.tabCatalogs);
-            this.tabMain.Controls.Add(this.tabSpecial);
             this.tabMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabMain.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.tabMain.Location = new System.Drawing.Point(0, 60);
@@ -105,86 +95,21 @@
             this.tabGames.TabIndex = 0;
             this.tabGames.Text = "🎮 Товары";
             // 
+            // tabOrders
+            // 
+            this.tabOrders.Location = new System.Drawing.Point(4, 26);
+            this.tabOrders.Name = "tabOrders";
+            this.tabOrders.Size = new System.Drawing.Size(976, 670);
+            this.tabOrders.TabIndex = 1;
+            this.tabOrders.Text = "📦 Заказы";
+            // 
             // tabCatalogs
             // 
             this.tabCatalogs.Location = new System.Drawing.Point(4, 26);
             this.tabCatalogs.Name = "tabCatalogs";
             this.tabCatalogs.Size = new System.Drawing.Size(976, 670);
-            this.tabCatalogs.TabIndex = 1;
+            this.tabCatalogs.TabIndex = 2;
             this.tabCatalogs.Text = "🏷️ Справочники";
-            // 
-            // tabSpecial
-            // 
-            this.tabSpecial.Controls.Add(this.lblReportTitle);
-            this.tabSpecial.Controls.Add(this.lblFrom);
-            this.tabSpecial.Controls.Add(this.dtpFrom);
-            this.tabSpecial.Controls.Add(this.lblTo);
-            this.tabSpecial.Controls.Add(this.dtpTo);
-            this.tabSpecial.Controls.Add(this.btnReport);
-            this.tabSpecial.Location = new System.Drawing.Point(4, 26);
-            this.tabSpecial.Name = "tabSpecial";
-            this.tabSpecial.Size = new System.Drawing.Size(976, 670);
-            this.tabSpecial.TabIndex = 2;
-            this.tabSpecial.Text = "📊 Отчеты";
-            // 
-            // lblReportTitle
-            // 
-            this.lblReportTitle.AutoSize = true;
-            this.lblReportTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.lblReportTitle.Location = new System.Drawing.Point(20, 30);
-            this.lblReportTitle.Name = "lblReportTitle";
-            this.lblReportTitle.Size = new System.Drawing.Size(430, 30);
-            this.lblReportTitle.TabIndex = 0;
-            this.lblReportTitle.Text = "Формирование отчета о продажах";
-            // 
-            // lblFrom
-            // 
-            this.lblFrom.AutoSize = true;
-            this.lblFrom.Location = new System.Drawing.Point(25, 90);
-            this.lblFrom.Name = "lblFrom";
-            this.lblFrom.Size = new System.Drawing.Size(71, 19);
-            this.lblFrom.TabIndex = 1;
-            this.lblFrom.Text = "Период с:";
-            // 
-            // dtpFrom
-            // 
-            this.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFrom.Location = new System.Drawing.Point(110, 88);
-            this.dtpFrom.Name = "dtpFrom";
-            this.dtpFrom.Size = new System.Drawing.Size(130, 25);
-            this.dtpFrom.TabIndex = 2;
-            // 
-            // lblTo
-            // 
-            this.lblTo.AutoSize = true;
-            this.lblTo.Location = new System.Drawing.Point(260, 90);
-            this.lblTo.Name = "lblTo";
-            this.lblTo.Size = new System.Drawing.Size(25, 19);
-            this.lblTo.TabIndex = 3;
-            this.lblTo.Text = "по";
-            // 
-            // dtpTo
-            // 
-            this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpTo.Location = new System.Drawing.Point(300, 88);
-            this.dtpTo.Name = "dtpTo";
-            this.dtpTo.Size = new System.Drawing.Size(130, 25);
-            this.dtpTo.TabIndex = 4;
-            // 
-            // btnReport
-            // 
-            this.btnReport.BackColor = System.Drawing.Color.Black;
-            this.btnReport.FlatAppearance.BorderSize = 0;
-            this.btnReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReport.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnReport.ForeColor = System.Drawing.Color.White;
-            this.btnReport.Location = new System.Drawing.Point(25, 140);
-            this.btnReport.Name = "btnReport";
-            this.btnReport.Size = new System.Drawing.Size(280, 45);
-            this.btnReport.TabIndex = 5;
-            this.btnReport.Text = "Сформировать отчет в Excel (CSV)";
-            this.btnReport.UseVisualStyleBackColor = false;
-            this.btnReport.Click += new System.EventHandler(this.btnReport_Click);
             // 
             // MainFormManager
             // 
@@ -201,8 +126,6 @@
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
             this.tabMain.ResumeLayout(false);
-            this.tabSpecial.ResumeLayout(false);
-            this.tabSpecial.PerformLayout();
             this.ResumeLayout(false);
         }
 
@@ -212,13 +135,7 @@
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.TabControl tabMain;
         private System.Windows.Forms.TabPage tabGames;
+        private System.Windows.Forms.TabPage tabOrders;
         private System.Windows.Forms.TabPage tabCatalogs;
-        private System.Windows.Forms.TabPage tabSpecial;
-        private System.Windows.Forms.Label lblReportTitle;
-        private System.Windows.Forms.Label lblFrom;
-        private System.Windows.Forms.DateTimePicker dtpFrom;
-        private System.Windows.Forms.Label lblTo;
-        private System.Windows.Forms.DateTimePicker dtpTo;
-        private System.Windows.Forms.Button btnReport;
     }
 }

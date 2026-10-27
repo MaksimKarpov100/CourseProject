@@ -12,6 +12,7 @@ namespace BoardGame_Store
         public OrderAddForm()
         {
             InitializeComponent();
+            nudDiscount.Enabled = false; // Скидка считается автоматически по ТЗ
         }
 
         private void OrderAddForm_Load(object sender, EventArgs e)
@@ -37,6 +38,10 @@ namespace BoardGame_Store
             dgvOrderItems.RowTemplate.Height = 50;
             dgvOrderItems.AllowUserToAddRows = false;
             dgvOrderItems.ReadOnly = true;
+
+            // ЖЕСТКАЯ НАСТРОЙКА ДЛЯ УДАЛЕНИЯ
+            dgvOrderItems.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvOrderItems.MultiSelect = false;
         }
 
         private void LoadCustomers()
@@ -56,10 +61,7 @@ namespace BoardGame_Store
                     cmbCustomer.ValueMember = "customer_id";
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка клиентов: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            catch (Exception ex) { MessageBox.Show("Ошибка клиентов: " + ex.Message); }
         }
 
         private void LoadGames()
@@ -79,10 +81,7 @@ namespace BoardGame_Store
                     cmbGame.ValueMember = "game_id";
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка игр: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            catch (Exception ex) { MessageBox.Show("Ошибка игр: " + ex.Message); }
         }
 
         private void cmbGame_SelectedIndexChanged(object sender, EventArgs e)
@@ -90,10 +89,7 @@ namespace BoardGame_Store
             if (cmbGame.SelectedIndex != -1)
             {
                 DataRowView row = cmbGame.SelectedItem as DataRowView;
-                if (row != null)
-                {
-                    txtPrice.Text = row["price"].ToString();
-                }
+                if (row != null) txtPrice.Text = row["price"].ToString();
             }
         }
 
@@ -115,18 +111,25 @@ namespace BoardGame_Store
                 return;
             }
 
+            int stock = GetStockQuantity(gameId);
+
+            if (stock <= 0)
+            {
+                MessageBox.Show("Этого товара нет на складе!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             bool itemExists = false;
 
+            // Если товар уже есть в корзине, увеличиваем количество
             foreach (DataGridViewRow row in dgvOrderItems.Rows)
             {
                 if (row.Cells["ID"].Value != null && Convert.ToInt32(row.Cells["ID"].Value) == gameId)
                 {
                     itemExists = true;
-
                     int currentQty = Convert.ToInt32(row.Cells["Кол-во"].Value);
                     int newQty = currentQty + addQty;
 
-                    int stock = GetStockQuantity(gameId);
                     if (newQty > stock)
                     {
                         MessageBox.Show("На складе осталось только " + stock + " шт. этого товара!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -135,13 +138,14 @@ namespace BoardGame_Store
 
                     row.Cells["Кол-во"].Value = newQty;
                     row.Cells["Сумма"].Value = newQty * price;
+                    row.Selected = true;
                     break;
                 }
             }
 
+            // Если товара нет, добавляем новую строку
             if (itemExists == false)
             {
-                int stock = GetStockQuantity(gameId);
                 if (addQty > stock)
                 {
                     MessageBox.Show("На складе осталось только " + stock + " шт. этого товара!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -150,9 +154,14 @@ namespace BoardGame_Store
 
                 Image photo = GetGameImage(gameId);
                 dgvOrderItems.Rows.Add(photo, gameId, cmbGame.Text, addQty, price, addQty * price);
+
+                // Автоматически выделяем добавленную строку
+                dgvOrderItems.ClearSelection();
+                dgvOrderItems.Rows[dgvOrderItems.Rows.Count - 1].Selected = true;
             }
 
             CalculateTotal();
+            nudQuantity.Value = 1; // Сброс количества
         }
 
         private int GetStockQuantity(int gameId)
@@ -165,18 +174,11 @@ namespace BoardGame_Store
                     string sql = "SELECT stock_quantity FROM board_games WHERE game_id=" + gameId;
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     object result = cmd.ExecuteScalar();
-
-                    if (result != null)
-                    {
-                        return Convert.ToInt32(result);
-                    }
+                    if (result != null) return Convert.ToInt32(result);
                     return 0;
                 }
             }
-            catch
-            {
-                return 0;
-            }
+            catch { return 0; }
         }
 
         private Image GetGameImage(int gameId)
@@ -189,64 +191,60 @@ namespace BoardGame_Store
                     string sql = "SELECT image_data FROM board_games WHERE game_id=" + gameId;
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     byte[] bytes = cmd.ExecuteScalar() as byte[];
-
                     if (bytes != null && bytes.Length > 0)
                     {
-                        using (MemoryStream ms = new MemoryStream(bytes))
-                        {
-                            return Image.FromStream(ms);
-                        }
+                        using (MemoryStream ms = new MemoryStream(bytes)) { return Image.FromStream(ms); }
                     }
                 }
             }
-            catch
-            {
-
-            }
-
-            try
-            {
-                return Image.FromFile("Resources/picture.png");
-            }
-            catch
-            {
-                return null;
-            }
+            catch { }
+            try { return Image.FromFile("Resources/picture.png"); } catch { return null; }
         }
 
+        // ИДЕАЛЬНЫЙ МЕТОД УДАЛЕНИЯ
         private void btnDeleteItem_Click(object sender, EventArgs e)
         {
-            if (dgvOrderItems.CurrentRow != null)
+            if (dgvOrderItems.Rows.Count == 0)
             {
-                dgvOrderItems.Rows.Remove(dgvOrderItems.CurrentRow);
+                MessageBox.Show("В корзине нет товаров для удаления!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (dgvOrderItems.SelectedRows.Count > 0)
+            {
+                int rowIndex = dgvOrderItems.SelectedRows[0].Index;
+                dgvOrderItems.Rows.RemoveAt(rowIndex);
                 CalculateTotal();
+            }
+            else
+            {
+                MessageBox.Show("Пожалуйста, кликните по строке, которую хотите удалить, и нажмите кнопку еще раз!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private void CalculateTotal()
         {
             decimal sum = 0;
-
             foreach (DataGridViewRow row in dgvOrderItems.Rows)
             {
-                if (row.Cells["Сумма"].Value != null)
-                {
-                    sum += Convert.ToDecimal(row.Cells["Сумма"].Value);
-                }
+                if (row.Cells["Сумма"].Value != null) sum += Convert.ToDecimal(row.Cells["Сумма"].Value);
             }
 
-            decimal disc = sum * (nudDiscount.Value / 100);
+            decimal discountPercent = DiscountHelper.GetDiscount(sum, dtpOrderDate.Value);
+
+            nudDiscount.ValueChanged -= nudDiscount_ValueChanged;
+            nudDiscount.Value = discountPercent;
+            nudDiscount.ValueChanged += nudDiscount_ValueChanged;
+
+            decimal disc = DiscountHelper.GetDiscountAmount(sum, discountPercent);
 
             txtSumWithout.Text = sum.ToString("0.00");
             txtDiscountAmount.Text = disc.ToString("0.00");
-            txtSumWith.Text = (sum - disc).ToString("0.00");
-            txtTotal.Text = (sum - disc).ToString("0.00");
+            txtSumWith.Text = DiscountHelper.GetTotal(sum, disc).ToString("0.00");
+            txtTotal.Text = txtSumWith.Text;
         }
 
-        private void nudDiscount_ValueChanged(object sender, EventArgs e)
-        {
-            CalculateTotal();
-        }
+        private void nudDiscount_ValueChanged(object sender, EventArgs e) { }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -258,7 +256,7 @@ namespace BoardGame_Store
 
             if (dgvOrderItems.Rows.Count == 0)
             {
-                MessageBox.Show("Добавьте хотя бы один товар!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Добавьте хотя бы один товар в заказ!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -331,9 +329,6 @@ namespace BoardGame_Store
             }
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private void btnCancel_Click(object sender, EventArgs e) { this.Close(); }
     }
 }
