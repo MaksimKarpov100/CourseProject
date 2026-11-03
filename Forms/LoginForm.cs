@@ -8,13 +8,18 @@ namespace BoardGame_Store
     public partial class LoginForm : Form
     {
         private int failedAttempts = 0;
+        private int blockSeconds = 0;
         private CaptchaGenerator captchaGen = new CaptchaGenerator();
+        private Timer blockTimer = new Timer();
 
         public LoginForm()
         {
             InitializeComponent();
-            LoadCaptcha();
 
+            blockTimer.Interval = 1000; 
+            blockTimer.Tick += BlockTimer_Tick;
+
+            LoadCaptcha();
             UpdateLoginButtonState();
         }
 
@@ -32,12 +37,12 @@ namespace BoardGame_Store
             if (isLoginFilled == true && isPasswordFilled == true && isCaptchaFilled == true)
             {
                 btnLogin.Enabled = true;
-                btnLogin.BackColor = Color.FromArgb(211, 47, 47); 
+                btnLogin.BackColor = Color.FromArgb(211, 47, 47);
             }
             else
             {
                 btnLogin.Enabled = false;
-                btnLogin.BackColor = Color.Gray; 
+                btnLogin.BackColor = Color.Gray;
             }
         }
 
@@ -45,7 +50,6 @@ namespace BoardGame_Store
         {
             pbCaptcha.Image = captchaGen.Generate();
             txtCaptcha.Clear();
-
             UpdateLoginButtonState();
         }
 
@@ -94,9 +98,28 @@ namespace BoardGame_Store
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            if (blockSeconds > 0)
+            {
+                return;
+            }
+
             string login = txtLogin.Text.Trim();
             string password = txtPassword.Text;
             string captcha = txtCaptcha.Text.Trim();
+
+            if (login.Length < 4 || login.Length > 32)
+            {
+                lblError.Text = "Логин должен быть от 4 до 32 символов!";
+                lblError.Visible = true;
+                return;
+            }
+
+            if (password.Length < 8 || password.Length > 64)
+            {
+                lblError.Text = "Пароль должен быть от 8 до 64 символов!";
+                lblError.Visible = true;
+                return;
+            }
 
             if (pbCaptcha.Visible == true)
             {
@@ -104,7 +127,14 @@ namespace BoardGame_Store
                 {
                     lblError.Text = "Неверная капча!";
                     lblError.Visible = true;
-                    LoadCaptcha(); 
+                    failedAttempts++;
+
+                    if (failedAttempts >= 3)
+                    {
+                        StartBlock();
+                    }
+
+                    LoadCaptcha();
                     return;
                 }
             }
@@ -167,7 +197,6 @@ namespace BoardGame_Store
             else
             {
                 failedAttempts++;
-
                 lblError.Text = "Неверный логин или пароль!";
                 lblError.Visible = true;
 
@@ -180,7 +209,41 @@ namespace BoardGame_Store
                     LoadCaptcha();
                 }
 
-                txtPassword.Clear(); 
+                if (failedAttempts >= 3)
+                {
+                    StartBlock();
+                }
+
+                txtPassword.Clear();
+                UpdateLoginButtonState();
+            }
+        }
+
+        private void StartBlock()
+        {
+            blockSeconds = 10;
+            lblTimer.Visible = true;
+            lblTimer.Text = "00:" + blockSeconds;
+            btnLogin.Enabled = false;
+            btnLogin.BackColor = Color.Gray;
+            blockTimer.Start();
+        }
+
+        private void BlockTimer_Tick(object sender, EventArgs e)
+        {
+            blockSeconds--;
+
+            if (blockSeconds > 0)
+            {
+                lblTimer.Text = "00:" + blockSeconds.ToString("D2");
+            }
+            else
+            {
+                blockTimer.Stop();
+                lblTimer.Visible = false;
+                failedAttempts = 0;
+                lblError.Visible = false;
+                UpdateLoginButtonState();
             }
         }
     }

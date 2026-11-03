@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Text.RegularExpressions;
+using System.Data;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
+using System.Collections.Generic;
 
 namespace BoardGame_Store
 {
     public partial class CategoryEditForm : Form
     {
-        private int _categoryId = 0;
+        private int categoryId = 0;
 
         public CategoryEditForm()
         {
@@ -18,75 +18,97 @@ namespace BoardGame_Store
         public CategoryEditForm(int id)
         {
             InitializeComponent();
-            _categoryId = id;
+            this.categoryId = id;
             lblTitle.Text = "Редактирование категории";
         }
 
         private void CategoryEditForm_Load(object sender, EventArgs e)
         {
-            if (_categoryId > 0)
+            if (categoryId > 0)
             {
-                try
+                LoadData();
+            }
+        }
+
+        private void LoadData()
+        {
+            try
+            {
+                Dictionary<string, object> parameters = new Dictionary<string, object>();
+                parameters.Add("@id", categoryId);
+
+                string sql = "SELECT category_name, description FROM categories WHERE category_id=@id";
+
+                DataTable dt = DatabaseHelper.ExecuteQuery(sql, parameters);
+
+                if (dt.Rows.Count > 0)
                 {
-                    using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                    {
-                        conn.Open();
-                        MySqlCommand cmd = new MySqlCommand("SELECT category_name, description FROM categories WHERE category_id=@id", conn);
-                        cmd.Parameters.AddWithValue("@id", _categoryId);
-                        using (var r = cmd.ExecuteReader())
-                        {
-                            if (r.Read())
-                            {
-                                txtName.Text = r["category_name"].ToString();
-                                txtDesc.Text = r["description"].ToString();
-                            }
-                        }
-                    }
+                    txtName.Text = dt.Rows[0]["category_name"].ToString();
+                    txtDesc.Text = dt.Rows[0]["description"].ToString();
                 }
-                catch (Exception ex) { MessageBox.Show("Ошибка загрузки: " + ex.Message); }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError("Ошибка загрузки данных: " + ex.Message);
             }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
             string name = txtName.Text.Trim();
+            string description = txtDesc.Text.Trim();
 
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name) == true)
             {
-                MessageBox.Show("Введите название!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageHelper.ShowWarning("Введите название категории!");
                 return;
             }
 
-            if (!Regex.IsMatch(name, @"^[А-Яа-яЁё\s\-]+$"))
+            if (ValidationHelper.IsRussianText(name) == false)
             {
-                MessageBox.Show("Название должно содержать только русские буквы и дефис!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageHelper.ShowWarning("Название должно содержать только русские буквы и дефис!");
                 return;
             }
 
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                {
-                    conn.Open();
-                    string sql = _categoryId == 0
-                        ? "INSERT INTO categories (category_name, description) VALUES (@n, @d)"
-                        : "UPDATE categories SET category_name=@n, description=@d WHERE category_id=@id";
+                Dictionary<string, object> parameters = new Dictionary<string, object>();
+                parameters.Add("@n", name);
+                parameters.Add("@d", description);
 
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@n", name);
-                    cmd.Parameters.AddWithValue("@d", txtDesc.Text.Trim());
-                    if (_categoryId > 0) cmd.Parameters.AddWithValue("@id", _categoryId);
-                    cmd.ExecuteNonQuery();
+                if (categoryId == 0)
+                {
+                    string sqlInsert = "INSERT INTO categories (category_name, description) VALUES (@n, @d)";
+                    DatabaseHelper.ExecuteNonQuery(sqlInsert, parameters);
+                    MessageHelper.ShowInfo("Категория успешно добавлена!");
                 }
+                else
+                {
+                    parameters.Add("@id", categoryId);
+                    string sqlUpdate = "UPDATE categories SET category_name=@n, description=@d WHERE category_id=@id";
+                    DatabaseHelper.ExecuteNonQuery(sqlUpdate, parameters);
+                    MessageHelper.ShowInfo("Категория успешно обновлена!");
+                }
+
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
-            catch (MySqlException ex)
+            catch (Exception ex)
             {
-                if (ex.Number == 1062) MessageBox.Show("Категория с таким названием уже существует!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                else MessageBox.Show("Ошибка БД: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (ex.Message.Contains("1062") == true)
+                {
+                    MessageHelper.ShowError("Категория с таким названием уже существует!");
+                }
+                else
+                {
+                    MessageHelper.ShowError("Ошибка базы данных: " + ex.Message);
+                }
             }
         }
-        private void btnCancel_Click(object sender, EventArgs e) { this.Close(); }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

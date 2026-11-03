@@ -13,31 +13,52 @@ namespace BoardGame_Store
 
         private static string SettingsPath
         {
-            get { return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "db_settings.ini"); }
+            get
+            {
+                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "db_settings.ini");
+            }
         }
 
         public static string BuildConnectionString()
         {
-            return "Server=" + Server + ";Port=" + Port + ";Database=" + Database + ";Uid=" + User + ";Pwd=" + Password + ";CharSet=utf8mb4;AllowPublicKeyRetrieval=True;";
+            string connectionString = "Server=" + Server + ";";
+            connectionString = connectionString + "Port=" + Port + ";";
+            connectionString = connectionString + "Database=" + Database + ";";
+            connectionString = connectionString + "Uid=" + User + ";";
+            connectionString = connectionString + "Pwd=" + Password + ";";
+            connectionString = connectionString + "CharSet=utf8mb4;";
+            connectionString = connectionString + "AllowPublicKeyRetrieval=True;";
+
+            return connectionString;
         }
 
         public static void Save()
         {
             try
             {
-                string[] lines = { Server, Port.ToString(), Database, User, Password };
+                string[] lines = new string[5];
+                lines[0] = Server;
+                lines[1] = Port.ToString();
+                lines[2] = Database;
+                lines[3] = User;
+                lines[4] = Password;
+
                 File.WriteAllLines(SettingsPath, lines);
             }
-            catch { }
+            catch
+            {
+
+            }
         }
 
         public static void Load()
         {
             try
             {
-                if (File.Exists(SettingsPath))
+                if (File.Exists(SettingsPath) == true)
                 {
                     string[] lines = File.ReadAllLines(SettingsPath);
+
                     if (lines.Length >= 5)
                     {
                         Server = lines[0];
@@ -48,7 +69,10 @@ namespace BoardGame_Store
                     }
                 }
             }
-            catch { }
+            catch
+            {
+
+            }
         }
     }
 }

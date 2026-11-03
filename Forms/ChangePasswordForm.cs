@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Data;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
+using System.Collections.Generic;
 
 namespace BoardGame_Store
 {
@@ -11,65 +12,116 @@ namespace BoardGame_Store
             InitializeComponent();
         }
 
-        private void chkShowPassword_CheckedChanged(object sender, EventArgs e)
+        private void btnShowOld_Click(object sender, EventArgs e)
         {
-            char passChar = chkShowPassword.Checked ? '\0' : '●';
-            txtOldPass.PasswordChar = passChar;
-            txtNewPass.PasswordChar = passChar;
-            txtConfirmPass.PasswordChar = passChar;
+            if (txtOldPass.PasswordChar == '●')
+            {
+                txtOldPass.PasswordChar = '\0';
+            }
+            else
+            {
+                txtOldPass.PasswordChar = '●';
+            }
+        }
+
+        private void btnShowNew_Click(object sender, EventArgs e)
+        {
+            if (txtNewPass.PasswordChar == '●')
+            {
+                txtNewPass.PasswordChar = '\0';
+            }
+            else
+            {
+                txtNewPass.PasswordChar = '●';
+            }
+        }
+
+        private void btnShowConfirm_Click(object sender, EventArgs e)
+        {
+            if (txtConfirmPass.PasswordChar == '●')
+            {
+                txtConfirmPass.PasswordChar = '\0';
+            }
+            else
+            {
+                txtConfirmPass.PasswordChar = '●';
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtOldPass.Text) ||
-                string.IsNullOrWhiteSpace(txtNewPass.Text) ||
-                string.IsNullOrWhiteSpace(txtConfirmPass.Text))
+            string oldPassword = txtOldPass.Text;
+            string newPassword = txtNewPass.Text;
+            string confirmPassword = txtConfirmPass.Text;
+
+            if (string.IsNullOrWhiteSpace(oldPassword) == true)
             {
-                ValidationHelper.ShowWarning("Заполните все поля!");
+                MessageHelper.ShowWarning("Введите старый пароль!");
                 return;
             }
 
-            if (txtNewPass.Text != txtConfirmPass.Text)
+            if (string.IsNullOrWhiteSpace(newPassword) == true)
             {
-                ValidationHelper.ShowWarning("Новые пароли не совпадают!");
+                MessageHelper.ShowWarning("Введите новый пароль!");
                 return;
             }
 
-            if (txtNewPass.Text.Length < 8)
+            if (string.IsNullOrWhiteSpace(confirmPassword) == true)
             {
-                ValidationHelper.ShowWarning("Новый пароль должен быть не менее 8 символов!");
+                MessageHelper.ShowWarning("Подтвердите новый пароль!");
+                return;
+            }
+
+            if (newPassword != confirmPassword)
+            {
+                MessageHelper.ShowWarning("Новые пароли не совпадают!");
+                return;
+            }
+
+            if (newPassword.Length < 8 || newPassword.Length > 64)
+            {
+                MessageHelper.ShowWarning("Новый пароль должен быть от 8 до 64 символов!");
                 return;
             }
 
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                Dictionary<string, object> parameters = new Dictionary<string, object>();
+                parameters.Add("@id", CurrentUser.UserId);
+
+                string sqlSelect = "SELECT password_hash FROM users WHERE user_id=@id";
+                DataTable dt = DatabaseHelper.ExecuteQuery(sqlSelect, parameters);
+
+                if (dt.Rows.Count == 0)
                 {
-                    conn.Open();
-
-                    MySqlCommand cmdCheck = new MySqlCommand("SELECT password_hash FROM users WHERE user_id=@id", conn);
-                    cmdCheck.Parameters.AddWithValue("@id", CurrentUser.UserId);
-                    string oldHash = cmdCheck.ExecuteScalar().ToString();
-
-                    if (!PasswordHelper.CheckPassword(txtOldPass.Text, oldHash))
-                    {
-                        ValidationHelper.ShowWarning("Неверный старый пароль!");
-                        return;
-                    }
-
-                    string newHash = PasswordHelper.GetHash(txtNewPass.Text);
-                    MySqlCommand cmdUpdate = new MySqlCommand("UPDATE users SET password_hash=@hash WHERE user_id=@id", conn);
-                    cmdUpdate.Parameters.AddWithValue("@hash", newHash);
-                    cmdUpdate.Parameters.AddWithValue("@id", CurrentUser.UserId);
-                    cmdUpdate.ExecuteNonQuery();
+                    MessageHelper.ShowError("Пользователь не найден!");
+                    return;
                 }
 
-                ValidationHelper.ShowSuccess("Пароль успешно изменен!");
+                string oldHashFromDb = dt.Rows[0]["password_hash"].ToString();
+
+                if (PasswordHelper.CheckPassword(oldPassword, oldHashFromDb) == false)
+                {
+                    MessageHelper.ShowWarning("Неверный старый пароль!");
+                    return;
+                }
+
+                string newHash = PasswordHelper.GetHash(newPassword);
+
+                Dictionary<string, object> updateParameters = new Dictionary<string, object>();
+                updateParameters.Add("@hash", newHash);
+                updateParameters.Add("@id", CurrentUser.UserId);
+
+                string sqlUpdate = "UPDATE users SET password_hash=@hash WHERE user_id=@id";
+                DatabaseHelper.ExecuteNonQuery(sqlUpdate, updateParameters);
+
+                MessageHelper.ShowInfo("Пароль успешно изменен!");
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (Exception ex)
             {
-                ValidationHelper.ShowError("Ошибка: " + ex.Message);
+                MessageHelper.ShowError("Ошибка базы данных: " + ex.Message);
             }
         }
 

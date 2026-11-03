@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
@@ -22,14 +23,14 @@ namespace BoardGame_Store
         {
             try
             {
-                string cs = "Server=" + txtServer.Text.Trim() + ";" +
-                            "Port=" + (int)nudPort.Value + ";" +
-                            "Uid=" + txtUser.Text.Trim() + ";" +
-                            "Pwd=" + txtPassword.Text + ";" +
-                            "CharSet=utf8mb4;" +
-                            "AllowPublicKeyRetrieval=True;";
+                string connectionString = "Server=" + txtServer.Text.Trim() + ";" +
+                                          "Port=" + (int)nudPort.Value + ";" +
+                                          "Uid=" + txtUser.Text.Trim() + ";" +
+                                          "Pwd=" + txtPassword.Text + ";" +
+                                          "CharSet=utf8mb4;" +
+                                          "AllowPublicKeyRetrieval=True;";
 
-                using (MySqlConnection conn = new MySqlConnection(cs))
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
                 }
@@ -52,27 +53,34 @@ namespace BoardGame_Store
 
             DbConfig.Save();
 
-            MessageHelper.ShowInfo("Настройки сохранены\n" +
-                "Сервер: " + DbConfig.Server + "\n" +
-                "База: " + DbConfig.Database + "\n" +
-                "Пользователь: " + DbConfig.User);
+            string infoMessage = "";
+            infoMessage = infoMessage + "Настройки сохранены\n";
+            infoMessage = infoMessage + "Сервер: " + DbConfig.Server + "\n";
+            infoMessage = infoMessage + "База: " + DbConfig.Database + "\n";
+            infoMessage = infoMessage + "Пользователь: " + DbConfig.User;
+
+            MessageHelper.ShowInfo(infoMessage);
         }
 
         private void btnImportSql_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "SQL|*.sql";
-            if (ofd.ShowDialog() != DialogResult.OK) return;
+            ofd.Filter = "SQL файлы (*.sql)|*.sql";
+
+            if (ofd.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
 
             try
             {
-                string sql = System.IO.File.ReadAllText(ofd.FileName, System.Text.Encoding.UTF8);
-                string cs = "Server=" + txtServer.Text.Trim() + ";Port=" + (int)nudPort.Value + ";Uid=" + txtUser.Text.Trim() + ";Pwd=" + txtPassword.Text + ";CharSet=utf8mb4;AllowPublicKeyRetrieval=True;";
+                string sqlScript = File.ReadAllText(ofd.FileName, Encoding.UTF8);
+                string connectionString = "Server=" + txtServer.Text.Trim() + ";Port=" + (int)nudPort.Value + ";Uid=" + txtUser.Text.Trim() + ";Pwd=" + txtPassword.Text + ";CharSet=utf8mb4;AllowPublicKeyRetrieval=True;";
 
-                using (MySqlConnection conn = new MySqlConnection(cs))
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    using (MySqlCommand cmd = new MySqlCommand(sqlScript, conn))
                     {
                         cmd.CommandTimeout = 300;
                         cmd.ExecuteNonQuery();
@@ -86,11 +94,21 @@ namespace BoardGame_Store
                 DbConfig.Password = txtPassword.Text;
                 DbConfig.Save();
 
-                try { DbInitializer.EnsureDefaultUsers(); } catch { }
+                try
+                {
+                    DbInitializer.EnsureDefaultUsers();
+                }
+                catch
+                {
 
-                MessageBox.Show("База восстановлена! Настройки сохранены.", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                MessageHelper.ShowInfo("База восстановлена! Настройки сохранены.");
             }
-            catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError("Ошибка импорта SQL: " + ex.Message);
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

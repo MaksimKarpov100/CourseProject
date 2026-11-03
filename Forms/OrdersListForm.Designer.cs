@@ -120,6 +120,8 @@
             this.txtOrderNumber.Size = new System.Drawing.Size(90, 25);
             this.txtOrderNumber.TabIndex = 1;
             this.txtOrderNumber.TextChanged += new System.EventHandler(this.txtOrderNumber_TextChanged);
+            this.txtOrderNumber.Enter += new System.EventHandler(this.txtOrderNumber_Enter);
+            this.txtOrderNumber.Leave += new System.EventHandler(this.txtOrderNumber_Leave);
             // 
             // lblDateFrom
             // 
@@ -393,9 +395,9 @@
             // 
             // nudDiscount
             // 
-            this.nudDiscount.Location = new System.Drawing.Point(150, 7);
+            this.nudDiscount.Location = new System.Drawing.Point(130, 7);
             this.nudDiscount.Name = "nudDiscount";
-            this.nudDiscount.Size = new System.Drawing.Size(80, 25);
+            this.nudDiscount.Size = new System.Drawing.Size(115, 25);
             this.nudDiscount.TabIndex = 1;
             this.nudDiscount.ValueChanged += new System.EventHandler(this.nudDiscount_ValueChanged);
             // 

@@ -12,7 +12,6 @@ namespace BoardGame_Store
         public Image Generate()
         {
             string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-
             currentCode = "";
 
             for (int i = 0; i < 4; i++)
@@ -32,17 +31,14 @@ namespace BoardGame_Store
             for (int i = 0; i < 6; i++)
             {
                 Pen pen = new Pen(Color.LightGray, 1);
-
                 int x1 = rnd.Next(180);
                 int y1 = rnd.Next(50);
                 int x2 = rnd.Next(180);
                 int y2 = rnd.Next(50);
-
                 g.DrawLine(pen, x1, y1, x2, y2);
             }
 
             g.Dispose();
-
             return bmp;
         }
 
@@ -52,7 +48,6 @@ namespace BoardGame_Store
             {
                 return false;
             }
-
             return input.Trim().ToUpper() == currentCode;
         }
     }

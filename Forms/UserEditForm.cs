@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Text.RegularExpressions;
+using System.Data;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using System.Collections.Generic;
 
 namespace BoardGame_Store
 {
     public partial class UserEditForm : Form
     {
-        private int _userId = 0;
+        private int userId = 0;
 
         public UserEditForm()
         {
@@ -15,135 +16,160 @@ namespace BoardGame_Store
             lblTitle.Text = "Добавление пользователя";
         }
 
-        public UserEditForm(int userId)
+        public UserEditForm(int id)
         {
             InitializeComponent();
-            _userId = userId;
+            this.userId = id;
             lblTitle.Text = "Редактирование пользователя";
         }
 
         private void UserEditForm_Load(object sender, EventArgs e)
         {
-            if (_userId > 0) LoadUserData();
+            if (userId > 0)
+            {
+                LoadUserData();
+            }
         }
 
         private void LoadUserData()
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                Dictionary<string, object> parameters = new Dictionary<string, object>();
+                parameters.Add("@id", userId);
+
+                string sql = "SELECT full_name, login, role, phone FROM users WHERE user_id=@id";
+                DataTable dt = DatabaseHelper.ExecuteQuery(sql, parameters);
+
+                if (dt.Rows.Count > 0)
                 {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT full_name, login, role, phone FROM users WHERE user_id=@id", conn);
-                    cmd.Parameters.AddWithValue("@id", _userId);
-                    using (var r = cmd.ExecuteReader())
-                    {
-                        if (r.Read())
-                        {
-                            txtName.Text = r["full_name"].ToString();
-                            txtLogin.Text = r["login"].ToString();
-                            cmbRole.SelectedItem = r["role"].ToString();
-                            mtxtPhone.Text = r["phone"].ToString();
-                        }
-                    }
+                    txtName.Text = dt.Rows[0]["full_name"].ToString();
+                    txtLogin.Text = dt.Rows[0]["login"].ToString();
+                    cmbRole.SelectedItem = dt.Rows[0]["role"].ToString();
+                    mtxtPhone.Text = dt.Rows[0]["phone"].ToString();
                 }
             }
-            catch (Exception ex) { MessageBox.Show("Ошибка загрузки: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError("Ошибка загрузки данных пользователя: " + ex.Message);
+            }
         }
 
         private void btnShowPass_Click(object sender, EventArgs e)
         {
-            if (txtPassword.PasswordChar == '●') { txtPassword.PasswordChar = '\0'; btnShowPass.Text = "🙈"; }
-            else { txtPassword.PasswordChar = '●'; btnShowPass.Text = "👁"; }
+            if (txtPassword.PasswordChar == '●')
+            {
+                txtPassword.PasswordChar = '\0';
+                btnShowPass.Text = "🙈";
+            }
+            else
+            {
+                txtPassword.PasswordChar = '●';
+                btnShowPass.Text = "👁";
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            string name = txtName.Text.Trim();
             string login = txtLogin.Text.Trim();
             string password = txtPassword.Text;
-            string name = txtName.Text.Trim();
 
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name) == true)
             {
-                MessageBox.Show("Введите ФИО!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageHelper.ShowWarning("Введите ФИО!");
                 return;
             }
-            if (!Regex.IsMatch(name, @"^[А-Яа-яЁё\s\-]+$"))
+
+            if (ValidationHelper.IsRussianText(name) == false)
             {
-                MessageBox.Show("ФИО должно содержать только русские буквы и дефис!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageHelper.ShowWarning("ФИО должно содержать только русские буквы и дефис!");
                 return;
             }
 
             if (login.Length < 4 || login.Length > 32)
             {
-                MessageBox.Show("Логин должен быть от 4 до 32 символов!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageHelper.ShowWarning("Логин должен быть от 4 до 32 символов!");
                 return;
             }
 
-            if (_userId == 0 || !string.IsNullOrWhiteSpace(password))
+            if (userId == 0 || string.IsNullOrWhiteSpace(password) == false)
             {
                 if (password.Length < 8 || password.Length > 64)
                 {
-                    MessageBox.Show("Пароль должен быть от 8 до 64 символов!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageHelper.ShowWarning("Пароль должен быть от 8 до 64 символов!");
                     return;
                 }
             }
 
             if (cmbRole.SelectedIndex == -1)
             {
-                MessageBox.Show("Выберите роль!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageHelper.ShowWarning("Выберите роль!");
                 return;
             }
 
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                if (userId == 0)
                 {
-                    conn.Open();
-                    string sql;
+                    string hash = PasswordHelper.GetHash(password);
 
-                    if (_userId == 0)
+                    Dictionary<string, object> parameters = new Dictionary<string, object>();
+                    parameters.Add("@n", name);
+                    parameters.Add("@l", login);
+                    parameters.Add("@p", hash);
+                    parameters.Add("@r", cmbRole.SelectedItem.ToString());
+                    parameters.Add("@ph", mtxtPhone.Text);
+
+                    string sql = "INSERT INTO users (full_name, login, password_hash, role, phone) VALUES (@n, @l, @p, @r, @ph)";
+                    DatabaseHelper.ExecuteNonQuery(sql, parameters);
+                }
+                else
+                {
+                    Dictionary<string, object> parameters = new Dictionary<string, object>();
+                    parameters.Add("@n", name);
+                    parameters.Add("@l", login);
+                    parameters.Add("@r", cmbRole.SelectedItem.ToString());
+                    parameters.Add("@ph", mtxtPhone.Text);
+                    parameters.Add("@id", userId);
+
+                    if (string.IsNullOrWhiteSpace(password) == false)
                     {
-                        string hash = PasswordHelper.GetHash(password);
-                        sql = "INSERT INTO users (full_name, login, password_hash, role, phone) VALUES (@n, @l, @p, @r, @ph)";
-                        MySqlCommand cmd = new MySqlCommand(sql, conn);
-                        cmd.Parameters.AddWithValue("@p", hash);
-                        cmd.Parameters.AddWithValue("@n", name);
-                        cmd.Parameters.AddWithValue("@l", login);
-                        cmd.Parameters.AddWithValue("@r", cmbRole.SelectedItem.ToString());
-                        cmd.Parameters.AddWithValue("@ph", mtxtPhone.Text);
-                        cmd.ExecuteNonQuery();
+                        parameters.Add("@p", PasswordHelper.GetHash(password));
+                        string sqlWithPass = "UPDATE users SET full_name=@n, login=@l, role=@r, phone=@ph, password_hash=@p WHERE user_id=@id";
+                        DatabaseHelper.ExecuteNonQuery(sqlWithPass, parameters);
                     }
                     else
                     {
-                        sql = "UPDATE users SET full_name=@n, login=@l, role=@r, phone=@ph";
-                        if (!string.IsNullOrWhiteSpace(password)) sql += ", password_hash=@p";
-                        sql += " WHERE user_id=@id";
-
-                        MySqlCommand cmd = new MySqlCommand(sql, conn);
-                        cmd.Parameters.AddWithValue("@n", name);
-                        cmd.Parameters.AddWithValue("@l", login);
-                        cmd.Parameters.AddWithValue("@r", cmbRole.SelectedItem.ToString());
-                        cmd.Parameters.AddWithValue("@ph", mtxtPhone.Text);
-                        cmd.Parameters.AddWithValue("@id", _userId);
-
-                        if (!string.IsNullOrWhiteSpace(password))
-                            cmd.Parameters.AddWithValue("@p", PasswordHelper.GetHash(password));
-
-                        cmd.ExecuteNonQuery();
+                        string sqlWithoutPass = "UPDATE users SET full_name=@n, login=@l, role=@r, phone=@ph WHERE user_id=@id";
+                        DatabaseHelper.ExecuteNonQuery(sqlWithoutPass, parameters);
                     }
                 }
-                MessageBox.Show("Сохранено!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                MessageHelper.ShowInfo("Данные успешно сохранены!");
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (MySqlException ex)
             {
-                if (ex.Number == 1062) MessageBox.Show("Пользователь с таким логином уже существует!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                else MessageBox.Show("Ошибка базы данных: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (ex.Number == 1062)
+                {
+                    MessageHelper.ShowError("Пользователь с таким логином уже существует!");
+                }
+                else
+                {
+                    MessageHelper.ShowError("Ошибка базы данных: " + ex.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError("Неизвестная ошибка: " + ex.Message);
             }
         }
 
-        private void btnCancel_Click(object sender, EventArgs e) { this.Close(); }
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

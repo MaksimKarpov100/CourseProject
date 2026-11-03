@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Data;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
+using System.Collections.Generic;
 
 namespace BoardGame_Store
 {
     public partial class OrderEditForm : Form
     {
-        private int _orderId = 0;
+        private int orderId = 0;
 
-        public OrderEditForm(int orderId)
+        public OrderEditForm(int id)
         {
             InitializeComponent();
-            _orderId = orderId;
+            this.orderId = id;
         }
 
         private void OrderEditForm_Load(object sender, EventArgs e)
         {
-            if (_orderId == 0)
+            if (orderId == 0)
             {
-                MessageBox.Show("Ошибка: ID заказа не передан!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageHelper.ShowError("Ошибка: ID заказа не передан!");
                 this.Close();
                 return;
             }
@@ -33,22 +33,16 @@ namespace BoardGame_Store
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                {
-                    conn.Open();
-                    string sql = "SELECT status_id, status_name FROM statuses ORDER BY status_id";
-                    MySqlDataAdapter da = new MySqlDataAdapter(sql, conn);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
+                string sql = "SELECT status_id, status_name FROM statuses ORDER BY status_id";
+                DataTable dt = DatabaseHelper.ExecuteQuery(sql);
 
-                    cmbStatus.DataSource = dt;
-                    cmbStatus.DisplayMember = "status_name";
-                    cmbStatus.ValueMember = "status_id";
-                }
+                cmbStatus.DataSource = dt;
+                cmbStatus.DisplayMember = "status_name";
+                cmbStatus.ValueMember = "status_id";
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка статусов: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageHelper.ShowError("Ошибка загрузки статусов: " + ex.Message);
             }
         }
 
@@ -56,51 +50,52 @@ namespace BoardGame_Store
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                Dictionary<string, object> parameters = new Dictionary<string, object>();
+                parameters.Add("@id", orderId);
+
+                string sql = "SELECT c.full_name, o.shipping_address, o.status_id, o.discount, " +
+                             "o.total_without_discount, o.total_with_discount, o.total_amount, " +
+                             "o.order_date, o.completion_date " +
+                             "FROM orders o " +
+                             "JOIN customers c ON o.customer_id = c.customer_id " +
+                             "WHERE o.order_id = @id";
+
+                DataTable dt = DatabaseHelper.ExecuteQuery(sql, parameters);
+
+                if (dt.Rows.Count > 0)
                 {
-                    conn.Open();
-                    string sql = "SELECT c.full_name, o.shipping_address, o.status_id, o.discount, " +
-                                 "o.total_without_discount, o.total_with_discount, o.total_amount, " +
-                                 "o.order_date, o.completion_date " +
-                                 "FROM orders o " +
-                                 "JOIN customers c ON o.customer_id = c.customer_id " +
-                                 "WHERE o.order_id = @id";
+                    lblCustomerName.Text = dt.Rows[0]["full_name"].ToString();
+                    txtAddress.Text = dt.Rows[0]["shipping_address"].ToString();
+                    cmbStatus.SelectedValue = dt.Rows[0]["status_id"];
 
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@id", _orderId);
+                    dtpOrderDate.Value = Convert.ToDateTime(dt.Rows[0]["order_date"]);
 
-                    using (MySqlDataReader r = cmd.ExecuteReader())
+                    if (dt.Rows[0]["completion_date"] != DBNull.Value)
                     {
-                        if (r.Read() == true)
-                        {
-                            lblCustomerName.Text = r["full_name"].ToString();
-                            txtAddress.Text = r["shipping_address"].ToString();
-                            cmbStatus.SelectedValue = r["status_id"];
-
-                            dtpOrderDate.Value = Convert.ToDateTime(r["order_date"]);
-                            if (r["completion_date"] != DBNull.Value)
-                                dtpCompletionDate.Value = Convert.ToDateTime(r["completion_date"]);
-                            else
-                                dtpCompletionDate.Value = DateTime.Now;
-
-                            decimal sumWithout = Convert.ToDecimal(r["total_without_discount"]);
-                            decimal sumWith = Convert.ToDecimal(r["total_with_discount"]);
-
-                            txtSumWithout.Text = sumWithout.ToString("0.00");
-                            txtSumWith.Text = sumWith.ToString("0.00");
-                            txtTotal.Text = Convert.ToDecimal(r["total_amount"]).ToString("0.00");
-                            txtDiscountAmount.Text = (sumWithout - sumWith).ToString("0.00");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Заказ не найден!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
+                        dtpCompletionDate.Value = Convert.ToDateTime(dt.Rows[0]["completion_date"]);
                     }
+                    else
+                    {
+                        dtpCompletionDate.Value = DateTime.Now;
+                    }
+
+                    decimal sumWithout = Convert.ToDecimal(dt.Rows[0]["total_without_discount"]);
+                    decimal sumWith = Convert.ToDecimal(dt.Rows[0]["total_with_discount"]);
+                    decimal discountAmount = sumWithout - sumWith;
+
+                    txtSumWithout.Text = sumWithout.ToString("0.00");
+                    txtSumWith.Text = sumWith.ToString("0.00");
+                    txtTotal.Text = Convert.ToDecimal(dt.Rows[0]["total_amount"]).ToString("0.00");
+                    txtDiscountAmount.Text = discountAmount.ToString("0.00");
+                }
+                else
+                {
+                    MessageHelper.ShowWarning("Заказ не найден!");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка загрузки заказа: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageHelper.ShowError("Ошибка загрузки данных заказа: " + ex.Message);
             }
         }
 
@@ -108,58 +103,53 @@ namespace BoardGame_Store
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                {
-                    conn.Open();
-                    string sql = "SELECT g.title AS `Товар`, oi.quantity AS `Кол-во`, " +
-                                 "oi.unit_price AS `Цена`, (oi.quantity * oi.unit_price) AS `Сумма` " +
-                                 "FROM order_items oi " +
-                                 "JOIN board_games g ON oi.game_id = g.game_id " +
-                                 "WHERE oi.order_id = @id";
+                Dictionary<string, object> parameters = new Dictionary<string, object>();
+                parameters.Add("@id", orderId);
 
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@id", _orderId);
+                string sql = "SELECT g.title AS 'Товар', oi.quantity AS 'Кол-во', " +
+                             "oi.unit_price AS 'Цена', (oi.quantity * oi.unit_price) AS 'Сумма' " +
+                             "FROM order_items oi " +
+                             "JOIN board_games g ON oi.game_id = g.game_id " +
+                             "WHERE oi.order_id = @id";
 
-                    MySqlDataAdapter da = new MySqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-
-                    dgvOrderItems.DataSource = dt;
-                }
+                DataTable dt = DatabaseHelper.ExecuteQuery(sql, parameters);
+                dgvOrderItems.DataSource = dt;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка состава: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageHelper.ShowError("Ошибка загрузки состава заказа: " + ex.Message);
             }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (dtpCompletionDate.Value.Date < dtpOrderDate.Value.Date)
+            {
+                MessageHelper.ShowWarning("Дата завершения не может быть меньше даты оформления!");
+                return;
+            }
+
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                {
-                    conn.Open();
-                    string sql = "UPDATE orders SET status_id=@status, shipping_address=@addr, " +
-                                 "order_date=@odate, completion_date=@cdate WHERE order_id=@id";
+                Dictionary<string, object> parameters = new Dictionary<string, object>();
+                parameters.Add("@status", cmbStatus.SelectedValue);
+                parameters.Add("@addr", txtAddress.Text);
+                parameters.Add("@odate", dtpOrderDate.Value);
+                parameters.Add("@cdate", dtpCompletionDate.Value);
+                parameters.Add("@id", orderId);
 
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@status", cmbStatus.SelectedValue);
-                    cmd.Parameters.AddWithValue("@addr", txtAddress.Text);
-                    cmd.Parameters.AddWithValue("@odate", dtpOrderDate.Value);
-                    cmd.Parameters.AddWithValue("@cdate", dtpCompletionDate.Value);
-                    cmd.Parameters.AddWithValue("@id", _orderId);
+                string sql = "UPDATE orders SET status_id=@status, shipping_address=@addr, " +
+                             "order_date=@odate, completion_date=@cdate WHERE order_id=@id";
 
-                    cmd.ExecuteNonQuery();
-                }
+                DatabaseHelper.ExecuteNonQuery(sql, parameters);
 
-                MessageBox.Show("Заказ обновлен!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageHelper.ShowInfo("Заказ успешно обновлен!");
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка сохранения: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageHelper.ShowError("Ошибка сохранения: " + ex.Message);
             }
         }
 

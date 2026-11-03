@@ -11,7 +11,6 @@ namespace BoardGame_Store
             {
                 byte[] bytes = Encoding.UTF8.GetBytes(password);
                 byte[] hash = sha.ComputeHash(bytes);
-
                 StringBuilder sb = new StringBuilder();
 
                 foreach (byte b in hash)
@@ -26,7 +25,6 @@ namespace BoardGame_Store
         public static bool CheckPassword(string password, string hashFromDb)
         {
             string hash = GetHash(password);
-
             return hash == hashFromDb;
         }
     }

@@ -3,7 +3,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
+using System.Collections.Generic;
 
 namespace BoardGame_Store
 {
@@ -30,7 +30,6 @@ namespace BoardGame_Store
             SetupFilters();
         }
 
-        // АВТООБНОВЛЕНИЕ
         public void RefreshData()
         {
             LoadGames();
@@ -63,113 +62,137 @@ namespace BoardGame_Store
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                {
-                    conn.Open();
-                    MySqlDataAdapter da = new MySqlDataAdapter("SELECT category_id, category_name FROM categories ORDER BY category_name", conn);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
+                string sql = "SELECT category_id, category_name FROM categories ORDER BY category_name";
+                DataTable dt = DatabaseHelper.ExecuteQuery(sql);
 
-                    DataRow row = dt.NewRow();
-                    row["category_id"] = 0;
-                    row["category_name"] = "Все категории";
-                    dt.Rows.InsertAt(row, 0);
+                DataRow row = dt.NewRow();
+                row["category_id"] = 0;
+                row["category_name"] = "Все категории";
+                dt.Rows.InsertAt(row, 0);
 
-                    cmbCategory.DataSource = dt;
-                    cmbCategory.DisplayMember = "category_name";
-                    cmbCategory.ValueMember = "category_id";
-                }
+                cmbCategory.DataSource = dt;
+                cmbCategory.DisplayMember = "category_name";
+                cmbCategory.ValueMember = "category_id";
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError("Ошибка загрузки категорий: " + ex.Message);
+            }
         }
 
         private void LoadGames()
         {
-            if (isLoaded == false) return;
+            if (isLoaded == false)
+            {
+                return;
+            }
 
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                string whereClause = " WHERE 1=1 ";
+                Dictionary<string, object> parameters = new Dictionary<string, object>();
+
+                if (string.IsNullOrWhiteSpace(txtSearch.Text) == false && txtSearch.Text != "Поиск...")
                 {
-                    conn.Open();
-                    string where = " WHERE 1=1 ";
-
-                    if (string.IsNullOrWhiteSpace(txtSearch.Text) == false && txtSearch.Text != "Поиск...")
-                        where += " AND g.title LIKE @search ";
-                    if (cmbCategory.SelectedIndex > 0)
-                        where += " AND g.category_id = @cat ";
-
-                    MySqlCommand cmdCount = new MySqlCommand("SELECT COUNT(*) FROM board_games g " + where, conn);
-
-                    if (string.IsNullOrWhiteSpace(txtSearch.Text) == false && txtSearch.Text != "Поиск...")
-                        cmdCount.Parameters.AddWithValue("@search", "%" + txtSearch.Text + "%");
-                    if (cmbCategory.SelectedIndex > 0)
-                        cmdCount.Parameters.AddWithValue("@cat", cmbCategory.SelectedValue);
-
-                    totalRecords = Convert.ToInt32(cmdCount.ExecuteScalar());
-                    totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
-
-                    if (totalPages < 1) totalPages = 1;
-                    if (currentPage > totalPages) currentPage = totalPages;
-
-                    string orderBy = " ORDER BY g.title ASC ";
-                    if (cmbSort.SelectedIndex == 1) orderBy = " ORDER BY g.price ASC ";
-                    else if (cmbSort.SelectedIndex == 2) orderBy = " ORDER BY g.stock_quantity ASC ";
-
-                    string sql = "SELECT g.game_id AS `ID`, g.title AS `Название`, c.category_name AS `Категория`, " +
-                                 "g.price AS `Цена`, g.stock_quantity AS `Кол-во на складе`, g.image_data " +
-                                 "FROM board_games g LEFT JOIN categories c ON g.category_id = c.category_id " +
-                                 where + orderBy + " LIMIT @offset, @pageSize";
-
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
-
-                    if (string.IsNullOrWhiteSpace(txtSearch.Text) == false && txtSearch.Text != "Поиск...")
-                        cmd.Parameters.AddWithValue("@search", "%" + txtSearch.Text + "%");
-                    if (cmbCategory.SelectedIndex > 0)
-                        cmd.Parameters.AddWithValue("@cat", cmbCategory.SelectedValue);
-
-                    cmd.Parameters.AddWithValue("@offset", (currentPage - 1) * pageSize);
-                    cmd.Parameters.AddWithValue("@pageSize", pageSize);
-
-                    MySqlDataAdapter da = new MySqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-
-                    if (dt.Columns.Contains("Image") == false)
-                        dt.Columns.Add("Image", typeof(Image));
-
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        if (row["image_data"] != DBNull.Value)
-                        {
-                            byte[] imgBytes = (byte[])row["image_data"];
-                            using (MemoryStream ms = new MemoryStream(imgBytes)) { row["Image"] = Image.FromStream(ms); }
-                        }
-                        else
-                        {
-                            try { row["Image"] = Image.FromFile("Resources/picture.png"); } catch { row["Image"] = null; }
-                        }
-                    }
-
-                    dgvGames.DataSource = dt;
-
-                    foreach (DataGridViewColumn col in dgvGames.Columns)
-                    {
-                        if (col.Name == "ID" || col.Name == "image_data") col.Visible = false;
-                        if (col.Name == "Image")
-                        {
-                            col.HeaderText = "Фото";
-                            col.Width = 80;
-                            DataGridViewImageColumn imgCol = col as DataGridViewImageColumn;
-                            if (imgCol != null) imgCol.ImageLayout = DataGridViewImageCellLayout.Zoom;
-                        }
-                    }
-
-                    lblCount.Text = "Количество записей: " + totalRecords;
-                    lblPageInfo.Text = "Страница " + currentPage + " из " + totalPages;
+                    whereClause = whereClause + " AND g.title LIKE @search ";
+                    parameters.Add("@search", "%" + txtSearch.Text + "%");
                 }
+
+                if (cmbCategory.SelectedIndex > 0)
+                {
+                    whereClause = whereClause + " AND g.category_id = @cat ";
+                    parameters.Add("@cat", cmbCategory.SelectedValue);
+                }
+
+                string sqlCount = "SELECT COUNT(*) FROM board_games g " + whereClause;
+                totalRecords = Convert.ToInt32(DatabaseHelper.ExecuteScalar(sqlCount, parameters));
+
+                totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+
+                if (totalPages < 1)
+                {
+                    totalPages = 1;
+                }
+                if (currentPage > totalPages)
+                {
+                    currentPage = totalPages;
+                }
+
+                string orderBy = " ORDER BY g.title ASC ";
+                if (cmbSort.SelectedIndex == 1)
+                {
+                    orderBy = " ORDER BY g.price ASC ";
+                }
+                else if (cmbSort.SelectedIndex == 2)
+                {
+                    orderBy = " ORDER BY g.stock_quantity ASC ";
+                }
+
+                string sqlData = "SELECT g.game_id AS ID, g.title AS 'Название', c.category_name AS 'Категория', " +
+                                 "g.price AS 'Цена', g.stock_quantity AS 'Кол-во на складе', g.image_data " +
+                                 "FROM board_games g LEFT JOIN categories c ON g.category_id = c.category_id " +
+                                 whereClause + orderBy + " LIMIT @offset, @pageSize";
+
+                parameters.Add("@offset", (currentPage - 1) * pageSize);
+                parameters.Add("@pageSize", pageSize);
+
+                DataTable dt = DatabaseHelper.ExecuteQuery(sqlData, parameters);
+
+                if (dt.Columns.Contains("Image") == false)
+                {
+                    dt.Columns.Add("Image", typeof(Image));
+                }
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row["image_data"] != DBNull.Value)
+                    {
+                        byte[] imgBytes = (byte[])row["image_data"];
+                        using (MemoryStream ms = new MemoryStream(imgBytes))
+                        {
+                            row["Image"] = Image.FromStream(ms);
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            row["Image"] = Image.FromFile("Resources/picture.png");
+                        }
+                        catch
+                        {
+                            row["Image"] = null;
+                        }
+                    }
+                }
+
+                dgvGames.DataSource = dt;
+
+                foreach (DataGridViewColumn col in dgvGames.Columns)
+                {
+                    if (col.Name == "ID" || col.Name == "image_data")
+                    {
+                        col.Visible = false;
+                    }
+                    if (col.Name == "Image")
+                    {
+                        col.HeaderText = "Фото";
+                        col.Width = 80;
+                        DataGridViewImageColumn imgCol = col as DataGridViewImageColumn;
+                        if (imgCol != null)
+                        {
+                            imgCol.ImageLayout = DataGridViewImageCellLayout.Zoom;
+                        }
+                    }
+                }
+
+                lblCount.Text = "Количество записей: " + totalRecords;
+                lblPageInfo.Text = "Страница " + currentPage + " из " + totalPages;
             }
-            catch (Exception ex) { MessageBox.Show("Ошибка загрузки: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError("Ошибка загрузки данных: " + ex.Message);
+            }
         }
 
         private void dgvGames_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -177,25 +200,76 @@ namespace BoardGame_Store
             if (dgvGames.Columns[e.ColumnIndex].Name == "Кол-во на складе" && e.Value != null)
             {
                 int stock = 0;
-                if (int.TryParse(e.Value.ToString(), out stock) == true)
+                bool isParsed = int.TryParse(e.Value.ToString(), out stock);
+
+                if (isParsed == true)
                 {
-                    if (stock < 4) { e.CellStyle.BackColor = Color.FromArgb(250, 210, 210); e.CellStyle.ForeColor = Color.DarkRed; }
-                    else if (stock <= 10) { e.CellStyle.BackColor = Color.FromArgb(255, 245, 200); e.CellStyle.ForeColor = Color.DarkGoldenrod; }
-                    else { e.CellStyle.BackColor = Color.FromArgb(200, 240, 210); e.CellStyle.ForeColor = Color.DarkGreen; }
+                    if (stock < 4)
+                    {
+                        e.CellStyle.BackColor = Color.FromArgb(250, 210, 210);
+                        e.CellStyle.ForeColor = Color.DarkRed;
+                    }
+                    else if (stock >= 4 && stock <= 10)
+                    {
+                        e.CellStyle.BackColor = Color.FromArgb(255, 245, 200);
+                        e.CellStyle.ForeColor = Color.DarkGoldenrod;
+                    }
+                    else
+                    {
+                        e.CellStyle.BackColor = Color.FromArgb(200, 240, 210);
+                        e.CellStyle.ForeColor = Color.DarkGreen;
+                    }
                 }
             }
         }
 
-        // Обработчики поиска
-        private void txtSearch_TextChanged(object sender, EventArgs e) { if (isLoaded) { currentPage = 1; LoadGames(); } }
-        private void txtSearch_Enter(object sender, EventArgs e) { if (txtSearch.Text == "Поиск...") { txtSearch.Text = ""; txtSearch.ForeColor = Color.Black; } }
-        private void txtSearch_Leave(object sender, EventArgs e) { if (string.IsNullOrWhiteSpace(txtSearch.Text)) { txtSearch.Text = "Поиск..."; txtSearch.ForeColor = Color.Gray; } }
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            if (isLoaded == true)
+            {
+                currentPage = 1;
+                LoadGames();
+            }
+        }
 
-        private void cmbCategory_SelectedIndexChanged(object sender, EventArgs e) { if (isLoaded) { currentPage = 1; LoadGames(); } }
-        private void cmbSort_SelectedIndexChanged(object sender, EventArgs e) { if (isLoaded) LoadGames(); }
+        private void txtSearch_Enter(object sender, EventArgs e)
+        {
+            if (txtSearch.Text == "Поиск...")
+            {
+                txtSearch.Text = "";
+                txtSearch.ForeColor = Color.Black;
+            }
+        }
+
+        private void txtSearch_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtSearch.Text))
+            {
+                txtSearch.Text = "Поиск...";
+                txtSearch.ForeColor = Color.Gray;
+            }
+        }
+
+        private void cmbCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (isLoaded == true)
+            {
+                currentPage = 1;
+                LoadGames();
+            }
+        }
+
+        private void cmbSort_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (isLoaded == true)
+            {
+                LoadGames();
+            }
+        }
+
         private void cmbPageSize_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (isLoaded && cmbPageSize.SelectedItem != null)
+            if (isLoaded == true && cmbPageSize.SelectedItem != null)
             {
                 pageSize = int.Parse(cmbPageSize.SelectedItem.ToString());
                 currentPage = 1;
@@ -203,56 +277,102 @@ namespace BoardGame_Store
             }
         }
 
-        private void btnFirst_Click(object sender, EventArgs e) { currentPage = 1; LoadGames(); }
-        private void btnPrev_Click(object sender, EventArgs e) { if (currentPage > 1) { currentPage--; } LoadGames(); }
-        private void btnNext_Click(object sender, EventArgs e) { if (currentPage < totalPages) { currentPage++; } LoadGames(); }
-        private void btnLast_Click(object sender, EventArgs e) { currentPage = totalPages; LoadGames(); }
+        private void btnFirst_Click(object sender, EventArgs e)
+        {
+            currentPage = 1;
+            LoadGames();
+        }
+
+        private void btnPrev_Click(object sender, EventArgs e)
+        {
+            if (currentPage > 1)
+            {
+                currentPage--;
+            }
+            LoadGames();
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            if (currentPage < totalPages)
+            {
+                currentPage++;
+            }
+            LoadGames();
+        }
+
+        private void btnLast_Click(object sender, EventArgs e)
+        {
+            currentPage = totalPages;
+            LoadGames();
+        }
 
         private void dgvGames_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvGames.CurrentRow == null || !dgvGames.Columns.Contains("ID")) return;
+            if (dgvGames.CurrentRow == null || dgvGames.Columns.Contains("ID") == false)
+            {
+                return;
+            }
             selectedGameId = Convert.ToInt32(dgvGames.CurrentRow.Cells["ID"].Value);
         }
 
         private void dgvGames_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && CurrentUser.Role != "Продавец") { btnEdit_Click(sender, e); }
+            if (e.RowIndex >= 0 && CurrentUser.Role != "Продавец")
+            {
+                btnEdit_Click(sender, e);
+            }
         }
 
-        private void btnAdd_Click(object sender, EventArgs e) { new GameEditForm().ShowDialog(); LoadGames(); }
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            GameEditForm form = new GameEditForm();
+            form.ShowDialog();
+            LoadGames();
+        }
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            if (selectedGameId == 0) { MessageBox.Show("Выберите товар"); return; }
-            new GameEditForm(selectedGameId).ShowDialog();
+            if (selectedGameId == 0)
+            {
+                MessageHelper.ShowWarning("Выберите товар для редактирования!");
+                return;
+            }
+
+            GameEditForm form = new GameEditForm(selectedGameId);
+            form.ShowDialog();
             LoadGames();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (selectedGameId == 0) { MessageBox.Show("Выберите товар", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
+            if (selectedGameId == 0)
+            {
+                MessageHelper.ShowWarning("Выберите товар для удаления!");
+                return;
+            }
 
-            DialogResult result = MessageBox.Show("Удалить выбранный товар?\n(ВНИМАНИЕ: он также удалится из всех оформленных заказов!)", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            string message = "Удалить выбранный товар?\n(ВНИМАНИЕ: он также удалится из всех оформленных заказов!)";
 
-            if (result == DialogResult.Yes)
+            if (MessageHelper.AskConfirm(message) == true)
             {
                 try
                 {
-                    using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                    {
-                        conn.Open();
-                        MySqlCommand cmdItems = new MySqlCommand("DELETE FROM order_items WHERE game_id = @id", conn);
-                        cmdItems.Parameters.AddWithValue("@id", selectedGameId);
-                        cmdItems.ExecuteNonQuery();
+                    Dictionary<string, object> pItems = new Dictionary<string, object>();
+                    pItems.Add("@id", selectedGameId);
+                    DatabaseHelper.ExecuteNonQuery("DELETE FROM order_items WHERE game_id = @id", pItems);
 
-                        MySqlCommand cmdGame = new MySqlCommand("DELETE FROM board_games WHERE game_id = @id", conn);
-                        cmdGame.Parameters.AddWithValue("@id", selectedGameId);
-                        cmdGame.ExecuteNonQuery();
-                    }
-                    MessageBox.Show("Товар удален", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Dictionary<string, object> pGame = new Dictionary<string, object>();
+                    pGame.Add("@id", selectedGameId);
+                    DatabaseHelper.ExecuteNonQuery("DELETE FROM board_games WHERE game_id = @id", pGame);
+
+                    MessageHelper.ShowInfo("Товар успешно удален!");
                     LoadGames();
                 }
-                catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message); }
+                catch (Exception ex)
+                {
+                    MessageHelper.ShowError("Ошибка при удалении: " + ex.Message);
+                }
             }
         }
     }

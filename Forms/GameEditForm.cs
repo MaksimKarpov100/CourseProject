@@ -3,182 +3,247 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
+using System.Collections.Generic;
 
 namespace BoardGame_Store
 {
     public partial class GameEditForm : Form
     {
-        private int _gameId = 0;
-        private byte[] _imageBytes = null;
+        private int gameId = 0;
+        private byte[] imageBytes = null;
 
         public GameEditForm()
         {
             InitializeComponent();
             lblTitle.Text = "Добавление товара";
-            txtPrice.KeyPress += txtPrice_KeyPress;
-            txtStock.KeyPress += txtStock_KeyPress;
         }
 
-        public GameEditForm(int gameId)
+        public GameEditForm(int id)
         {
             InitializeComponent();
-            _gameId = gameId;
+            this.gameId = id;
             lblTitle.Text = "Редактирование товара";
-            txtPrice.KeyPress += txtPrice_KeyPress;
-            txtStock.KeyPress += txtStock_KeyPress;
         }
 
         private void GameEditForm_Load(object sender, EventArgs e)
         {
             LoadCategories();
-            if (_gameId > 0) LoadGameData();
+
+            if (gameId > 0)
+            {
+                LoadGameData();
+            }
         }
 
         private void LoadCategories()
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
-                {
-                    conn.Open();
-                    MySqlDataAdapter da = new MySqlDataAdapter("SELECT category_id, category_name FROM categories ORDER BY category_name", conn);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    cmbCategory.DataSource = dt;
-                    cmbCategory.DisplayMember = "category_name";
-                    cmbCategory.ValueMember = "category_id";
-                }
+                string sql = "SELECT category_id, category_name FROM categories ORDER BY category_name";
+                DataTable dt = DatabaseHelper.ExecuteQuery(sql);
+
+                cmbCategory.DataSource = dt;
+                cmbCategory.DisplayMember = "category_name";
+                cmbCategory.ValueMember = "category_id";
             }
-            catch (Exception ex) { MessageBox.Show("Ошибка загрузки категорий: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError("Ошибка загрузки категорий: " + ex.Message);
+            }
         }
 
         private void LoadGameData()
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                Dictionary<string, object> parameters = new Dictionary<string, object>();
+                parameters.Add("@id", gameId);
+
+                string sql = "SELECT title, price, stock_quantity, category_id, image_data FROM board_games WHERE game_id=@id";
+                DataTable dt = DatabaseHelper.ExecuteQuery(sql, parameters);
+
+                if (dt.Rows.Count > 0)
                 {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT title, price, stock_quantity, category_id, image_data FROM board_games WHERE game_id=@id", conn);
-                    cmd.Parameters.AddWithValue("@id", _gameId);
+                    txtName.Text = dt.Rows[0]["title"].ToString();
+                    txtPrice.Text = dt.Rows[0]["price"].ToString();
+                    txtStock.Text = dt.Rows[0]["stock_quantity"].ToString();
+                    cmbCategory.SelectedValue = dt.Rows[0]["category_id"];
 
-                    using (var r = cmd.ExecuteReader())
+                    if (dt.Rows[0]["image_data"] != DBNull.Value)
                     {
-                        if (r.Read())
-                        {
-                            txtName.Text = r["title"].ToString();
-                            txtPrice.Text = r["price"].ToString();
-                            txtStock.Text = r["stock_quantity"].ToString();
-                            cmbCategory.SelectedValue = r["category_id"];
+                        imageBytes = (byte[])dt.Rows[0]["image_data"];
 
-                            if (r["image_data"] != DBNull.Value)
-                            {
-                                _imageBytes = (byte[])r["image_data"];
-                                using (MemoryStream ms = new MemoryStream(_imageBytes)) { pbImage.Image = Image.FromStream(ms); }
-                            }
-                            else
-                            {
-                                try { pbImage.Image = Image.FromFile("Resources/picture.png"); } catch { }
-                            }
+                        using (MemoryStream ms = new MemoryStream(imageBytes))
+                        {
+                            pbImage.Image = Image.FromStream(ms);
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            pbImage.Image = Image.FromFile("Resources/picture.png");
+                        }
+                        catch
+                        {
+
                         }
                     }
                 }
             }
-            catch (Exception ex) { MessageBox.Show("Ошибка загрузки данных: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError("Ошибка загрузки данных: " + ex.Message);
+            }
         }
 
         private void txtPrice_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsDigit(e.KeyChar) && e.KeyChar != ',' && e.KeyChar != '.' && !char.IsControl(e.KeyChar)) e.Handled = true;
-            if ((e.KeyChar == ',' || e.KeyChar == '.') && (txtPrice.Text.Contains(",") || txtPrice.Text.Contains("."))) e.Handled = true;
+            bool isDigit = char.IsDigit(e.KeyChar);
+            bool isControl = char.IsControl(e.KeyChar);
+            bool isSeparator = (e.KeyChar == ',' || e.KeyChar == '.');
+
+            if (isDigit == false && isControl == false && isSeparator == false)
+            {
+                e.Handled = true;
+            }
+
+            if (isSeparator == true)
+            {
+                if (txtPrice.Text.Contains(",") == true || txtPrice.Text.Contains(".") == true)
+                {
+                    e.Handled = true;
+                }
+            }
         }
 
         private void txtStock_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar)) e.Handled = true;
+            bool isDigit = char.IsDigit(e.KeyChar);
+            bool isControl = char.IsControl(e.KeyChar);
+
+            if (isDigit == false && isControl == false)
+            {
+                e.Handled = true;
+            }
         }
 
         private void btnLoadImage_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog ofd = new OpenFileDialog())
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Изображения|*.jpg;*.jpeg;*.png";
+
+            if (ofd.ShowDialog() == DialogResult.OK)
             {
-                ofd.Filter = "Images|*.jpg;*.jpeg;*.png";
-                if (ofd.ShowDialog() == DialogResult.OK)
+                try
                 {
-                    try
+                    imageBytes = File.ReadAllBytes(ofd.FileName);
+
+                    using (MemoryStream ms = new MemoryStream(imageBytes))
                     {
-                        _imageBytes = File.ReadAllBytes(ofd.FileName);
-                        using (MemoryStream ms = new MemoryStream(_imageBytes)) { pbImage.Image = Image.FromStream(ms); }
+                        pbImage.Image = Image.FromStream(ms);
                     }
-                    catch (Exception ex) { MessageBox.Show("Ошибка загрузки картинки: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                }
+                catch (Exception ex)
+                {
+                    MessageHelper.ShowError("Ошибка загрузки картинки: " + ex.Message);
                 }
             }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtName.Text))
+            string title = txtName.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(title) == true)
             {
-                MessageBox.Show("Введите название игры!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            if (cmbCategory.SelectedIndex == -1)
-            {
-                MessageBox.Show("Выберите категорию!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageHelper.ShowWarning("Введите название игры!");
                 return;
             }
 
-            if (!decimal.TryParse(txtPrice.Text, out decimal price))
+            if (ValidationHelper.IsRussianText(title) == false)
             {
-                MessageBox.Show("Введите корректную цену!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageHelper.ShowWarning("Название игры должно содержать только русские буквы и дефис!");
                 return;
             }
-            if (!int.TryParse(txtStock.Text, out int stock))
+
+            if (cmbCategory.SelectedIndex == -1)
             {
-                MessageBox.Show("Введите корректное количество!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageHelper.ShowWarning("Выберите категорию!");
+                return;
+            }
+
+            decimal price = 0;
+            bool isPriceValid = decimal.TryParse(txtPrice.Text, out price);
+
+            if (isPriceValid == false)
+            {
+                MessageHelper.ShowWarning("Введите корректную цену!");
                 return;
             }
 
             if (price < 0 || price > 10000)
             {
-                MessageBox.Show("Цена должна быть от 0 до 10 000!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageHelper.ShowWarning("Цена должна быть от 0 до 10 000!");
                 return;
             }
+
+            int stock = 0;
+            bool isStockValid = int.TryParse(txtStock.Text, out stock);
+
+            if (isStockValid == false)
+            {
+                MessageHelper.ShowWarning("Введите корректное количество!");
+                return;
+            }
+
             if (stock < 0 || stock > 1000)
             {
-                MessageBox.Show("Количество на складе должно быть от 0 до 1 000!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageHelper.ShowWarning("Количество на складе должно быть от 0 до 1 000!");
                 return;
             }
 
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(DbConfig.BuildConnectionString()))
+                object imageParam = DBNull.Value;
+                if (imageBytes != null)
                 {
-                    conn.Open();
-                    string sql;
-                    if (_gameId == 0)
-                        sql = "INSERT INTO board_games (title, price, stock_quantity, category_id, image_data) VALUES (@t, @p, @s, @c, @img)";
-                    else
-                        sql = "UPDATE board_games SET title=@t, price=@p, stock_quantity=@s, category_id=@c, image_data=@img WHERE game_id=@id";
-
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@t", txtName.Text.Trim());
-                    cmd.Parameters.AddWithValue("@p", price);
-                    cmd.Parameters.AddWithValue("@s", stock);
-                    cmd.Parameters.AddWithValue("@c", cmbCategory.SelectedValue);
-                    cmd.Parameters.AddWithValue("@img", _imageBytes != null ? (object)_imageBytes : DBNull.Value);
-
-                    if (_gameId > 0) cmd.Parameters.AddWithValue("@id", _gameId);
-                    cmd.ExecuteNonQuery();
+                    imageParam = imageBytes;
                 }
-                MessageBox.Show("Сохранено!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                Dictionary<string, object> parameters = new Dictionary<string, object>();
+                parameters.Add("@t", title);
+                parameters.Add("@p", price);
+                parameters.Add("@s", stock);
+                parameters.Add("@c", cmbCategory.SelectedValue);
+                parameters.Add("@img", imageParam);
+
+                if (gameId == 0)
+                {
+                    string sqlInsert = "INSERT INTO board_games (title, price, stock_quantity, category_id, image_data) VALUES (@t, @p, @s, @c, @img)";
+                    DatabaseHelper.ExecuteNonQuery(sqlInsert, parameters);
+                    MessageHelper.ShowInfo("Товар успешно добавлен!");
+                }
+                else
+                {
+                    parameters.Add("@id", gameId);
+                    string sqlUpdate = "UPDATE board_games SET title=@t, price=@p, stock_quantity=@s, category_id=@c, image_data=@img WHERE game_id=@id";
+                    DatabaseHelper.ExecuteNonQuery(sqlUpdate, parameters);
+                    MessageHelper.ShowInfo("Товар успешно обновлен!");
+                }
+
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
-            catch (Exception ex) { MessageBox.Show("Ошибка базы данных: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError("Ошибка базы данных: " + ex.Message);
+            }
         }
 
-        private void btnCancel_Click(object sender, EventArgs e) { this.Close(); }
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
