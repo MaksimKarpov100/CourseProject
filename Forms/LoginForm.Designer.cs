@@ -15,6 +15,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
             this.pnlCard = new System.Windows.Forms.Panel();
             this.btnExitApp = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
@@ -59,7 +60,7 @@
             this.pnlCard.Controls.Add(this.lblTitle);
             this.pnlCard.Location = new System.Drawing.Point(355, 0);
             this.pnlCard.Name = "pnlCard";
-            this.pnlCard.Size = new System.Drawing.Size(381, 449);
+            this.pnlCard.Size = new System.Drawing.Size(381, 477);
             this.pnlCard.TabIndex = 0;
             // 
             // btnExitApp
@@ -68,9 +69,9 @@
             this.btnExitApp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExitApp.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnExitApp.ForeColor = System.Drawing.Color.Gray;
-            this.btnExitApp.Location = new System.Drawing.Point(207, 413);
+            this.btnExitApp.Location = new System.Drawing.Point(207, 426);
             this.btnExitApp.Name = "btnExitApp";
-            this.btnExitApp.Size = new System.Drawing.Size(135, 30);
+            this.btnExitApp.Size = new System.Drawing.Size(135, 39);
             this.btnExitApp.TabIndex = 16;
             this.btnExitApp.Text = "Выйти";
             this.btnExitApp.UseVisualStyleBackColor = true;
@@ -82,9 +83,9 @@
             this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSettings.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnSettings.ForeColor = System.Drawing.Color.Gray;
-            this.btnSettings.Location = new System.Drawing.Point(37, 413);
+            this.btnSettings.Location = new System.Drawing.Point(37, 426);
             this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(135, 30);
+            this.btnSettings.Size = new System.Drawing.Size(135, 39);
             this.btnSettings.TabIndex = 15;
             this.btnSettings.Text = "Настройки БД";
             this.btnSettings.UseVisualStyleBackColor = true;
@@ -98,7 +99,7 @@
             this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogin.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.btnLogin.ForeColor = System.Drawing.Color.White;
-            this.btnLogin.Location = new System.Drawing.Point(37, 357);
+            this.btnLogin.Location = new System.Drawing.Point(37, 370);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(305, 50);
             this.btnLogin.TabIndex = 14;
@@ -264,7 +265,7 @@
             this.pbLogo.Image = global::BoardGame_Store.Properties.Resources.images;
             this.pbLogo.Location = new System.Drawing.Point(0, 0);
             this.pbLogo.Name = "pbLogo";
-            this.pbLogo.Size = new System.Drawing.Size(355, 449);
+            this.pbLogo.Size = new System.Drawing.Size(357, 477);
             this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbLogo.TabIndex = 1;
             this.pbLogo.TabStop = false;
@@ -274,11 +275,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(242)))), ((int)(((byte)(245)))));
-            this.ClientSize = new System.Drawing.Size(733, 449);
+            this.ClientSize = new System.Drawing.Size(733, 477);
             this.Controls.Add(this.pnlCard);
             this.Controls.Add(this.pbLogo);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "LoginForm";

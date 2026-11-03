@@ -15,6 +15,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OrderAddForm));
             this.lblTitle = new System.Windows.Forms.Label();
             this.panelTop = new System.Windows.Forms.Panel();
             this.dtpOrderDate = new System.Windows.Forms.DateTimePicker();
@@ -43,9 +44,8 @@
             this.nudDiscount = new System.Windows.Forms.NumericUpDown();
             this.lblDiscount = new System.Windows.Forms.Label();
             this.panelBottom = new System.Windows.Forms.Panel();
-            this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-
+            this.btnSave = new System.Windows.Forms.Button();
             this.panelTop.SuspendLayout();
             this.panelAdd.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity)).BeginInit();
@@ -54,8 +54,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudDiscount)).BeginInit();
             this.panelBottom.SuspendLayout();
             this.SuspendLayout();
-
+            // 
             // lblTitle
+            // 
             this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
@@ -64,8 +65,9 @@
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Оформление заказа";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-
+            // 
             // panelTop
+            // 
             this.panelTop.Controls.Add(this.dtpOrderDate);
             this.panelTop.Controls.Add(this.lblDate);
             this.panelTop.Controls.Add(this.cmbCustomer);
@@ -75,39 +77,44 @@
             this.panelTop.Name = "panelTop";
             this.panelTop.Size = new System.Drawing.Size(900, 60);
             this.panelTop.TabIndex = 1;
-
+            // 
             // dtpOrderDate
+            // 
             this.dtpOrderDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpOrderDate.Location = new System.Drawing.Point(600, 15);
             this.dtpOrderDate.Name = "dtpOrderDate";
             this.dtpOrderDate.Size = new System.Drawing.Size(150, 25);
             this.dtpOrderDate.TabIndex = 3;
-
+            // 
             // lblDate
+            // 
             this.lblDate.AutoSize = true;
             this.lblDate.Location = new System.Drawing.Point(480, 20);
             this.lblDate.Name = "lblDate";
-            this.lblDate.Size = new System.Drawing.Size(90, 19);
+            this.lblDate.Size = new System.Drawing.Size(86, 19);
             this.lblDate.TabIndex = 2;
             this.lblDate.Text = "Дата заказа:";
-
+            // 
             // cmbCustomer
+            // 
             this.cmbCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCustomer.FormattingEnabled = true;
             this.cmbCustomer.Location = new System.Drawing.Point(150, 15);
             this.cmbCustomer.Name = "cmbCustomer";
             this.cmbCustomer.Size = new System.Drawing.Size(300, 25);
             this.cmbCustomer.TabIndex = 1;
-
+            // 
             // lblCustomer
+            // 
             this.lblCustomer.AutoSize = true;
             this.lblCustomer.Location = new System.Drawing.Point(20, 20);
             this.lblCustomer.Name = "lblCustomer";
-            this.lblCustomer.Size = new System.Drawing.Size(55, 19);
+            this.lblCustomer.Size = new System.Drawing.Size(56, 19);
             this.lblCustomer.TabIndex = 0;
             this.lblCustomer.Text = "Клиент:";
-
+            // 
             // panelAdd
+            // 
             this.panelAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
             this.panelAdd.Controls.Add(this.btnAddItem);
             this.panelAdd.Controls.Add(this.txtPrice);
@@ -121,8 +128,9 @@
             this.panelAdd.Name = "panelAdd";
             this.panelAdd.Size = new System.Drawing.Size(900, 60);
             this.panelAdd.TabIndex = 2;
-
+            // 
             // btnAddItem
+            // 
             this.btnAddItem.BackColor = System.Drawing.Color.SteelBlue;
             this.btnAddItem.FlatAppearance.BorderSize = 0;
             this.btnAddItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -134,39 +142,52 @@
             this.btnAddItem.Text = "Добавить в заказ";
             this.btnAddItem.UseVisualStyleBackColor = false;
             this.btnAddItem.Click += new System.EventHandler(this.btnAddItem_Click);
-
+            // 
             // txtPrice
+            // 
             this.txtPrice.Enabled = false;
             this.txtPrice.Location = new System.Drawing.Point(600, 15);
             this.txtPrice.Name = "txtPrice";
             this.txtPrice.Size = new System.Drawing.Size(100, 25);
             this.txtPrice.TabIndex = 5;
-
+            // 
             // lblPrice
+            // 
             this.lblPrice.AutoSize = true;
             this.lblPrice.Location = new System.Drawing.Point(550, 20);
             this.lblPrice.Name = "lblPrice";
             this.lblPrice.Size = new System.Drawing.Size(44, 19);
             this.lblPrice.TabIndex = 4;
             this.lblPrice.Text = "Цена:";
-
+            // 
             // nudQuantity
+            // 
             this.nudQuantity.Location = new System.Drawing.Point(460, 15);
-            this.nudQuantity.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            this.nudQuantity.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nudQuantity.Name = "nudQuantity";
             this.nudQuantity.Size = new System.Drawing.Size(60, 25);
             this.nudQuantity.TabIndex = 3;
-            this.nudQuantity.Value = new decimal(new int[] { 1, 0, 0, 0 });
-
+            this.nudQuantity.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // lblQty
+            // 
             this.lblQty.AutoSize = true;
             this.lblQty.Location = new System.Drawing.Point(380, 20);
             this.lblQty.Name = "lblQty";
-            this.lblQty.Size = new System.Drawing.Size(55, 19);
+            this.lblQty.Size = new System.Drawing.Size(56, 19);
             this.lblQty.TabIndex = 2;
             this.lblQty.Text = "Кол-во:";
-
+            // 
             // cmbGame
+            // 
             this.cmbGame.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbGame.FormattingEnabled = true;
             this.cmbGame.Location = new System.Drawing.Point(80, 15);
@@ -174,16 +195,18 @@
             this.cmbGame.Size = new System.Drawing.Size(280, 25);
             this.cmbGame.TabIndex = 1;
             this.cmbGame.SelectedIndexChanged += new System.EventHandler(this.cmbGame_SelectedIndexChanged);
-
+            // 
             // lblGame
+            // 
             this.lblGame.AutoSize = true;
             this.lblGame.Location = new System.Drawing.Point(20, 20);
             this.lblGame.Name = "lblGame";
-            this.lblGame.Size = new System.Drawing.Size(48, 19);
+            this.lblGame.Size = new System.Drawing.Size(49, 19);
             this.lblGame.TabIndex = 0;
             this.lblGame.Text = "Товар:";
-
+            // 
             // dgvOrderItems
+            // 
             this.dgvOrderItems.AllowUserToAddRows = false;
             this.dgvOrderItems.AllowUserToDeleteRows = false;
             this.dgvOrderItems.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -198,8 +221,23 @@
             this.dgvOrderItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvOrderItems.Size = new System.Drawing.Size(900, 290);
             this.dgvOrderItems.TabIndex = 3;
-
+            // 
+            // btnDeleteItem
+            // 
+            this.btnDeleteItem.BackColor = System.Drawing.Color.Firebrick;
+            this.btnDeleteItem.FlatAppearance.BorderSize = 0;
+            this.btnDeleteItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDeleteItem.ForeColor = System.Drawing.Color.White;
+            this.btnDeleteItem.Location = new System.Drawing.Point(750, 12);
+            this.btnDeleteItem.Name = "btnDeleteItem";
+            this.btnDeleteItem.Size = new System.Drawing.Size(130, 35);
+            this.btnDeleteItem.TabIndex = 7;
+            this.btnDeleteItem.Text = "Удалить товар";
+            this.btnDeleteItem.UseVisualStyleBackColor = false;
+            this.btnDeleteItem.Click += new System.EventHandler(this.btnDeleteItem_Click);
+            // 
             // panelTotals
+            // 
             this.panelTotals.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
             this.panelTotals.Controls.Add(this.btnDeleteItem);
             this.panelTotals.Controls.Add(this.txtTotal);
@@ -217,97 +255,95 @@
             this.panelTotals.Name = "panelTotals";
             this.panelTotals.Size = new System.Drawing.Size(900, 100);
             this.panelTotals.TabIndex = 4;
-
-            // btnDeleteItem
-            this.btnDeleteItem.BackColor = System.Drawing.Color.Firebrick;
-            this.btnDeleteItem.FlatAppearance.BorderSize = 0;
-            this.btnDeleteItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDeleteItem.ForeColor = System.Drawing.Color.White;
-            this.btnDeleteItem.Location = new System.Drawing.Point(750, 12);
-            this.btnDeleteItem.Name = "btnDeleteItem";
-            this.btnDeleteItem.Size = new System.Drawing.Size(130, 35);
-            this.btnDeleteItem.TabIndex = 7;
-            this.btnDeleteItem.Text = "Удалить товар";
-            this.btnDeleteItem.UseVisualStyleBackColor = false;
-            this.btnDeleteItem.Click += new System.EventHandler(this.btnDeleteItem_Click);
-
+            // 
             // txtTotal
+            // 
             this.txtTotal.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.txtTotal.Location = new System.Drawing.Point(600, 60);
             this.txtTotal.Name = "txtTotal";
             this.txtTotal.ReadOnly = true;
             this.txtTotal.Size = new System.Drawing.Size(120, 25);
             this.txtTotal.TabIndex = 9;
-
+            // 
             // lblTotal
+            // 
             this.lblTotal.AutoSize = true;
             this.lblTotal.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblTotal.Location = new System.Drawing.Point(480, 65);
             this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(50, 19);
+            this.lblTotal.Size = new System.Drawing.Size(54, 19);
             this.lblTotal.TabIndex = 8;
             this.lblTotal.Text = "Итого:";
-
+            // 
             // txtSumWith
+            // 
             this.txtSumWith.Location = new System.Drawing.Point(600, 20);
             this.txtSumWith.Name = "txtSumWith";
             this.txtSumWith.ReadOnly = true;
             this.txtSumWith.Size = new System.Drawing.Size(120, 25);
             this.txtSumWith.TabIndex = 7;
-
+            // 
             // lblSumWith
+            // 
             this.lblSumWith.AutoSize = true;
             this.lblSumWith.Location = new System.Drawing.Point(480, 25);
             this.lblSumWith.Name = "lblSumWith";
-            this.lblSumWith.Size = new System.Drawing.Size(88, 19);
+            this.lblSumWith.Size = new System.Drawing.Size(85, 19);
             this.lblSumWith.TabIndex = 6;
             this.lblSumWith.Text = "Со скидкой:";
-
+            // 
             // txtDiscountAmount
+            // 
             this.txtDiscountAmount.Location = new System.Drawing.Point(320, 60);
             this.txtDiscountAmount.Name = "txtDiscountAmount";
             this.txtDiscountAmount.ReadOnly = true;
             this.txtDiscountAmount.Size = new System.Drawing.Size(120, 25);
             this.txtDiscountAmount.TabIndex = 5;
-
+            // 
             // lblDiscountAmount
+            // 
             this.lblDiscountAmount.AutoSize = true;
             this.lblDiscountAmount.Location = new System.Drawing.Point(200, 65);
             this.lblDiscountAmount.Name = "lblDiscountAmount";
-            this.lblDiscountAmount.Size = new System.Drawing.Size(92, 19);
+            this.lblDiscountAmount.Size = new System.Drawing.Size(91, 19);
             this.lblDiscountAmount.TabIndex = 4;
             this.lblDiscountAmount.Text = "Скидка, руб.:";
-
+            // 
             // txtSumWithout
+            // 
             this.txtSumWithout.Location = new System.Drawing.Point(320, 20);
             this.txtSumWithout.Name = "txtSumWithout";
             this.txtSumWithout.ReadOnly = true;
             this.txtSumWithout.Size = new System.Drawing.Size(120, 25);
             this.txtSumWithout.TabIndex = 3;
-
+            // 
             // lblSumWithout
+            // 
             this.lblSumWithout.AutoSize = true;
             this.lblSumWithout.Location = new System.Drawing.Point(200, 25);
             this.lblSumWithout.Name = "lblSumWithout";
-            this.lblSumWithout.Size = new System.Drawing.Size(87, 19);
+            this.lblSumWithout.Size = new System.Drawing.Size(81, 19);
             this.lblSumWithout.TabIndex = 2;
             this.lblSumWithout.Text = "Без скидки:";
-
+            // 
             // nudDiscount
+            // 
             this.nudDiscount.Location = new System.Drawing.Point(110, 20);
             this.nudDiscount.Name = "nudDiscount";
             this.nudDiscount.Size = new System.Drawing.Size(60, 25);
             this.nudDiscount.TabIndex = 1;
-
+            // 
             // lblDiscount
+            // 
             this.lblDiscount.AutoSize = true;
             this.lblDiscount.Location = new System.Drawing.Point(20, 25);
             this.lblDiscount.Name = "lblDiscount";
-            this.lblDiscount.Size = new System.Drawing.Size(73, 19);
+            this.lblDiscount.Size = new System.Drawing.Size(76, 19);
             this.lblDiscount.TabIndex = 0;
             this.lblDiscount.Text = "Скидка, %:";
-
+            // 
             // panelBottom
+            // 
             this.panelBottom.Controls.Add(this.btnCancel);
             this.panelBottom.Controls.Add(this.btnSave);
             this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -315,22 +351,9 @@
             this.panelBottom.Name = "panelBottom";
             this.panelBottom.Size = new System.Drawing.Size(900, 60);
             this.panelBottom.TabIndex = 5;
-
-            // btnSave
-            this.btnSave.BackColor = System.Drawing.Color.SeaGreen;
-            this.btnSave.FlatAppearance.BorderSize = 0;
-            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(20, 10);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(200, 40);
-            this.btnSave.TabIndex = 0;
-            this.btnSave.Text = "Оформить заказ";
-            this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-
+            // 
             // btnCancel
+            // 
             this.btnCancel.BackColor = System.Drawing.Color.Gray;
             this.btnCancel.FlatAppearance.BorderSize = 0;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -343,8 +366,24 @@
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-
+            // 
+            // btnSave
+            // 
+            this.btnSave.BackColor = System.Drawing.Color.SeaGreen;
+            this.btnSave.FlatAppearance.BorderSize = 0;
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(20, 10);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(200, 40);
+            this.btnSave.TabIndex = 0;
+            this.btnSave.Text = "Оформить заказ";
+            this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
             // OrderAddForm
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
@@ -356,11 +395,11 @@
             this.Controls.Add(this.panelTop);
             this.Controls.Add(this.lblTitle);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "OrderAddForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Новый заказ";
             this.Load += new System.EventHandler(this.OrderAddForm_Load);
-
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
             this.panelAdd.ResumeLayout(false);
@@ -372,6 +411,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudDiscount)).EndInit();
             this.panelBottom.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         private System.Windows.Forms.Label lblTitle;

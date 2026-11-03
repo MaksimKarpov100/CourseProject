@@ -15,6 +15,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainFormAdmin));
             this.panelTop = new System.Windows.Forms.Panel();
             this.lblTitle = new System.Windows.Forms.Label();
             this.lblUserInfo = new System.Windows.Forms.Label();
@@ -26,12 +27,12 @@
             this.tabCatalogs = new System.Windows.Forms.TabPage();
             this.tabDiscounts = new System.Windows.Forms.TabPage();
             this.tabSpecial = new System.Windows.Forms.TabPage();
-
             this.panelTop.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.SuspendLayout();
-
+            // 
             // panelTop
+            // 
             this.panelTop.BackColor = System.Drawing.Color.Firebrick;
             this.panelTop.Controls.Add(this.lblTitle);
             this.panelTop.Controls.Add(this.lblUserInfo);
@@ -41,8 +42,9 @@
             this.panelTop.Name = "panelTop";
             this.panelTop.Size = new System.Drawing.Size(1124, 60);
             this.panelTop.TabIndex = 0;
-
+            // 
             // lblTitle
+            // 
             this.lblTitle.AutoSize = true;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
@@ -51,8 +53,9 @@
             this.lblTitle.Size = new System.Drawing.Size(245, 25);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Магазин настольных игр";
-
+            // 
             // lblUserInfo
+            // 
             this.lblUserInfo.AutoSize = true;
             this.lblUserInfo.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.lblUserInfo.ForeColor = System.Drawing.Color.White;
@@ -61,8 +64,9 @@
             this.lblUserInfo.Size = new System.Drawing.Size(107, 20);
             this.lblUserInfo.TabIndex = 1;
             this.lblUserInfo.Text = "Пользователь";
-
+            // 
             // btnExit
+            // 
             this.btnExit.BackColor = System.Drawing.Color.DarkRed;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
@@ -74,8 +78,9 @@
             this.btnExit.Text = "Выход";
             this.btnExit.UseVisualStyleBackColor = false;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
-
+            // 
             // tabMain
+            // 
             this.tabMain.Controls.Add(this.tabOrders);
             this.tabMain.Controls.Add(this.tabGames);
             this.tabMain.Controls.Add(this.tabUsers);
@@ -90,66 +95,74 @@
             this.tabMain.Size = new System.Drawing.Size(1124, 760);
             this.tabMain.TabIndex = 1;
             this.tabMain.SelectedIndexChanged += new System.EventHandler(this.tabMain_SelectedIndexChanged);
-
+            // 
             // tabOrders
+            // 
             this.tabOrders.Location = new System.Drawing.Point(4, 26);
             this.tabOrders.Name = "tabOrders";
             this.tabOrders.Padding = new System.Windows.Forms.Padding(3);
             this.tabOrders.Size = new System.Drawing.Size(1116, 730);
             this.tabOrders.TabIndex = 0;
             this.tabOrders.Text = "📦 Заказы";
-
+            // 
             // tabGames
+            // 
             this.tabGames.Location = new System.Drawing.Point(4, 26);
             this.tabGames.Name = "tabGames";
             this.tabGames.Size = new System.Drawing.Size(1116, 730);
             this.tabGames.TabIndex = 1;
             this.tabGames.Text = "🎮 Товары";
-
+            // 
             // tabUsers
+            // 
             this.tabUsers.Location = new System.Drawing.Point(4, 26);
             this.tabUsers.Name = "tabUsers";
             this.tabUsers.Size = new System.Drawing.Size(1116, 730);
             this.tabUsers.TabIndex = 2;
             this.tabUsers.Text = "👥 Пользователи";
-
+            // 
             // tabCatalogs
+            // 
             this.tabCatalogs.Location = new System.Drawing.Point(4, 26);
             this.tabCatalogs.Name = "tabCatalogs";
             this.tabCatalogs.Size = new System.Drawing.Size(1116, 730);
             this.tabCatalogs.TabIndex = 3;
             this.tabCatalogs.Text = "🏷️ Справочники";
-
+            // 
             // tabDiscounts
+            // 
             this.tabDiscounts.Location = new System.Drawing.Point(4, 26);
             this.tabDiscounts.Name = "tabDiscounts";
             this.tabDiscounts.Size = new System.Drawing.Size(1116, 730);
             this.tabDiscounts.TabIndex = 4;
             this.tabDiscounts.Text = "💰 Скидки";
-
+            // 
             // tabSpecial
+            // 
             this.tabSpecial.Location = new System.Drawing.Point(4, 26);
             this.tabSpecial.Name = "tabSpecial";
             this.tabSpecial.Size = new System.Drawing.Size(1116, 730);
             this.tabSpecial.TabIndex = 5;
             this.tabSpecial.Text = "⚙️ Специальные возможности";
-
+            // 
             // MainFormAdmin
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1124, 820);
             this.ControlBox = false;
             this.Controls.Add(this.tabMain);
             this.Controls.Add(this.panelTop);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1000, 700);
             this.Name = "MainFormAdmin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Board Game Store — Администратор";
-
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
             this.tabMain.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         private System.Windows.Forms.Panel panelTop;

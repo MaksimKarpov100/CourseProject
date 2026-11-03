@@ -15,6 +15,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GamesForm));
             this.lblTitle = new System.Windows.Forms.Label();
             this.panelFilters = new System.Windows.Forms.Panel();
             this.lblSearch = new System.Windows.Forms.Label();
@@ -43,13 +44,11 @@
             this.lblLegendYellow = new System.Windows.Forms.Label();
             this.pnlLegendRed = new System.Windows.Forms.Panel();
             this.lblLegendRed = new System.Windows.Forms.Label();
-
             this.panelFilters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGames)).BeginInit();
             this.panelPagination.SuspendLayout();
             this.panelButtons.SuspendLayout();
             this.SuspendLayout();
-
             // 
             // lblTitle
             // 
@@ -61,11 +60,10 @@
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Управление товарами";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-
             // 
             // panelFilters
             // 
-            this.panelFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.panelFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelFilters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
             this.panelFilters.Controls.Add(this.lblSearch);
@@ -78,7 +76,6 @@
             this.panelFilters.Name = "panelFilters";
             this.panelFilters.Size = new System.Drawing.Size(970, 50);
             this.panelFilters.TabIndex = 2;
-
             // 
             // lblSearch
             // 
@@ -88,7 +85,6 @@
             this.lblSearch.Size = new System.Drawing.Size(48, 19);
             this.lblSearch.TabIndex = 0;
             this.lblSearch.Text = "Поиск";
-
             // 
             // txtSearch
             // 
@@ -99,7 +95,6 @@
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             this.txtSearch.Enter += new System.EventHandler(this.txtSearch_Enter);
             this.txtSearch.Leave += new System.EventHandler(this.txtSearch_Leave);
-
             // 
             // lblCategory
             // 
@@ -109,7 +104,6 @@
             this.lblCategory.Size = new System.Drawing.Size(73, 19);
             this.lblCategory.TabIndex = 2;
             this.lblCategory.Text = "Категория";
-
             // 
             // cmbCategory
             // 
@@ -119,7 +113,6 @@
             this.cmbCategory.Size = new System.Drawing.Size(180, 25);
             this.cmbCategory.TabIndex = 3;
             this.cmbCategory.SelectedIndexChanged += new System.EventHandler(this.cmbCategory_SelectedIndexChanged);
-
             // 
             // lblSort
             // 
@@ -129,7 +122,6 @@
             this.lblSort.Size = new System.Drawing.Size(88, 19);
             this.lblSort.TabIndex = 4;
             this.lblSort.Text = "Сортировка:";
-
             // 
             // cmbSort
             // 
@@ -143,14 +135,13 @@
             this.cmbSort.Size = new System.Drawing.Size(125, 25);
             this.cmbSort.TabIndex = 5;
             this.cmbSort.SelectedIndexChanged += new System.EventHandler(this.cmbSort_SelectedIndexChanged);
-
             // 
             // dgvGames
             // 
             this.dgvGames.AllowUserToAddRows = false;
             this.dgvGames.AllowUserToDeleteRows = false;
-            this.dgvGames.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dgvGames.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvGames.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvGames.BackgroundColor = System.Drawing.Color.White;
@@ -167,7 +158,6 @@
             this.dgvGames.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGames_CellDoubleClick);
             this.dgvGames.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvGames_CellFormatting);
             this.dgvGames.SelectionChanged += new System.EventHandler(this.dgvGames_SelectionChanged);
-
             // 
             // lblCount
             // 
@@ -178,11 +168,10 @@
             this.lblCount.Size = new System.Drawing.Size(151, 19);
             this.lblCount.TabIndex = 4;
             this.lblCount.Text = "Количество записей: 0";
-
             // 
             // panelPagination
             // 
-            this.panelPagination.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.panelPagination.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPagination.Controls.Add(this.btnFirst);
             this.panelPagination.Controls.Add(this.btnPrev);
@@ -195,7 +184,6 @@
             this.panelPagination.Name = "panelPagination";
             this.panelPagination.Size = new System.Drawing.Size(970, 40);
             this.panelPagination.TabIndex = 5;
-
             // 
             // btnFirst
             // 
@@ -206,7 +194,6 @@
             this.btnFirst.Text = "<<";
             this.btnFirst.UseVisualStyleBackColor = true;
             this.btnFirst.Click += new System.EventHandler(this.btnFirst_Click);
-
             // 
             // btnPrev
             // 
@@ -217,7 +204,6 @@
             this.btnPrev.Text = "<";
             this.btnPrev.UseVisualStyleBackColor = true;
             this.btnPrev.Click += new System.EventHandler(this.btnPrev_Click);
-
             // 
             // lblPageInfo
             // 
@@ -227,7 +213,6 @@
             this.lblPageInfo.Size = new System.Drawing.Size(112, 19);
             this.lblPageInfo.TabIndex = 2;
             this.lblPageInfo.Text = "Страница 1 из 1";
-
             // 
             // btnNext
             // 
@@ -238,7 +223,6 @@
             this.btnNext.Text = ">";
             this.btnNext.UseVisualStyleBackColor = true;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
-
             // 
             // btnLast
             // 
@@ -249,7 +233,6 @@
             this.btnLast.Text = ">>";
             this.btnLast.UseVisualStyleBackColor = true;
             this.btnLast.Click += new System.EventHandler(this.btnLast_Click);
-
             // 
             // lblPageSize
             // 
@@ -259,7 +242,6 @@
             this.lblPageSize.Size = new System.Drawing.Size(64, 19);
             this.lblPageSize.TabIndex = 5;
             this.lblPageSize.Text = "Записей:";
-
             // 
             // cmbPageSize
             // 
@@ -274,11 +256,10 @@
             this.cmbPageSize.Size = new System.Drawing.Size(60, 25);
             this.cmbPageSize.TabIndex = 6;
             this.cmbPageSize.SelectedIndexChanged += new System.EventHandler(this.cmbPageSize_SelectedIndexChanged);
-
             // 
             // panelButtons
             // 
-            this.panelButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.panelButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelButtons.Controls.Add(this.btnAdd);
             this.panelButtons.Controls.Add(this.btnEdit);
@@ -293,7 +274,6 @@
             this.panelButtons.Name = "panelButtons";
             this.panelButtons.Size = new System.Drawing.Size(970, 45);
             this.panelButtons.TabIndex = 9;
-
             // 
             // btnAdd
             // 
@@ -308,7 +288,6 @@
             this.btnAdd.Text = "Добавить";
             this.btnAdd.UseVisualStyleBackColor = false;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-
             // 
             // btnEdit
             // 
@@ -323,7 +302,6 @@
             this.btnEdit.Text = "Изменить";
             this.btnEdit.UseVisualStyleBackColor = false;
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
-
             // 
             // btnDelete
             // 
@@ -338,7 +316,6 @@
             this.btnDelete.Text = "Удалить";
             this.btnDelete.UseVisualStyleBackColor = false;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-
             // 
             // pnlLegendGreen
             // 
@@ -348,7 +325,6 @@
             this.pnlLegendGreen.Name = "pnlLegendGreen";
             this.pnlLegendGreen.Size = new System.Drawing.Size(15, 15);
             this.pnlLegendGreen.TabIndex = 3;
-
             // 
             // lblLegendGreen
             // 
@@ -359,7 +335,6 @@
             this.lblLegendGreen.Size = new System.Drawing.Size(52, 15);
             this.lblLegendGreen.TabIndex = 4;
             this.lblLegendGreen.Text = "> 10 шт.";
-
             // 
             // pnlLegendYellow
             // 
@@ -369,7 +344,6 @@
             this.pnlLegendYellow.Name = "pnlLegendYellow";
             this.pnlLegendYellow.Size = new System.Drawing.Size(15, 15);
             this.pnlLegendYellow.TabIndex = 5;
-
             // 
             // lblLegendYellow
             // 
@@ -380,7 +354,6 @@
             this.lblLegendYellow.Size = new System.Drawing.Size(52, 15);
             this.lblLegendYellow.TabIndex = 6;
             this.lblLegendYellow.Text = "4-10 шт.";
-
             // 
             // pnlLegendRed
             // 
@@ -390,7 +363,6 @@
             this.pnlLegendRed.Name = "pnlLegendRed";
             this.pnlLegendRed.Size = new System.Drawing.Size(15, 15);
             this.pnlLegendRed.TabIndex = 7;
-
             // 
             // lblLegendRed
             // 
@@ -401,7 +373,6 @@
             this.lblLegendRed.Size = new System.Drawing.Size(46, 15);
             this.lblLegendRed.TabIndex = 8;
             this.lblLegendRed.Text = "< 4 шт.";
-
             // 
             // GamesForm
             // 
@@ -416,10 +387,10 @@
             this.Controls.Add(this.panelFilters);
             this.Controls.Add(this.lblTitle);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "GamesForm";
             this.Text = "Управление товарами";
             this.Load += new System.EventHandler(this.GamesForm_Load);
-
             this.panelFilters.ResumeLayout(false);
             this.panelFilters.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGames)).EndInit();
@@ -429,6 +400,7 @@
             this.panelButtons.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.Label lblTitle;

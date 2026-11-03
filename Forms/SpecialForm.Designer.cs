@@ -15,6 +15,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SpecialForm));
             this.lblTitle = new System.Windows.Forms.Label();
             this.grpImportExport = new System.Windows.Forms.GroupBox();
             this.clbTables = new System.Windows.Forms.CheckedListBox();
@@ -37,13 +38,11 @@
             this.btnExcel = new System.Windows.Forms.Button();
             this.lblLog = new System.Windows.Forms.Label();
             this.txtLog = new System.Windows.Forms.TextBox();
-
             this.grpImportExport.SuspendLayout();
             this.grpBackup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBackups)).BeginInit();
             this.grpReports.SuspendLayout();
             this.SuspendLayout();
-
             // 
             // lblTitle
             // 
@@ -55,7 +54,6 @@
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Специальные возможности";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-
             // 
             // grpImportExport
             // 
@@ -74,7 +72,6 @@
             this.grpImportExport.TabIndex = 1;
             this.grpImportExport.TabStop = false;
             this.grpImportExport.Text = "1. Импорт / Экспорт CSV";
-
             // 
             // clbTables
             // 
@@ -91,9 +88,8 @@
             "order_items"});
             this.clbTables.Location = new System.Drawing.Point(15, 30);
             this.clbTables.Name = "clbTables";
-            this.clbTables.Size = new System.Drawing.Size(280, 140);
+            this.clbTables.Size = new System.Drawing.Size(280, 136);
             this.clbTables.TabIndex = 0;
-
             // 
             // btnSelectAll
             // 
@@ -105,7 +101,6 @@
             this.btnSelectAll.Text = "Выбрать все";
             this.btnSelectAll.UseVisualStyleBackColor = true;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
-
             // 
             // btnDeselectAll
             // 
@@ -117,7 +112,6 @@
             this.btnDeselectAll.Text = "Снять все";
             this.btnDeselectAll.UseVisualStyleBackColor = true;
             this.btnDeselectAll.Click += new System.EventHandler(this.btnDeselectAll_Click);
-
             // 
             // lblFolder
             // 
@@ -125,10 +119,9 @@
             this.lblFolder.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblFolder.Location = new System.Drawing.Point(15, 190);
             this.lblFolder.Name = "lblFolder";
-            this.lblFolder.Size = new System.Drawing.Size(47, 19);
+            this.lblFolder.Size = new System.Drawing.Size(51, 19);
             this.lblFolder.TabIndex = 3;
             this.lblFolder.Text = "Папка:";
-
             // 
             // txtFolder
             // 
@@ -137,7 +130,6 @@
             this.txtFolder.Name = "txtFolder";
             this.txtFolder.Size = new System.Drawing.Size(280, 25);
             this.txtFolder.TabIndex = 4;
-
             // 
             // btnBrowse
             // 
@@ -148,7 +140,6 @@
             this.btnBrowse.Text = "Обзор...";
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
-
             // 
             // btnExportSelected
             // 
@@ -162,7 +153,6 @@
             this.btnExportSelected.Text = "Экспорт в CSV";
             this.btnExportSelected.UseVisualStyleBackColor = false;
             this.btnExportSelected.Click += new System.EventHandler(this.btnExportSelected_Click);
-
             // 
             // btnImportCSV
             // 
@@ -176,7 +166,6 @@
             this.btnImportCSV.Text = "Импорт из CSV";
             this.btnImportCSV.UseVisualStyleBackColor = false;
             this.btnImportCSV.Click += new System.EventHandler(this.btnImportCSV_Click);
-
             // 
             // grpBackup
             // 
@@ -190,7 +179,6 @@
             this.grpBackup.TabIndex = 2;
             this.grpBackup.TabStop = false;
             this.grpBackup.Text = "2. Резервное копирование";
-
             // 
             // dgvBackups
             // 
@@ -207,7 +195,6 @@
             this.dgvBackups.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvBackups.Size = new System.Drawing.Size(450, 180);
             this.dgvBackups.TabIndex = 0;
-
             // 
             // btnBackupManual
             // 
@@ -221,7 +208,6 @@
             this.btnBackupManual.Text = "Создать бэкап";
             this.btnBackupManual.UseVisualStyleBackColor = false;
             this.btnBackupManual.Click += new System.EventHandler(this.btnBackupManual_Click);
-
             // 
             // btnRestore
             // 
@@ -235,7 +221,6 @@
             this.btnRestore.Text = "Восстановить БД";
             this.btnRestore.UseVisualStyleBackColor = false;
             this.btnRestore.Click += new System.EventHandler(this.btnRestore_Click);
-
             // 
             // grpReports
             // 
@@ -251,7 +236,6 @@
             this.grpReports.TabIndex = 3;
             this.grpReports.TabStop = false;
             this.grpReports.Text = "3. Формирование отчетов";
-
             // 
             // lblFrom
             // 
@@ -259,10 +243,9 @@
             this.lblFrom.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblFrom.Location = new System.Drawing.Point(30, 45);
             this.lblFrom.Name = "lblFrom";
-            this.lblFrom.Size = new System.Drawing.Size(68, 19);
+            this.lblFrom.Size = new System.Drawing.Size(71, 19);
             this.lblFrom.TabIndex = 0;
             this.lblFrom.Text = "Период с:";
-
             // 
             // dtpFrom
             // 
@@ -272,7 +255,6 @@
             this.dtpFrom.Name = "dtpFrom";
             this.dtpFrom.Size = new System.Drawing.Size(150, 25);
             this.dtpFrom.TabIndex = 1;
-
             // 
             // lblTo
             // 
@@ -280,10 +262,9 @@
             this.lblTo.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblTo.Location = new System.Drawing.Point(300, 45);
             this.lblTo.Name = "lblTo";
-            this.lblTo.Size = new System.Drawing.Size(25, 19);
+            this.lblTo.Size = new System.Drawing.Size(28, 19);
             this.lblTo.TabIndex = 2;
             this.lblTo.Text = "по:";
-
             // 
             // dtpTo
             // 
@@ -293,7 +274,6 @@
             this.dtpTo.Name = "dtpTo";
             this.dtpTo.Size = new System.Drawing.Size(150, 25);
             this.dtpTo.TabIndex = 3;
-
             // 
             // btnExcel
             // 
@@ -307,7 +287,6 @@
             this.btnExcel.Text = "Отчет в Excel (CSV)";
             this.btnExcel.UseVisualStyleBackColor = false;
             this.btnExcel.Click += new System.EventHandler(this.btnExcel_Click);
-
             // 
             // lblLog
             // 
@@ -315,15 +294,14 @@
             this.lblLog.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.lblLog.Location = new System.Drawing.Point(20, 530);
             this.lblLog.Name = "lblLog";
-            this.lblLog.Size = new System.Drawing.Size(143, 20);
+            this.lblLog.Size = new System.Drawing.Size(146, 20);
             this.lblLog.TabIndex = 4;
             this.lblLog.Text = "Журнал операций:";
-
             // 
             // txtLog
             // 
-            this.txtLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.txtLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtLog.Font = new System.Drawing.Font("Consolas", 10F);
             this.txtLog.Location = new System.Drawing.Point(20, 560);
@@ -333,7 +311,6 @@
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtLog.Size = new System.Drawing.Size(980, 120);
             this.txtLog.TabIndex = 5;
-
             // 
             // SpecialForm
             // 
@@ -348,11 +325,11 @@
             this.Controls.Add(this.grpImportExport);
             this.Controls.Add(this.lblTitle);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SpecialForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Специальные возможности";
             this.Load += new System.EventHandler(this.SpecialForm_Load);
-
             this.grpImportExport.ResumeLayout(false);
             this.grpImportExport.PerformLayout();
             this.grpBackup.ResumeLayout(false);
@@ -361,6 +338,7 @@
             this.grpReports.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.Label lblTitle;

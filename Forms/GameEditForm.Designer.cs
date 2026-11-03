@@ -15,6 +15,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameEditForm));
             this.lblTitle = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
@@ -28,11 +29,11 @@
             this.btnLoadImage = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).BeginInit();
             this.SuspendLayout();
-
+            // 
             // lblTitle
+            // 
             this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
@@ -41,8 +42,9 @@
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Добавление товара";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-
+            // 
             // lblName
+            // 
             this.lblName.AutoSize = true;
             this.lblName.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblName.Location = new System.Drawing.Point(30, 70);
@@ -50,15 +52,17 @@
             this.lblName.Size = new System.Drawing.Size(107, 19);
             this.lblName.TabIndex = 1;
             this.lblName.Text = "Название игры:";
-
+            // 
             // txtName
+            // 
             this.txtName.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.txtName.Location = new System.Drawing.Point(159, 70);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(300, 27);
             this.txtName.TabIndex = 2;
-
+            // 
             // lblPrice
+            // 
             this.lblPrice.AutoSize = true;
             this.lblPrice.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblPrice.Location = new System.Drawing.Point(30, 120);
@@ -66,16 +70,18 @@
             this.lblPrice.Size = new System.Drawing.Size(44, 19);
             this.lblPrice.TabIndex = 3;
             this.lblPrice.Text = "Цена:";
-
+            // 
             // txtPrice
+            // 
             this.txtPrice.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.txtPrice.Location = new System.Drawing.Point(159, 120);
             this.txtPrice.Name = "txtPrice";
             this.txtPrice.Size = new System.Drawing.Size(300, 27);
             this.txtPrice.TabIndex = 4;
             this.txtPrice.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPrice_KeyPress);
-
+            // 
             // lblStock
+            // 
             this.lblStock.AutoSize = true;
             this.lblStock.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblStock.Location = new System.Drawing.Point(30, 170);
@@ -83,16 +89,18 @@
             this.lblStock.Size = new System.Drawing.Size(121, 19);
             this.lblStock.TabIndex = 5;
             this.lblStock.Text = "Кол-во на складе:";
-
+            // 
             // txtStock
+            // 
             this.txtStock.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.txtStock.Location = new System.Drawing.Point(159, 170);
             this.txtStock.Name = "txtStock";
             this.txtStock.Size = new System.Drawing.Size(300, 27);
             this.txtStock.TabIndex = 6;
             this.txtStock.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtStock_KeyPress);
-
+            // 
             // lblCategory
+            // 
             this.lblCategory.AutoSize = true;
             this.lblCategory.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblCategory.Location = new System.Drawing.Point(30, 220);
@@ -100,8 +108,9 @@
             this.lblCategory.Size = new System.Drawing.Size(76, 19);
             this.lblCategory.TabIndex = 7;
             this.lblCategory.Text = "Категория:";
-
+            // 
             // cmbCategory
+            // 
             this.cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCategory.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.cmbCategory.FormattingEnabled = true;
@@ -109,8 +118,9 @@
             this.cmbCategory.Name = "cmbCategory";
             this.cmbCategory.Size = new System.Drawing.Size(300, 28);
             this.cmbCategory.TabIndex = 8;
-
+            // 
             // pbImage
+            // 
             this.pbImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbImage.Location = new System.Drawing.Point(30, 270);
             this.pbImage.Name = "pbImage";
@@ -118,8 +128,9 @@
             this.pbImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbImage.TabIndex = 9;
             this.pbImage.TabStop = false;
-
+            // 
             // btnLoadImage
+            // 
             this.btnLoadImage.BackColor = System.Drawing.Color.Black;
             this.btnLoadImage.FlatAppearance.BorderSize = 0;
             this.btnLoadImage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -132,8 +143,9 @@
             this.btnLoadImage.Text = "Загрузить картинку";
             this.btnLoadImage.UseVisualStyleBackColor = false;
             this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
-
+            // 
             // btnSave
+            // 
             this.btnSave.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnSave.FlatAppearance.BorderSize = 0;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -146,8 +158,9 @@
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-
+            // 
             // btnCancel
+            // 
             this.btnCancel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnCancel.FlatAppearance.BorderSize = 0;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -160,8 +173,9 @@
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-
+            // 
             // GameEditForm
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(251)))), ((int)(((byte)(247)))));
@@ -181,16 +195,17 @@
             this.Controls.Add(this.lblTitle);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "GameEditForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Товар";
             this.Load += new System.EventHandler(this.GameEditForm_Load);
-
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.Label lblTitle;
