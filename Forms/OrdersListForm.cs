@@ -99,6 +99,7 @@ namespace BoardGame_Store
                 {
                     totalPages = 1;
                 }
+
                 if (currentPage > totalPages)
                 {
                     currentPage = totalPages;
@@ -182,8 +183,9 @@ namespace BoardGame_Store
                 {
                     decimal sumWithout = Convert.ToDecimal(dtOrder.Rows[0]["total_without_discount"]);
                     decimal sumWith = Convert.ToDecimal(dtOrder.Rows[0]["total_with_discount"]);
+                    decimal discountPercent = Convert.ToDecimal(dtOrder.Rows[0]["discount"]);
 
-                    nudDiscount.Value = Convert.ToDecimal(dtOrder.Rows[0]["discount"]);
+                    txtDiscount.Text = discountPercent.ToString() + " %";
                     txtSumWithout.Text = sumWithout.ToString("0.00");
                     txtDiscountAmount.Text = (sumWithout - sumWith).ToString("0.00");
                     txtSumWith.Text = sumWith.ToString("0.00");
@@ -268,6 +270,7 @@ namespace BoardGame_Store
             {
                 currentPage--;
             }
+
             LoadOrders();
         }
 
@@ -277,6 +280,7 @@ namespace BoardGame_Store
             {
                 currentPage++;
             }
+
             LoadOrders();
         }
 
@@ -306,21 +310,6 @@ namespace BoardGame_Store
 
             selectedOrderId = Convert.ToInt32(dgvOrders.CurrentRow.Cells["Номер"].Value);
             LoadOrderContent(selectedOrderId);
-        }
-
-        private void nudDiscount_ValueChanged(object sender, EventArgs e)
-        {
-            decimal sumWithout = 0;
-
-            if (decimal.TryParse(txtSumWithout.Text, out sumWithout) == true)
-            {
-                decimal discountAmount = sumWithout * nudDiscount.Value / 100;
-                decimal sumWith = sumWithout - discountAmount;
-
-                txtDiscountAmount.Text = discountAmount.ToString("0.00");
-                txtSumWith.Text = sumWith.ToString("0.00");
-                txtTotal.Text = sumWith.ToString("0.00");
-            }
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -464,6 +453,7 @@ namespace BoardGame_Store
                 }
 
                 decimal totalSum = 0;
+
                 foreach (DataRow row in dt.Rows)
                 {
                     totalSum = totalSum + Convert.ToDecimal(row["total_amount"]);

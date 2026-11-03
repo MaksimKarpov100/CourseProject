@@ -2,7 +2,6 @@
 using System.Data;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 
 namespace BoardGame_Store
@@ -153,6 +152,30 @@ namespace BoardGame_Store
             return phone;
         }
 
+        private void dgvUsers_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dgvUsers.Columns[e.ColumnIndex].Name == "Роль" && e.Value != null)
+            {
+                string role = e.Value.ToString();
+
+                if (role == "Администратор")
+                {
+                    e.CellStyle.BackColor = System.Drawing.Color.LightCoral;
+                    e.CellStyle.ForeColor = System.Drawing.Color.DarkRed;
+                }
+                else if (role == "Товаровед")
+                {
+                    e.CellStyle.BackColor = System.Drawing.Color.LightYellow;
+                    e.CellStyle.ForeColor = System.Drawing.Color.DarkGoldenrod;
+                }
+                else if (role == "Продавец")
+                {
+                    e.CellStyle.BackColor = System.Drawing.Color.LightGreen;
+                    e.CellStyle.ForeColor = System.Drawing.Color.DarkGreen;
+                }
+            }
+        }
+
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             currentPage = 1;
@@ -231,6 +254,7 @@ namespace BoardGame_Store
         private void btnAdd_Click(object sender, EventArgs e)
         {
             UserEditForm form = new UserEditForm();
+
             if (form.ShowDialog() == DialogResult.OK)
             {
                 LoadUsers();
@@ -290,16 +314,9 @@ namespace BoardGame_Store
                     MessageHelper.ShowInfo("Пользователь успешно удален!");
                     LoadUsers();
                 }
-                catch (MySqlException ex)
+                catch (Exception ex)
                 {
-                    if (ex.Number == 1451)
-                    {
-                        MessageHelper.ShowError("Этого пользователя нельзя удалить, так как он оформлял заказы!");
-                    }
-                    else
-                    {
-                        MessageHelper.ShowError("Ошибка базы данных: " + ex.Message);
-                    }
+                    MessageHelper.ShowError("Ошибка удаления: " + ex.Message);
                 }
             }
         }
