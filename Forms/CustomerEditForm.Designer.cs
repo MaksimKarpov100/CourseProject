@@ -52,6 +52,7 @@
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(290, 27);
             this.txtName.TabIndex = 2;
+            this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
             // 
             // lblPhone
             // 

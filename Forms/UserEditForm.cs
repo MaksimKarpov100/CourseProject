@@ -171,5 +171,22 @@ namespace BoardGame_Store
         {
             this.Close();
         }
+
+        private void txtName_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtName.Text) == true)
+            {
+                return;
+            }
+
+            string formattedText = ValidationHelper.CapitalizeWords(txtName.Text);
+
+            if (txtName.Text != formattedText)
+            {
+                int cursorPosition = txtName.SelectionStart;
+                txtName.Text = formattedText;
+                txtName.SelectionStart = cursorPosition;
+            }
+        }
     }
 }
