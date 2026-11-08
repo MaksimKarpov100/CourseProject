@@ -66,5 +66,15 @@ namespace BoardGame_Store
 
             return char.ToUpper(text[0]) + text.Substring(1);
         }
+
+        public static bool IsValidGameTitle(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text) == true)
+            {
+                return false;
+            }
+
+            return Regex.IsMatch(text, @"^[A-Za-zА-Яа-яЁё0-9\s\-]+$");
+        }
     }
 }

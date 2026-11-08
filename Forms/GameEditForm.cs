@@ -161,9 +161,9 @@ namespace BoardGame_Store
                 return;
             }
 
-            if (ValidationHelper.IsRussianText(title) == false)
+            if (ValidationHelper.IsValidGameTitle(title) == false)
             {
-                MessageHelper.ShowWarning("Название игры должно содержать только русские буквы и дефис!");
+                MessageHelper.ShowWarning("Название игры содержит недопустимые символы! Разрешены только буквы, цифры, пробел и дефис.");
                 return;
             }
 
