@@ -54,7 +54,8 @@
             // lblTitle
             // 
             this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Font = new System.Drawing.Font("Trebuchet MS", 16F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(900, 40);
@@ -81,17 +82,19 @@
             // lblSearch
             // 
             this.lblSearch.AutoSize = true;
+            this.lblSearch.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblSearch.Location = new System.Drawing.Point(10, 15);
             this.lblSearch.Name = "lblSearch";
-            this.lblSearch.Size = new System.Drawing.Size(48, 19);
+            this.lblSearch.Size = new System.Drawing.Size(47, 17);
             this.lblSearch.TabIndex = 0;
             this.lblSearch.Text = "Поиск";
             // 
             // txtSearch
             // 
+            this.txtSearch.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtSearch.Location = new System.Drawing.Point(70, 12);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(200, 25);
+            this.txtSearch.Size = new System.Drawing.Size(200, 24);
             this.txtSearch.TabIndex = 1;
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             this.txtSearch.Enter += new System.EventHandler(this.txtSearch_Enter);
@@ -100,15 +103,17 @@
             // lblRoleFilter
             // 
             this.lblRoleFilter.AutoSize = true;
+            this.lblRoleFilter.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblRoleFilter.Location = new System.Drawing.Point(290, 15);
             this.lblRoleFilter.Name = "lblRoleFilter";
-            this.lblRoleFilter.Size = new System.Drawing.Size(39, 19);
+            this.lblRoleFilter.Size = new System.Drawing.Size(39, 17);
             this.lblRoleFilter.TabIndex = 2;
             this.lblRoleFilter.Text = "Роль";
             // 
             // cmbRoleFilter
             // 
             this.cmbRoleFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbRoleFilter.Font = new System.Drawing.Font("Tahoma", 10F);
             this.cmbRoleFilter.Items.AddRange(new object[] {
             "Все",
             "Администратор",
@@ -116,29 +121,31 @@
             "Продавец"});
             this.cmbRoleFilter.Location = new System.Drawing.Point(340, 12);
             this.cmbRoleFilter.Name = "cmbRoleFilter";
-            this.cmbRoleFilter.Size = new System.Drawing.Size(150, 25);
+            this.cmbRoleFilter.Size = new System.Drawing.Size(150, 24);
             this.cmbRoleFilter.TabIndex = 3;
             this.cmbRoleFilter.SelectedIndexChanged += new System.EventHandler(this.cmbRoleFilter_SelectedIndexChanged);
             // 
             // lblSort
             // 
             this.lblSort.AutoSize = true;
+            this.lblSort.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblSort.Location = new System.Drawing.Point(520, 15);
             this.lblSort.Name = "lblSort";
-            this.lblSort.Size = new System.Drawing.Size(88, 19);
+            this.lblSort.Size = new System.Drawing.Size(91, 17);
             this.lblSort.TabIndex = 4;
             this.lblSort.Text = "Сортировка:";
             // 
             // cmbSort
             // 
             this.cmbSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSort.Font = new System.Drawing.Font("Tahoma", 10F);
             this.cmbSort.Items.AddRange(new object[] {
             "По ФИО",
             "По логину",
             "По роли"});
             this.cmbSort.Location = new System.Drawing.Point(620, 12);
             this.cmbSort.Name = "cmbSort";
-            this.cmbSort.Size = new System.Drawing.Size(150, 25);
+            this.cmbSort.Size = new System.Drawing.Size(150, 24);
             this.cmbSort.TabIndex = 5;
             this.cmbSort.SelectedIndexChanged += new System.EventHandler(this.cmbSort_SelectedIndexChanged);
             // 
@@ -153,6 +160,7 @@
             this.dgvUsers.BackgroundColor = System.Drawing.Color.White;
             this.dgvUsers.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvUsers.Font = new System.Drawing.Font("Tahoma", 10F);
             this.dgvUsers.Location = new System.Drawing.Point(12, 105);
             this.dgvUsers.Name = "dgvUsers";
             this.dgvUsers.ReadOnly = true;
@@ -167,9 +175,10 @@
             // 
             this.lblCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCount.AutoSize = true;
+            this.lblCount.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblCount.Location = new System.Drawing.Point(12, 607);
             this.lblCount.Name = "lblCount";
-            this.lblCount.Size = new System.Drawing.Size(151, 19);
+            this.lblCount.Size = new System.Drawing.Size(157, 17);
             this.lblCount.TabIndex = 3;
             this.lblCount.Text = "Количество записей: 0";
             // 
@@ -191,72 +200,103 @@
             // 
             // btnFirst
             // 
+            this.btnFirst.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnFirst.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnFirst.FlatAppearance.BorderSize = 0;
+            this.btnFirst.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+            this.btnFirst.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnFirst.Font = new System.Drawing.Font("Trebuchet MS", 9F, System.Drawing.FontStyle.Bold);
+            this.btnFirst.ForeColor = System.Drawing.Color.White;
             this.btnFirst.Location = new System.Drawing.Point(0, 5);
             this.btnFirst.Name = "btnFirst";
             this.btnFirst.Size = new System.Drawing.Size(50, 30);
             this.btnFirst.TabIndex = 0;
             this.btnFirst.Text = "<<";
-            this.btnFirst.UseVisualStyleBackColor = true;
+            this.btnFirst.UseVisualStyleBackColor = false;
             this.btnFirst.Click += new System.EventHandler(this.btnFirst_Click);
             // 
             // btnPrev
             // 
+            this.btnPrev.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnPrev.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPrev.FlatAppearance.BorderSize = 0;
+            this.btnPrev.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+            this.btnPrev.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPrev.Font = new System.Drawing.Font("Trebuchet MS", 9F, System.Drawing.FontStyle.Bold);
+            this.btnPrev.ForeColor = System.Drawing.Color.White;
             this.btnPrev.Location = new System.Drawing.Point(60, 5);
             this.btnPrev.Name = "btnPrev";
             this.btnPrev.Size = new System.Drawing.Size(50, 30);
             this.btnPrev.TabIndex = 1;
             this.btnPrev.Text = "<";
-            this.btnPrev.UseVisualStyleBackColor = true;
+            this.btnPrev.UseVisualStyleBackColor = false;
             this.btnPrev.Click += new System.EventHandler(this.btnPrev_Click);
             // 
             // lblPageInfo
             // 
             this.lblPageInfo.AutoSize = true;
+            this.lblPageInfo.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblPageInfo.Location = new System.Drawing.Point(130, 10);
             this.lblPageInfo.Name = "lblPageInfo";
-            this.lblPageInfo.Size = new System.Drawing.Size(112, 19);
+            this.lblPageInfo.Size = new System.Drawing.Size(113, 17);
             this.lblPageInfo.TabIndex = 2;
             this.lblPageInfo.Text = "Страница 1 из 1";
             // 
             // btnNext
             // 
-            this.btnNext.Location = new System.Drawing.Point(250, 5);
+            this.btnNext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnNext.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnNext.FlatAppearance.BorderSize = 0;
+            this.btnNext.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+            this.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNext.Font = new System.Drawing.Font("Trebuchet MS", 9F, System.Drawing.FontStyle.Bold);
+            this.btnNext.ForeColor = System.Drawing.Color.White;
+            this.btnNext.Location = new System.Drawing.Point(265, 4);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(50, 30);
             this.btnNext.TabIndex = 3;
             this.btnNext.Text = ">";
-            this.btnNext.UseVisualStyleBackColor = true;
+            this.btnNext.UseVisualStyleBackColor = false;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
             // btnLast
             // 
-            this.btnLast.Location = new System.Drawing.Point(310, 5);
+            this.btnLast.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnLast.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLast.FlatAppearance.BorderSize = 0;
+            this.btnLast.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+            this.btnLast.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLast.Font = new System.Drawing.Font("Trebuchet MS", 9F, System.Drawing.FontStyle.Bold);
+            this.btnLast.ForeColor = System.Drawing.Color.White;
+            this.btnLast.Location = new System.Drawing.Point(321, 5);
             this.btnLast.Name = "btnLast";
             this.btnLast.Size = new System.Drawing.Size(50, 30);
             this.btnLast.TabIndex = 4;
             this.btnLast.Text = ">>";
-            this.btnLast.UseVisualStyleBackColor = true;
+            this.btnLast.UseVisualStyleBackColor = false;
             this.btnLast.Click += new System.EventHandler(this.btnLast_Click);
             // 
             // lblPageSize
             // 
             this.lblPageSize.AutoSize = true;
+            this.lblPageSize.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblPageSize.Location = new System.Drawing.Point(400, 10);
             this.lblPageSize.Name = "lblPageSize";
-            this.lblPageSize.Size = new System.Drawing.Size(64, 19);
+            this.lblPageSize.Size = new System.Drawing.Size(65, 17);
             this.lblPageSize.TabIndex = 5;
             this.lblPageSize.Text = "Записей:";
             // 
             // cmbPageSize
             // 
             this.cmbPageSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPageSize.Font = new System.Drawing.Font("Tahoma", 10F);
             this.cmbPageSize.Items.AddRange(new object[] {
             "10",
             "25",
             "50"});
             this.cmbPageSize.Location = new System.Drawing.Point(470, 7);
             this.cmbPageSize.Name = "cmbPageSize";
-            this.cmbPageSize.Size = new System.Drawing.Size(60, 25);
+            this.cmbPageSize.Size = new System.Drawing.Size(60, 24);
             this.cmbPageSize.TabIndex = 6;
             this.cmbPageSize.SelectedIndexChanged += new System.EventHandler(this.cmbPageSize_SelectedIndexChanged);
             // 
@@ -281,8 +321,12 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAdd.FlatAppearance.BorderSize = 0;
+            this.btnAdd.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAdd.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnAdd.ForeColor = System.Drawing.Color.White;
             this.btnAdd.Location = new System.Drawing.Point(9, 10);
             this.btnAdd.Name = "btnAdd";
@@ -294,8 +338,12 @@
             // 
             // btnEdit
             // 
-            this.btnEdit.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnEdit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEdit.FlatAppearance.BorderSize = 0;
+            this.btnEdit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEdit.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnEdit.ForeColor = System.Drawing.Color.White;
             this.btnEdit.Location = new System.Drawing.Point(165, 10);
             this.btnEdit.Name = "btnEdit";
@@ -307,8 +355,12 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnDelete.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDelete.FlatAppearance.BorderSize = 0;
+            this.btnDelete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDelete.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnDelete.ForeColor = System.Drawing.Color.White;
             this.btnDelete.Location = new System.Drawing.Point(321, 10);
             this.btnDelete.Name = "btnDelete";
@@ -321,11 +373,11 @@
             // lblHint
             // 
             this.lblHint.AutoSize = true;
-            this.lblHint.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+            this.lblHint.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Italic);
             this.lblHint.ForeColor = System.Drawing.Color.Gray;
             this.lblHint.Location = new System.Drawing.Point(477, 5);
             this.lblHint.Name = "lblHint";
-            this.lblHint.Size = new System.Drawing.Size(185, 15);
+            this.lblHint.Size = new System.Drawing.Size(182, 14);
             this.lblHint.TabIndex = 3;
             this.lblHint.Text = "Двойной клик - редактировать";
             // 
@@ -341,10 +393,10 @@
             // lblLegAdmin
             // 
             this.lblLegAdmin.AutoSize = true;
-            this.lblLegAdmin.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblLegAdmin.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblLegAdmin.Location = new System.Drawing.Point(500, 35);
             this.lblLegAdmin.Name = "lblLegAdmin";
-            this.lblLegAdmin.Size = new System.Drawing.Size(94, 15);
+            this.lblLegAdmin.Size = new System.Drawing.Size(96, 14);
             this.lblLegAdmin.TabIndex = 5;
             this.lblLegAdmin.Text = "Администратор";
             // 
@@ -360,10 +412,10 @@
             // lblLegManager
             // 
             this.lblLegManager.AutoSize = true;
-            this.lblLegManager.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblLegManager.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblLegManager.Location = new System.Drawing.Point(621, 35);
             this.lblLegManager.Name = "lblLegManager";
-            this.lblLegManager.Size = new System.Drawing.Size(65, 15);
+            this.lblLegManager.Size = new System.Drawing.Size(68, 14);
             this.lblLegManager.TabIndex = 7;
             this.lblLegManager.Text = "Товаровед";
             // 
@@ -379,16 +431,16 @@
             // lblLegSeller
             // 
             this.lblLegSeller.AutoSize = true;
-            this.lblLegSeller.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblLegSeller.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblLegSeller.Location = new System.Drawing.Point(720, 35);
             this.lblLegSeller.Name = "lblLegSeller";
-            this.lblLegSeller.Size = new System.Drawing.Size(61, 15);
+            this.lblLegSeller.Size = new System.Drawing.Size(62, 14);
             this.lblLegSeller.TabIndex = 9;
             this.lblLegSeller.Text = "Продавец";
             // 
             // UsersForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(900, 747);
@@ -398,7 +450,7 @@
             this.Controls.Add(this.dgvUsers);
             this.Controls.Add(this.panelFilters);
             this.Controls.Add(this.lblTitle);
-            this.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.Font = new System.Drawing.Font("Tahoma", 10F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "UsersForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

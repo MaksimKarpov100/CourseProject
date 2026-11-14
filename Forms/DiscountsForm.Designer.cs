@@ -30,7 +30,6 @@
             this.lblRule1 = new System.Windows.Forms.Label();
             this.grpExample = new System.Windows.Forms.GroupBox();
             this.lblExample = new System.Windows.Forms.Label();
-            this.btnClose = new System.Windows.Forms.Button();
             this.grpSum.SuspendLayout();
             this.grpSeason.SuspendLayout();
             this.grpRules.SuspendLayout();
@@ -42,7 +41,7 @@
             this.grpSum.Controls.Add(this.lblSum3);
             this.grpSum.Controls.Add(this.lblSum2);
             this.grpSum.Controls.Add(this.lblSum1);
-            this.grpSum.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.grpSum.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.grpSum.Location = new System.Drawing.Point(20, 20);
             this.grpSum.Name = "grpSum";
             this.grpSum.Size = new System.Drawing.Size(460, 100);
@@ -53,35 +52,35 @@
             // lblSum3
             // 
             this.lblSum3.AutoSize = true;
-            this.lblSum3.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblSum3.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblSum3.Location = new System.Drawing.Point(15, 75);
             this.lblSum3.Name = "lblSum3";
-            this.lblSum3.Size = new System.Drawing.Size(0, 15);
+            this.lblSum3.Size = new System.Drawing.Size(0, 14);
             this.lblSum3.TabIndex = 2;
             // 
             // lblSum2
             // 
             this.lblSum2.AutoSize = true;
-            this.lblSum2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblSum2.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblSum2.Location = new System.Drawing.Point(15, 50);
             this.lblSum2.Name = "lblSum2";
-            this.lblSum2.Size = new System.Drawing.Size(0, 15);
+            this.lblSum2.Size = new System.Drawing.Size(0, 14);
             this.lblSum2.TabIndex = 1;
             // 
             // lblSum1
             // 
             this.lblSum1.AutoSize = true;
-            this.lblSum1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblSum1.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblSum1.Location = new System.Drawing.Point(15, 25);
             this.lblSum1.Name = "lblSum1";
-            this.lblSum1.Size = new System.Drawing.Size(0, 15);
+            this.lblSum1.Size = new System.Drawing.Size(0, 14);
             this.lblSum1.TabIndex = 0;
             // 
             // grpSeason
             // 
             this.grpSeason.Controls.Add(this.lblSeason2);
             this.grpSeason.Controls.Add(this.lblSeason1);
-            this.grpSeason.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.grpSeason.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.grpSeason.Location = new System.Drawing.Point(20, 130);
             this.grpSeason.Name = "grpSeason";
             this.grpSeason.Size = new System.Drawing.Size(460, 90);
@@ -92,19 +91,19 @@
             // lblSeason2
             // 
             this.lblSeason2.AutoSize = true;
-            this.lblSeason2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblSeason2.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblSeason2.Location = new System.Drawing.Point(15, 55);
             this.lblSeason2.Name = "lblSeason2";
-            this.lblSeason2.Size = new System.Drawing.Size(0, 15);
+            this.lblSeason2.Size = new System.Drawing.Size(0, 14);
             this.lblSeason2.TabIndex = 1;
             // 
             // lblSeason1
             // 
             this.lblSeason1.AutoSize = true;
-            this.lblSeason1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblSeason1.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblSeason1.Location = new System.Drawing.Point(15, 25);
             this.lblSeason1.Name = "lblSeason1";
-            this.lblSeason1.Size = new System.Drawing.Size(0, 15);
+            this.lblSeason1.Size = new System.Drawing.Size(0, 14);
             this.lblSeason1.TabIndex = 0;
             // 
             // grpRules
@@ -113,7 +112,7 @@
             this.grpRules.Controls.Add(this.lblRule3);
             this.grpRules.Controls.Add(this.lblRule2);
             this.grpRules.Controls.Add(this.lblRule1);
-            this.grpRules.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.grpRules.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.grpRules.Location = new System.Drawing.Point(20, 230);
             this.grpRules.Name = "grpRules";
             this.grpRules.Size = new System.Drawing.Size(460, 120);
@@ -124,43 +123,43 @@
             // lblRule4
             // 
             this.lblRule4.AutoSize = true;
-            this.lblRule4.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblRule4.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblRule4.Location = new System.Drawing.Point(15, 95);
             this.lblRule4.Name = "lblRule4";
-            this.lblRule4.Size = new System.Drawing.Size(0, 15);
+            this.lblRule4.Size = new System.Drawing.Size(0, 14);
             this.lblRule4.TabIndex = 3;
             // 
             // lblRule3
             // 
             this.lblRule3.AutoSize = true;
-            this.lblRule3.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblRule3.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblRule3.Location = new System.Drawing.Point(15, 75);
             this.lblRule3.Name = "lblRule3";
-            this.lblRule3.Size = new System.Drawing.Size(0, 15);
+            this.lblRule3.Size = new System.Drawing.Size(0, 14);
             this.lblRule3.TabIndex = 2;
             // 
             // lblRule2
             // 
             this.lblRule2.AutoSize = true;
-            this.lblRule2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblRule2.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblRule2.Location = new System.Drawing.Point(15, 50);
             this.lblRule2.Name = "lblRule2";
-            this.lblRule2.Size = new System.Drawing.Size(0, 15);
+            this.lblRule2.Size = new System.Drawing.Size(0, 14);
             this.lblRule2.TabIndex = 1;
             // 
             // lblRule1
             // 
             this.lblRule1.AutoSize = true;
-            this.lblRule1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblRule1.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblRule1.Location = new System.Drawing.Point(15, 25);
             this.lblRule1.Name = "lblRule1";
-            this.lblRule1.Size = new System.Drawing.Size(0, 15);
+            this.lblRule1.Size = new System.Drawing.Size(0, 14);
             this.lblRule1.TabIndex = 0;
             // 
             // grpExample
             // 
             this.grpExample.Controls.Add(this.lblExample);
-            this.grpExample.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.grpExample.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.grpExample.Location = new System.Drawing.Point(20, 360);
             this.grpExample.Name = "grpExample";
             this.grpExample.Size = new System.Drawing.Size(460, 100);
@@ -171,34 +170,23 @@
             // lblExample
             // 
             this.lblExample.AutoSize = true;
-            this.lblExample.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblExample.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblExample.Location = new System.Drawing.Point(15, 25);
             this.lblExample.Name = "lblExample";
-            this.lblExample.Size = new System.Drawing.Size(0, 15);
+            this.lblExample.Size = new System.Drawing.Size(0, 14);
             this.lblExample.TabIndex = 0;
-            // 
-            // btnClose
-            // 
-            this.btnClose.Location = new System.Drawing.Point(380, 470);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(100, 35);
-            this.btnClose.TabIndex = 4;
-            this.btnClose.Text = "В меню";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // DiscountsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(500, 520);
-            this.Controls.Add(this.btnClose);
+            this.ClientSize = new System.Drawing.Size(500, 487);
             this.Controls.Add(this.grpExample);
             this.Controls.Add(this.grpRules);
             this.Controls.Add(this.grpSeason);
             this.Controls.Add(this.grpSum);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.Font = new System.Drawing.Font("Tahoma", 9F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -233,6 +221,5 @@
         private System.Windows.Forms.Label lblRule4;
         private System.Windows.Forms.GroupBox grpExample;
         private System.Windows.Forms.Label lblExample;
-        private System.Windows.Forms.Button btnClose;
     }
 }

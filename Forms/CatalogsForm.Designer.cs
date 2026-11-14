@@ -54,7 +54,8 @@
             // lblTitle
             // 
             this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Font = new System.Drawing.Font("Trebuchet MS", 18F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(900, 40);
@@ -68,7 +69,7 @@
             this.tabCatalogs.Controls.Add(this.tabCustomers);
             this.tabCatalogs.Controls.Add(this.tabStatuses);
             this.tabCatalogs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabCatalogs.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.tabCatalogs.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.tabCatalogs.Location = new System.Drawing.Point(0, 40);
             this.tabCatalogs.Name = "tabCatalogs";
             this.tabCatalogs.SelectedIndex = 0;
@@ -80,12 +81,13 @@
             this.tabCategories.Controls.Add(this.dgvCategories);
             this.tabCategories.Controls.Add(this.panelCatTop);
             this.tabCategories.Controls.Add(this.panelCatBottom);
-            this.tabCategories.Location = new System.Drawing.Point(4, 26);
+            this.tabCategories.Location = new System.Drawing.Point(4, 27);
             this.tabCategories.Name = "tabCategories";
             this.tabCategories.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCategories.Size = new System.Drawing.Size(892, 630);
+            this.tabCategories.Size = new System.Drawing.Size(892, 629);
             this.tabCategories.TabIndex = 0;
             this.tabCategories.Text = "Категории";
+            this.tabCategories.UseVisualStyleBackColor = true;
             // 
             // dgvCategories
             // 
@@ -96,9 +98,10 @@
             this.dgvCategories.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvCategories.Location = new System.Drawing.Point(3, 53);
             this.dgvCategories.Name = "dgvCategories";
+            this.dgvCategories.ReadOnly = true;
             this.dgvCategories.RowHeadersVisible = false;
             this.dgvCategories.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCategories.Size = new System.Drawing.Size(886, 514);
+            this.dgvCategories.Size = new System.Drawing.Size(886, 513);
             this.dgvCategories.TabIndex = 0;
             this.dgvCategories.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCategories_CellDoubleClick);
             // 
@@ -114,9 +117,10 @@
             // 
             // txtSearchCat
             // 
+            this.txtSearchCat.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtSearchCat.Location = new System.Drawing.Point(10, 10);
             this.txtSearchCat.Name = "txtSearchCat";
-            this.txtSearchCat.Size = new System.Drawing.Size(300, 25);
+            this.txtSearchCat.Size = new System.Drawing.Size(300, 24);
             this.txtSearchCat.TabIndex = 0;
             this.txtSearchCat.Text = "Поиск...";
             this.txtSearchCat.TextChanged += new System.EventHandler(this.txtSearchCat_TextChanged);
@@ -124,12 +128,13 @@
             // cmbSortCat
             // 
             this.cmbSortCat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSortCat.Font = new System.Drawing.Font("Tahoma", 10F);
             this.cmbSortCat.Items.AddRange(new object[] {
             "По названию (А-Я)",
             "По названию (Я-А)"});
-            this.cmbSortCat.Location = new System.Drawing.Point(320, 10);
+            this.cmbSortCat.Location = new System.Drawing.Point(320, 9);
             this.cmbSortCat.Name = "cmbSortCat";
-            this.cmbSortCat.Size = new System.Drawing.Size(200, 25);
+            this.cmbSortCat.Size = new System.Drawing.Size(200, 24);
             this.cmbSortCat.TabIndex = 1;
             this.cmbSortCat.SelectedIndexChanged += new System.EventHandler(this.cmbSortCat_SelectedIndexChanged);
             // 
@@ -139,15 +144,19 @@
             this.panelCatBottom.Controls.Add(this.btnCatEdit);
             this.panelCatBottom.Controls.Add(this.btnCatDelete);
             this.panelCatBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelCatBottom.Location = new System.Drawing.Point(3, 567);
+            this.panelCatBottom.Location = new System.Drawing.Point(3, 566);
             this.panelCatBottom.Name = "panelCatBottom";
             this.panelCatBottom.Size = new System.Drawing.Size(886, 60);
             this.panelCatBottom.TabIndex = 2;
             // 
             // btnCatAdd
             // 
-            this.btnCatAdd.BackColor = System.Drawing.Color.SeaGreen;
+            this.btnCatAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnCatAdd.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCatAdd.FlatAppearance.BorderSize = 0;
+            this.btnCatAdd.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.btnCatAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCatAdd.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnCatAdd.ForeColor = System.Drawing.Color.White;
             this.btnCatAdd.Location = new System.Drawing.Point(10, 10);
             this.btnCatAdd.Name = "btnCatAdd";
@@ -159,8 +168,12 @@
             // 
             // btnCatEdit
             // 
-            this.btnCatEdit.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnCatEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnCatEdit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCatEdit.FlatAppearance.BorderSize = 0;
+            this.btnCatEdit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.btnCatEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCatEdit.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnCatEdit.ForeColor = System.Drawing.Color.White;
             this.btnCatEdit.Location = new System.Drawing.Point(170, 10);
             this.btnCatEdit.Name = "btnCatEdit";
@@ -172,8 +185,12 @@
             // 
             // btnCatDelete
             // 
-            this.btnCatDelete.BackColor = System.Drawing.Color.Firebrick;
+            this.btnCatDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnCatDelete.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCatDelete.FlatAppearance.BorderSize = 0;
+            this.btnCatDelete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.btnCatDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCatDelete.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnCatDelete.ForeColor = System.Drawing.Color.White;
             this.btnCatDelete.Location = new System.Drawing.Point(330, 10);
             this.btnCatDelete.Name = "btnCatDelete";
@@ -188,12 +205,13 @@
             this.tabCustomers.Controls.Add(this.dgvCustomers);
             this.tabCustomers.Controls.Add(this.panelCustTop);
             this.tabCustomers.Controls.Add(this.panelCustBottom);
-            this.tabCustomers.Location = new System.Drawing.Point(4, 26);
+            this.tabCustomers.Location = new System.Drawing.Point(4, 27);
             this.tabCustomers.Name = "tabCustomers";
             this.tabCustomers.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCustomers.Size = new System.Drawing.Size(892, 630);
+            this.tabCustomers.Size = new System.Drawing.Size(892, 629);
             this.tabCustomers.TabIndex = 1;
             this.tabCustomers.Text = "Клиенты";
+            this.tabCustomers.UseVisualStyleBackColor = true;
             // 
             // dgvCustomers
             // 
@@ -204,9 +222,10 @@
             this.dgvCustomers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvCustomers.Location = new System.Drawing.Point(3, 53);
             this.dgvCustomers.Name = "dgvCustomers";
+            this.dgvCustomers.ReadOnly = true;
             this.dgvCustomers.RowHeadersVisible = false;
             this.dgvCustomers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCustomers.Size = new System.Drawing.Size(886, 514);
+            this.dgvCustomers.Size = new System.Drawing.Size(886, 513);
             this.dgvCustomers.TabIndex = 0;
             this.dgvCustomers.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCustomers_CellDoubleClick);
             // 
@@ -222,9 +241,10 @@
             // 
             // txtSearchCust
             // 
+            this.txtSearchCust.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtSearchCust.Location = new System.Drawing.Point(10, 10);
             this.txtSearchCust.Name = "txtSearchCust";
-            this.txtSearchCust.Size = new System.Drawing.Size(300, 25);
+            this.txtSearchCust.Size = new System.Drawing.Size(300, 24);
             this.txtSearchCust.TabIndex = 0;
             this.txtSearchCust.Text = "Поиск...";
             this.txtSearchCust.TextChanged += new System.EventHandler(this.txtSearchCust_TextChanged);
@@ -232,12 +252,13 @@
             // cmbSortCust
             // 
             this.cmbSortCust.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSortCust.Font = new System.Drawing.Font("Tahoma", 10F);
             this.cmbSortCust.Items.AddRange(new object[] {
             "По ФИО (А-Я)",
             "По ФИО (Я-А)"});
-            this.cmbSortCust.Location = new System.Drawing.Point(320, 10);
+            this.cmbSortCust.Location = new System.Drawing.Point(320, 9);
             this.cmbSortCust.Name = "cmbSortCust";
-            this.cmbSortCust.Size = new System.Drawing.Size(200, 25);
+            this.cmbSortCust.Size = new System.Drawing.Size(200, 24);
             this.cmbSortCust.TabIndex = 1;
             this.cmbSortCust.SelectedIndexChanged += new System.EventHandler(this.cmbSortCust_SelectedIndexChanged);
             // 
@@ -247,15 +268,19 @@
             this.panelCustBottom.Controls.Add(this.btnCustEdit);
             this.panelCustBottom.Controls.Add(this.btnCustDelete);
             this.panelCustBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelCustBottom.Location = new System.Drawing.Point(3, 567);
+            this.panelCustBottom.Location = new System.Drawing.Point(3, 566);
             this.panelCustBottom.Name = "panelCustBottom";
             this.panelCustBottom.Size = new System.Drawing.Size(886, 60);
             this.panelCustBottom.TabIndex = 2;
             // 
             // btnCustAdd
             // 
-            this.btnCustAdd.BackColor = System.Drawing.Color.SeaGreen;
+            this.btnCustAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnCustAdd.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCustAdd.FlatAppearance.BorderSize = 0;
+            this.btnCustAdd.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.btnCustAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCustAdd.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnCustAdd.ForeColor = System.Drawing.Color.White;
             this.btnCustAdd.Location = new System.Drawing.Point(10, 10);
             this.btnCustAdd.Name = "btnCustAdd";
@@ -267,8 +292,12 @@
             // 
             // btnCustEdit
             // 
-            this.btnCustEdit.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnCustEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnCustEdit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCustEdit.FlatAppearance.BorderSize = 0;
+            this.btnCustEdit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.btnCustEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCustEdit.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnCustEdit.ForeColor = System.Drawing.Color.White;
             this.btnCustEdit.Location = new System.Drawing.Point(170, 10);
             this.btnCustEdit.Name = "btnCustEdit";
@@ -280,8 +309,12 @@
             // 
             // btnCustDelete
             // 
-            this.btnCustDelete.BackColor = System.Drawing.Color.Firebrick;
+            this.btnCustDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnCustDelete.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCustDelete.FlatAppearance.BorderSize = 0;
+            this.btnCustDelete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.btnCustDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCustDelete.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnCustDelete.ForeColor = System.Drawing.Color.White;
             this.btnCustDelete.Location = new System.Drawing.Point(330, 10);
             this.btnCustDelete.Name = "btnCustDelete";
@@ -294,12 +327,13 @@
             // tabStatuses
             // 
             this.tabStatuses.Controls.Add(this.dgvStatuses);
-            this.tabStatuses.Location = new System.Drawing.Point(4, 26);
+            this.tabStatuses.Location = new System.Drawing.Point(4, 27);
             this.tabStatuses.Name = "tabStatuses";
             this.tabStatuses.Padding = new System.Windows.Forms.Padding(3);
-            this.tabStatuses.Size = new System.Drawing.Size(892, 630);
+            this.tabStatuses.Size = new System.Drawing.Size(892, 629);
             this.tabStatuses.TabIndex = 2;
             this.tabStatuses.Text = "Статусы";
+            this.tabStatuses.UseVisualStyleBackColor = true;
             // 
             // dgvStatuses
             // 
@@ -310,17 +344,23 @@
             this.dgvStatuses.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvStatuses.Location = new System.Drawing.Point(3, 3);
             this.dgvStatuses.Name = "dgvStatuses";
+            this.dgvStatuses.ReadOnly = true;
             this.dgvStatuses.RowHeadersVisible = false;
-            this.dgvStatuses.Size = new System.Drawing.Size(886, 624);
+            this.dgvStatuses.Size = new System.Drawing.Size(886, 623);
             this.dgvStatuses.TabIndex = 0;
             // 
             // CatalogsForm
             // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 700);
             this.Controls.Add(this.tabCatalogs);
             this.Controls.Add(this.lblTitle);
+            this.Font = new System.Drawing.Font("Tahoma", 10F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CatalogsForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Справочники";
             this.Load += new System.EventHandler(this.CatalogsForm_Load);
             this.tabCatalogs.ResumeLayout(false);
             this.tabCategories.ResumeLayout(false);

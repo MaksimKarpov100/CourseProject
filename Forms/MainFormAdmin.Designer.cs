@@ -46,20 +46,21 @@
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Font = new System.Drawing.Font("Trebuchet MS", 16F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
             this.lblTitle.Location = new System.Drawing.Point(20, 15);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(245, 25);
+            this.lblTitle.Size = new System.Drawing.Size(245, 29);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Магазин настольных игр";
             // 
             // lblUserInfo
             // 
+            this.lblUserInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblUserInfo.AutoSize = true;
-            this.lblUserInfo.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblUserInfo.Font = new System.Drawing.Font("Trebuchet MS", 11F);
             this.lblUserInfo.ForeColor = System.Drawing.Color.White;
-            this.lblUserInfo.Location = new System.Drawing.Point(576, 19);
+            this.lblUserInfo.Location = new System.Drawing.Point(750, 22);
             this.lblUserInfo.Name = "lblUserInfo";
             this.lblUserInfo.Size = new System.Drawing.Size(107, 20);
             this.lblUserInfo.TabIndex = 1;
@@ -67,9 +68,13 @@
             // 
             // btnExit
             // 
-            this.btnExit.BackColor = System.Drawing.Color.DarkRed;
+            this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnExit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnExit.FlatAppearance.BorderSize = 0;
+            this.btnExit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnExit.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnExit.ForeColor = System.Drawing.Color.White;
             this.btnExit.Location = new System.Drawing.Point(1012, 11);
             this.btnExit.Name = "btnExit";
@@ -88,7 +93,7 @@
             this.tabMain.Controls.Add(this.tabDiscounts);
             this.tabMain.Controls.Add(this.tabSpecial);
             this.tabMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabMain.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.tabMain.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.tabMain.Location = new System.Drawing.Point(0, 60);
             this.tabMain.Name = "tabMain";
             this.tabMain.SelectedIndex = 0;
@@ -98,50 +103,50 @@
             // 
             // tabOrders
             // 
-            this.tabOrders.Location = new System.Drawing.Point(4, 26);
+            this.tabOrders.Location = new System.Drawing.Point(4, 27);
             this.tabOrders.Name = "tabOrders";
             this.tabOrders.Padding = new System.Windows.Forms.Padding(3);
-            this.tabOrders.Size = new System.Drawing.Size(1116, 730);
+            this.tabOrders.Size = new System.Drawing.Size(1116, 729);
             this.tabOrders.TabIndex = 0;
             this.tabOrders.Text = "📦 Заказы";
             // 
             // tabGames
             // 
-            this.tabGames.Location = new System.Drawing.Point(4, 26);
+            this.tabGames.Location = new System.Drawing.Point(4, 27);
             this.tabGames.Name = "tabGames";
-            this.tabGames.Size = new System.Drawing.Size(1116, 730);
+            this.tabGames.Size = new System.Drawing.Size(1116, 729);
             this.tabGames.TabIndex = 1;
             this.tabGames.Text = "🎮 Товары";
             // 
             // tabUsers
             // 
-            this.tabUsers.Location = new System.Drawing.Point(4, 26);
+            this.tabUsers.Location = new System.Drawing.Point(4, 27);
             this.tabUsers.Name = "tabUsers";
-            this.tabUsers.Size = new System.Drawing.Size(1116, 730);
+            this.tabUsers.Size = new System.Drawing.Size(1116, 729);
             this.tabUsers.TabIndex = 2;
             this.tabUsers.Text = "👥 Пользователи";
             // 
             // tabCatalogs
             // 
-            this.tabCatalogs.Location = new System.Drawing.Point(4, 26);
+            this.tabCatalogs.Location = new System.Drawing.Point(4, 27);
             this.tabCatalogs.Name = "tabCatalogs";
-            this.tabCatalogs.Size = new System.Drawing.Size(1116, 730);
+            this.tabCatalogs.Size = new System.Drawing.Size(1116, 729);
             this.tabCatalogs.TabIndex = 3;
             this.tabCatalogs.Text = "🏷️ Справочники";
             // 
             // tabDiscounts
             // 
-            this.tabDiscounts.Location = new System.Drawing.Point(4, 26);
+            this.tabDiscounts.Location = new System.Drawing.Point(4, 27);
             this.tabDiscounts.Name = "tabDiscounts";
-            this.tabDiscounts.Size = new System.Drawing.Size(1116, 730);
+            this.tabDiscounts.Size = new System.Drawing.Size(1116, 729);
             this.tabDiscounts.TabIndex = 4;
             this.tabDiscounts.Text = "💰 Скидки";
             // 
             // tabSpecial
             // 
-            this.tabSpecial.Location = new System.Drawing.Point(4, 26);
+            this.tabSpecial.Location = new System.Drawing.Point(4, 27);
             this.tabSpecial.Name = "tabSpecial";
-            this.tabSpecial.Size = new System.Drawing.Size(1116, 730);
+            this.tabSpecial.Size = new System.Drawing.Size(1116, 729);
             this.tabSpecial.TabIndex = 5;
             this.tabSpecial.Text = "⚙️ Специальные возможности";
             // 
@@ -153,6 +158,7 @@
             this.ControlBox = false;
             this.Controls.Add(this.tabMain);
             this.Controls.Add(this.panelTop);
+            this.Font = new System.Drawing.Font("Tahoma", 9F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1000, 700);
             this.Name = "MainFormAdmin";

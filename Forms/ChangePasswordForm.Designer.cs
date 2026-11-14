@@ -33,7 +33,8 @@
             // lblTitle
             // 
             this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Font = new System.Drawing.Font("Trebuchet MS", 14F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(350, 40);
@@ -44,18 +45,20 @@
             // lblOld
             // 
             this.lblOld.AutoSize = true;
+            this.lblOld.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblOld.Location = new System.Drawing.Point(30, 60);
             this.lblOld.Name = "lblOld";
-            this.lblOld.Size = new System.Drawing.Size(109, 19);
+            this.lblOld.Size = new System.Drawing.Size(109, 17);
             this.lblOld.TabIndex = 1;
             this.lblOld.Text = "Старый пароль:";
             // 
             // txtOldPass
             // 
+            this.txtOldPass.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtOldPass.Location = new System.Drawing.Point(30, 85);
             this.txtOldPass.Name = "txtOldPass";
             this.txtOldPass.PasswordChar = '●';
-            this.txtOldPass.Size = new System.Drawing.Size(250, 25);
+            this.txtOldPass.Size = new System.Drawing.Size(250, 24);
             this.txtOldPass.TabIndex = 2;
             // 
             // btnShowOld
@@ -74,18 +77,20 @@
             // lblNew
             // 
             this.lblNew.AutoSize = true;
+            this.lblNew.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblNew.Location = new System.Drawing.Point(30, 125);
             this.lblNew.Name = "lblNew";
-            this.lblNew.Size = new System.Drawing.Size(104, 19);
+            this.lblNew.Size = new System.Drawing.Size(104, 17);
             this.lblNew.TabIndex = 4;
             this.lblNew.Text = "Новый пароль:";
             // 
             // txtNewPass
             // 
+            this.txtNewPass.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtNewPass.Location = new System.Drawing.Point(30, 150);
             this.txtNewPass.Name = "txtNewPass";
             this.txtNewPass.PasswordChar = '●';
-            this.txtNewPass.Size = new System.Drawing.Size(250, 25);
+            this.txtNewPass.Size = new System.Drawing.Size(250, 24);
             this.txtNewPass.TabIndex = 5;
             // 
             // btnShowNew
@@ -104,18 +109,20 @@
             // lblConfirm
             // 
             this.lblConfirm.AutoSize = true;
+            this.lblConfirm.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblConfirm.Location = new System.Drawing.Point(30, 190);
             this.lblConfirm.Name = "lblConfirm";
-            this.lblConfirm.Size = new System.Drawing.Size(95, 19);
+            this.lblConfirm.Size = new System.Drawing.Size(95, 17);
             this.lblConfirm.TabIndex = 7;
             this.lblConfirm.Text = "Подтвердите:";
             // 
             // txtConfirmPass
             // 
+            this.txtConfirmPass.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtConfirmPass.Location = new System.Drawing.Point(30, 215);
             this.txtConfirmPass.Name = "txtConfirmPass";
             this.txtConfirmPass.PasswordChar = '●';
-            this.txtConfirmPass.Size = new System.Drawing.Size(250, 25);
+            this.txtConfirmPass.Size = new System.Drawing.Size(250, 24);
             this.txtConfirmPass.TabIndex = 8;
             // 
             // btnShowConfirm
@@ -133,8 +140,12 @@
             // 
             // btnSave
             // 
-            this.btnSave.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSave.FlatAppearance.BorderSize = 0;
+            this.btnSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.Location = new System.Drawing.Point(30, 260);
             this.btnSave.Name = "btnSave";
@@ -146,8 +157,12 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCancel.FlatAppearance.BorderSize = 0;
+            this.btnCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
             this.btnCancel.Location = new System.Drawing.Point(190, 260);
             this.btnCancel.Name = "btnCancel";
@@ -175,7 +190,7 @@
             this.Controls.Add(this.txtOldPass);
             this.Controls.Add(this.lblOld);
             this.Controls.Add(this.lblTitle);
-            this.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.Font = new System.Drawing.Font("Tahoma", 10F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

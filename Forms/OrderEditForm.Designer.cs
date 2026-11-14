@@ -50,7 +50,8 @@
             // lblTitle
             // 
             this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Font = new System.Drawing.Font("Trebuchet MS", 18F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(800, 40);
@@ -78,101 +79,110 @@
             // 
             // dtpCompletionDate
             // 
+            this.dtpCompletionDate.Font = new System.Drawing.Font("Tahoma", 10F);
             this.dtpCompletionDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpCompletionDate.Location = new System.Drawing.Point(463, 50);
             this.dtpCompletionDate.Name = "dtpCompletionDate";
-            this.dtpCompletionDate.Size = new System.Drawing.Size(130, 25);
+            this.dtpCompletionDate.Size = new System.Drawing.Size(130, 24);
             this.dtpCompletionDate.TabIndex = 9;
             // 
             // lblCompletionDate
             // 
             this.lblCompletionDate.AutoSize = true;
+            this.lblCompletionDate.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblCompletionDate.Location = new System.Drawing.Point(330, 50);
             this.lblCompletionDate.Name = "lblCompletionDate";
-            this.lblCompletionDate.Size = new System.Drawing.Size(122, 19);
+            this.lblCompletionDate.Size = new System.Drawing.Size(122, 17);
             this.lblCompletionDate.TabIndex = 8;
             this.lblCompletionDate.Text = "Дата завершения:";
             // 
             // dtpOrderDate
             // 
+            this.dtpOrderDate.Font = new System.Drawing.Font("Tahoma", 10F);
             this.dtpOrderDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpOrderDate.Location = new System.Drawing.Point(463, 15);
             this.dtpOrderDate.Name = "dtpOrderDate";
-            this.dtpOrderDate.Size = new System.Drawing.Size(130, 25);
+            this.dtpOrderDate.Size = new System.Drawing.Size(130, 24);
             this.dtpOrderDate.TabIndex = 7;
             // 
             // lblOrderDate
             // 
             this.lblOrderDate.AutoSize = true;
+            this.lblOrderDate.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblOrderDate.Location = new System.Drawing.Point(330, 15);
             this.lblOrderDate.Name = "lblOrderDate";
-            this.lblOrderDate.Size = new System.Drawing.Size(127, 19);
+            this.lblOrderDate.Size = new System.Drawing.Size(127, 17);
             this.lblOrderDate.TabIndex = 6;
             this.lblOrderDate.Text = "Дата оформления:";
             // 
             // lblCustomer
             // 
             this.lblCustomer.AutoSize = true;
-            this.lblCustomer.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblCustomer.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.lblCustomer.Location = new System.Drawing.Point(20, 15);
             this.lblCustomer.Name = "lblCustomer";
-            this.lblCustomer.Size = new System.Drawing.Size(63, 19);
+            this.lblCustomer.Size = new System.Drawing.Size(63, 17);
             this.lblCustomer.TabIndex = 0;
             this.lblCustomer.Text = "Клиент:";
             // 
             // lblCustomerName
             // 
             this.lblCustomerName.AutoSize = true;
-            this.lblCustomerName.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblCustomerName.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblCustomerName.Location = new System.Drawing.Point(80, 15);
             this.lblCustomerName.Name = "lblCustomerName";
-            this.lblCustomerName.Size = new System.Drawing.Size(0, 19);
+            this.lblCustomerName.Size = new System.Drawing.Size(0, 17);
             this.lblCustomerName.TabIndex = 1;
             // 
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblStatus.Location = new System.Drawing.Point(20, 85);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(97, 19);
+            this.lblStatus.Size = new System.Drawing.Size(97, 17);
             this.lblStatus.TabIndex = 2;
             this.lblStatus.Text = "Статус заказа:";
             // 
             // cmbStatus
             // 
             this.cmbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbStatus.Font = new System.Drawing.Font("Tahoma", 10F);
             this.cmbStatus.Location = new System.Drawing.Point(120, 82);
             this.cmbStatus.Name = "cmbStatus";
-            this.cmbStatus.Size = new System.Drawing.Size(180, 25);
+            this.cmbStatus.Size = new System.Drawing.Size(180, 24);
             this.cmbStatus.TabIndex = 3;
             // 
             // lblAddress
             // 
             this.lblAddress.AutoSize = true;
+            this.lblAddress.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblAddress.Location = new System.Drawing.Point(330, 85);
             this.lblAddress.Name = "lblAddress";
-            this.lblAddress.Size = new System.Drawing.Size(111, 19);
+            this.lblAddress.Size = new System.Drawing.Size(111, 17);
             this.lblAddress.TabIndex = 4;
             this.lblAddress.Text = "Адрес доставки:";
             // 
             // txtAddress
             // 
+            this.txtAddress.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtAddress.Location = new System.Drawing.Point(463, 81);
             this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(300, 25);
+            this.txtAddress.Size = new System.Drawing.Size(300, 24);
             this.txtAddress.TabIndex = 5;
             // 
             // dgvOrderItems
             // 
             this.dgvOrderItems.AllowUserToAddRows = false;
             this.dgvOrderItems.AllowUserToDeleteRows = false;
-            this.dgvOrderItems.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvOrderItems.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvOrderItems.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvOrderItems.BackgroundColor = System.Drawing.Color.White;
             this.dgvOrderItems.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvOrderItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvOrderItems.Font = new System.Drawing.Font("Tahoma", 10F);
             this.dgvOrderItems.Location = new System.Drawing.Point(20, 160);
             this.dgvOrderItems.Name = "dgvOrderItems";
             this.dgvOrderItems.ReadOnly = true;
@@ -184,7 +194,7 @@
             // 
             // panelCalc
             // 
-            this.panelCalc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panelCalc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelCalc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
             this.panelCalc.Controls.Add(this.txtTotal);
@@ -202,71 +212,77 @@
             // 
             // txtTotal
             // 
-            this.txtTotal.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.txtTotal.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.txtTotal.Location = new System.Drawing.Point(20, 240);
             this.txtTotal.Name = "txtTotal";
             this.txtTotal.ReadOnly = true;
-            this.txtTotal.Size = new System.Drawing.Size(170, 25);
+            this.txtTotal.Size = new System.Drawing.Size(170, 24);
             this.txtTotal.TabIndex = 9;
             // 
             // lblTotal
             // 
             this.lblTotal.AutoSize = true;
-            this.lblTotal.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblTotal.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.lblTotal.Location = new System.Drawing.Point(20, 215);
             this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(50, 19);
+            this.lblTotal.Size = new System.Drawing.Size(50, 17);
             this.lblTotal.TabIndex = 8;
             this.lblTotal.Text = "Итого";
             // 
             // txtSumWith
             // 
+            this.txtSumWith.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtSumWith.Location = new System.Drawing.Point(20, 175);
             this.txtSumWith.Name = "txtSumWith";
             this.txtSumWith.ReadOnly = true;
-            this.txtSumWith.Size = new System.Drawing.Size(170, 25);
+            this.txtSumWith.Size = new System.Drawing.Size(170, 24);
             this.txtSumWith.TabIndex = 7;
             // 
             // lblSumWith
             // 
             this.lblSumWith.AutoSize = true;
+            this.lblSumWith.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblSumWith.Location = new System.Drawing.Point(20, 150);
             this.lblSumWith.Name = "lblSumWith";
-            this.lblSumWith.Size = new System.Drawing.Size(82, 19);
+            this.lblSumWith.Size = new System.Drawing.Size(82, 17);
             this.lblSumWith.TabIndex = 6;
             this.lblSumWith.Text = "Со скидкой";
             // 
             // txtDiscountAmount
             // 
+            this.txtDiscountAmount.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtDiscountAmount.Location = new System.Drawing.Point(20, 115);
             this.txtDiscountAmount.Name = "txtDiscountAmount";
             this.txtDiscountAmount.ReadOnly = true;
-            this.txtDiscountAmount.Size = new System.Drawing.Size(170, 25);
+            this.txtDiscountAmount.Size = new System.Drawing.Size(170, 24);
             this.txtDiscountAmount.TabIndex = 5;
             // 
             // lblDiscountAmount
             // 
             this.lblDiscountAmount.AutoSize = true;
+            this.lblDiscountAmount.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblDiscountAmount.Location = new System.Drawing.Point(20, 90);
             this.lblDiscountAmount.Name = "lblDiscountAmount";
-            this.lblDiscountAmount.Size = new System.Drawing.Size(88, 19);
+            this.lblDiscountAmount.Size = new System.Drawing.Size(88, 17);
             this.lblDiscountAmount.TabIndex = 4;
             this.lblDiscountAmount.Text = "Скидка, руб.";
             // 
             // txtSumWithout
             // 
+            this.txtSumWithout.Font = new System.Drawing.Font("Tahoma", 10F);
             this.txtSumWithout.Location = new System.Drawing.Point(20, 55);
             this.txtSumWithout.Name = "txtSumWithout";
             this.txtSumWithout.ReadOnly = true;
-            this.txtSumWithout.Size = new System.Drawing.Size(170, 25);
+            this.txtSumWithout.Size = new System.Drawing.Size(170, 24);
             this.txtSumWithout.TabIndex = 3;
             // 
             // lblSumWithout
             // 
             this.lblSumWithout.AutoSize = true;
+            this.lblSumWithout.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblSumWithout.Location = new System.Drawing.Point(20, 30);
             this.lblSumWithout.Name = "lblSumWithout";
-            this.lblSumWithout.Size = new System.Drawing.Size(78, 19);
+            this.lblSumWithout.Size = new System.Drawing.Size(78, 17);
             this.lblSumWithout.TabIndex = 2;
             this.lblSumWithout.Text = "Без скидки";
             // 
@@ -282,9 +298,12 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCancel.FlatAppearance.BorderSize = 0;
+            this.btnCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
             this.btnCancel.Location = new System.Drawing.Point(240, 10);
             this.btnCancel.Name = "btnCancel";
@@ -296,9 +315,12 @@
             // 
             // btnSave
             // 
-            this.btnSave.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSave.FlatAppearance.BorderSize = 0;
+            this.btnSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.Location = new System.Drawing.Point(20, 10);
             this.btnSave.Name = "btnSave";
@@ -319,7 +341,7 @@
             this.Controls.Add(this.dgvOrderItems);
             this.Controls.Add(this.panelTop);
             this.Controls.Add(this.lblTitle);
-            this.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.Font = new System.Drawing.Font("Tahoma", 10F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "OrderEditForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

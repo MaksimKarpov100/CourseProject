@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -18,6 +19,38 @@ namespace BoardGame_Store
             txtUser.Text = DbConfig.User;
             txtPassword.Text = DbConfig.Password;
         }
+
+        private void btnShowPassword_Click(object sender, EventArgs e)
+        {
+            if (txtPassword.PasswordChar == '*')
+            {
+                txtPassword.PasswordChar = '\0';
+            }
+            else
+            {
+                txtPassword.PasswordChar = '*';
+            }
+        }
+
+        private void Panel_Paint(object sender, PaintEventArgs e)
+        {
+            Panel panel = sender as Panel;
+            ControlPaint.DrawBorder(e.Graphics, panel.ClientRectangle,
+                Color.FromArgb(220, 220, 220), ButtonBorderStyle.Solid);
+        }
+
+        private void btnBrowseSql_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "SQL файлы (*.sql)|*.sql";
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                txtImportPath.Text = ofd.FileName;
+            }
+        }
+
+
 
         private void btnTest_Click(object sender, EventArgs e)
         {

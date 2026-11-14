@@ -35,7 +35,8 @@
             // lblTitle
             // 
             this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Font = new System.Drawing.Font("Trebuchet MS", 16F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(409, 50);
@@ -46,16 +47,18 @@
             // lblName
             // 
             this.lblName.AutoSize = true;
-            this.lblName.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblName.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblName.ForeColor = System.Drawing.Color.DimGray;
             this.lblName.Location = new System.Drawing.Point(30, 70);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(43, 19);
+            this.lblName.Size = new System.Drawing.Size(42, 17);
             this.lblName.TabIndex = 1;
             this.lblName.Text = "ФИО:";
             // 
             // txtName
             // 
-            this.txtName.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtName.Font = new System.Drawing.Font("Tahoma", 11F);
             this.txtName.Location = new System.Drawing.Point(120, 67);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(250, 25);
@@ -65,16 +68,18 @@
             // lblLogin
             // 
             this.lblLogin.AutoSize = true;
-            this.lblLogin.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblLogin.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblLogin.ForeColor = System.Drawing.Color.DimGray;
             this.lblLogin.Location = new System.Drawing.Point(30, 115);
             this.lblLogin.Name = "lblLogin";
-            this.lblLogin.Size = new System.Drawing.Size(50, 19);
+            this.lblLogin.Size = new System.Drawing.Size(52, 17);
             this.lblLogin.TabIndex = 3;
             this.lblLogin.Text = "Логин:";
             // 
             // txtLogin
             // 
-            this.txtLogin.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtLogin.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtLogin.Font = new System.Drawing.Font("Tahoma", 11F);
             this.txtLogin.Location = new System.Drawing.Point(120, 112);
             this.txtLogin.Name = "txtLogin";
             this.txtLogin.Size = new System.Drawing.Size(250, 25);
@@ -83,16 +88,18 @@
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblPassword.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblPassword.ForeColor = System.Drawing.Color.DimGray;
             this.lblPassword.Location = new System.Drawing.Point(30, 160);
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(59, 19);
+            this.lblPassword.Size = new System.Drawing.Size(60, 17);
             this.lblPassword.TabIndex = 5;
             this.lblPassword.Text = "Пароль:";
             // 
             // txtPassword
             // 
-            this.txtPassword.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPassword.Font = new System.Drawing.Font("Tahoma", 11F);
             this.txtPassword.Location = new System.Drawing.Point(120, 157);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '●';
@@ -101,31 +108,34 @@
             // 
             // btnShowPass
             // 
+            this.btnShowPass.BackColor = System.Drawing.Color.Transparent;
+            this.btnShowPass.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnShowPass.FlatAppearance.BorderSize = 0;
             this.btnShowPass.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnShowPass.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnShowPass.Location = new System.Drawing.Point(374, 157);
+            this.btnShowPass.Location = new System.Drawing.Point(376, 147);
             this.btnShowPass.Name = "btnShowPass";
-            this.btnShowPass.Size = new System.Drawing.Size(35, 30);
+            this.btnShowPass.Size = new System.Drawing.Size(30, 39);
             this.btnShowPass.TabIndex = 7;
             this.btnShowPass.Text = "👁";
-            this.btnShowPass.UseVisualStyleBackColor = true;
+            this.btnShowPass.UseVisualStyleBackColor = false;
             this.btnShowPass.Click += new System.EventHandler(this.btnShowPass_Click);
             // 
             // lblRole
             // 
             this.lblRole.AutoSize = true;
-            this.lblRole.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblRole.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblRole.ForeColor = System.Drawing.Color.DimGray;
             this.lblRole.Location = new System.Drawing.Point(30, 205);
             this.lblRole.Name = "lblRole";
-            this.lblRole.Size = new System.Drawing.Size(42, 19);
+            this.lblRole.Size = new System.Drawing.Size(44, 17);
             this.lblRole.TabIndex = 8;
             this.lblRole.Text = "Роль:";
             // 
             // cmbRole
             // 
             this.cmbRole.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbRole.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbRole.Font = new System.Drawing.Font("Tahoma", 11F);
             this.cmbRole.FormattingEnabled = true;
             this.cmbRole.Items.AddRange(new object[] {
             "Администратор",
@@ -133,22 +143,24 @@
             "Продавец"});
             this.cmbRole.Location = new System.Drawing.Point(120, 202);
             this.cmbRole.Name = "cmbRole";
-            this.cmbRole.Size = new System.Drawing.Size(250, 25);
+            this.cmbRole.Size = new System.Drawing.Size(250, 26);
             this.cmbRole.TabIndex = 9;
             // 
             // lblPhone
             // 
             this.lblPhone.AutoSize = true;
-            this.lblPhone.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblPhone.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblPhone.ForeColor = System.Drawing.Color.DimGray;
             this.lblPhone.Location = new System.Drawing.Point(30, 250);
             this.lblPhone.Name = "lblPhone";
-            this.lblPhone.Size = new System.Drawing.Size(66, 19);
+            this.lblPhone.Size = new System.Drawing.Size(69, 17);
             this.lblPhone.TabIndex = 10;
             this.lblPhone.Text = "Телефон:";
             // 
             // mtxtPhone
             // 
-            this.mtxtPhone.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.mtxtPhone.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.mtxtPhone.Font = new System.Drawing.Font("Tahoma", 11F);
             this.mtxtPhone.Location = new System.Drawing.Point(120, 247);
             this.mtxtPhone.Mask = "+7 (000) 000-00-00";
             this.mtxtPhone.Name = "mtxtPhone";
@@ -157,12 +169,14 @@
             // 
             // btnSave
             // 
-            this.btnSave.BackColor = System.Drawing.Color.SeaGreen;
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSave.FlatAppearance.BorderSize = 0;
+            this.btnSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnSave.Font = new System.Drawing.Font("Trebuchet MS", 11F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(30, 310);
+            this.btnSave.Location = new System.Drawing.Point(33, 310);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(160, 45);
             this.btnSave.TabIndex = 12;
@@ -172,12 +186,14 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.BackColor = System.Drawing.Color.Gray;
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCancel.FlatAppearance.BorderSize = 0;
+            this.btnCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnCancel.Font = new System.Drawing.Font("Trebuchet MS", 11F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(210, 310);
+            this.btnCancel.Location = new System.Drawing.Point(221, 310);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(160, 45);
             this.btnCancel.TabIndex = 13;
@@ -187,9 +203,9 @@
             // 
             // UserEditForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(251)))), ((int)(((byte)(247)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
             this.ClientSize = new System.Drawing.Size(409, 380);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
@@ -205,7 +221,7 @@
             this.Controls.Add(this.txtName);
             this.Controls.Add(this.lblName);
             this.Controls.Add(this.lblTitle);
-            this.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.Font = new System.Drawing.Font("Tahoma", 10F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

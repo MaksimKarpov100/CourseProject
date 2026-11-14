@@ -10,9 +10,7 @@ namespace BoardGame_Store
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
             DbConfig.Load(); 
-
             Application.Run(new LoginForm());
         }
     }

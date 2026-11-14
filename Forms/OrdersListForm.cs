@@ -6,6 +6,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Xceed.Words.NET;
+using Xceed.Document.NET;
 
 namespace BoardGame_Store
 {
@@ -364,70 +366,84 @@ namespace BoardGame_Store
         {
             if (selectedOrderId == 0)
             {
-                MessageHelper.ShowWarning("Выберите заказ!");
+                MessageHelper.ShowWarning("Выберите заказ для печати чека!");
                 return;
             }
 
             try
             {
-                string customerName = "";
-                DateTime orderDate = DateTime.Now;
-                decimal totalSum = 0;
-
-                Dictionary<string, object> parameters = new Dictionary<string, object>();
-                parameters.Add("@id", selectedOrderId);
+                Dictionary<string, object> pOrder = new Dictionary<string, object>();
+                pOrder.Add("@id", selectedOrderId);
 
                 string sqlOrder = "SELECT c.full_name, o.order_date, o.total_amount FROM orders o JOIN customers c ON o.customer_id = c.customer_id WHERE o.order_id = @id";
-                DataTable dtOrder = DatabaseHelper.ExecuteQuery(sqlOrder, parameters);
+                DataTable dtOrder = DatabaseHelper.ExecuteQuery(sqlOrder, pOrder);
 
-                if (dtOrder.Rows.Count > 0)
-                {
-                    customerName = dtOrder.Rows[0]["full_name"].ToString();
-                    orderDate = Convert.ToDateTime(dtOrder.Rows[0]["order_date"]);
-                    totalSum = Convert.ToDecimal(dtOrder.Rows[0]["total_amount"]);
-                }
+                if (dtOrder.Rows.Count == 0) return;
+
+                string customerName = dtOrder.Rows[0]["full_name"].ToString();
+                string orderDate = Convert.ToDateTime(dtOrder.Rows[0]["order_date"]).ToString("dd.MM.yyyy HH:mm");
+                decimal totalSum = Convert.ToDecimal(dtOrder.Rows[0]["total_amount"]);
 
                 string sqlItems = "SELECT g.title, oi.quantity, oi.unit_price, (oi.quantity * oi.unit_price) AS item_total FROM order_items oi JOIN board_games g ON oi.game_id = g.game_id WHERE oi.order_id = @id";
-                DataTable dtItems = DatabaseHelper.ExecuteQuery(sqlItems, parameters);
-
-                StringBuilder txt = new StringBuilder();
-                txt.AppendLine("==========================================");
-                txt.AppendLine("          МАГАЗИН НАСТОЛЬНЫХ ИГР");
-                txt.AppendLine("==========================================");
-                txt.AppendLine("Чек к заказу №" + selectedOrderId);
-                txt.AppendLine("Дата: " + orderDate.ToString("dd.MM.yyyy HH:mm"));
-                txt.AppendLine("Клиент: " + customerName);
-                txt.AppendLine("------------------------------------------");
-                txt.AppendLine("Товар               Кол-во   Цена     Сумма");
-                txt.AppendLine("------------------------------------------");
-
-                foreach (DataRow row in dtItems.Rows)
-                {
-                    string title = row["title"].ToString();
-
-                    if (title.Length > 18)
-                    {
-                        title = title.Substring(0, 15) + "...";
-                    }
-
-                    string line = title.PadRight(20) + " " + row["quantity"].ToString().PadRight(8) + " " + Convert.ToDecimal(row["unit_price"]).ToString("0.00").PadRight(8) + " " + Convert.ToDecimal(row["item_total"]).ToString("0.00");
-                    txt.AppendLine(line);
-                }
-
-                txt.AppendLine("------------------------------------------");
-                txt.AppendLine("ИТОГО К ОПЛАТЕ: " + totalSum.ToString("C2"));
-                txt.AppendLine("==========================================");
-                txt.AppendLine("          Спасибо за покупку!");
+                DataTable dtItems = DatabaseHelper.ExecuteQuery(sqlItems, pOrder);
 
                 SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "Документ Word (*.doc)|*.doc";
-                sfd.FileName = "Чек_Заказ_" + selectedOrderId + "_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".doc";
+                sfd.Filter = "Документ Word (*.docx)|*.docx";
+                sfd.FileName = "Чек_Заказ_" + selectedOrderId + ".docx";
 
-                if (sfd.ShowDialog() == DialogResult.OK)
+                if (sfd.ShowDialog() != DialogResult.OK) return;
+
+                using (DocX document = DocX.Create(sfd.FileName))
                 {
-                    File.WriteAllText(sfd.FileName, txt.ToString(), Encoding.UTF8);
-                    Process.Start(sfd.FileName);
+                    document.SetDefaultFont(new Xceed.Document.NET.Font("Times New Roman"), 12);
+
+                    var title = document.InsertParagraph("ТОВАРНЫЙ ЧЕК № " + selectedOrderId);
+                    title.Font("Times New Roman").FontSize(18).Bold().Alignment = Alignment.center;
+
+                    var info = document.InsertParagraph("Магазин настольных игр \"Название\"\n" +
+                                                        "ИНН: 0000000000, Адрес: г. Москва, ул. Игровая, д. 1\n" +
+                                                        "--------------------------------------------------------\n" +
+                                                        "Клиент: " + customerName + "\n" +
+                                                        "Дата оформления: " + orderDate + "\n\n");
+                    info.Font("Times New Roman").FontSize(12);
+
+                    int rows = dtItems.Rows.Count + 2; 
+                    int cols = 5;
+                    var table = document.AddTable(rows, cols);
+
+                    table.Design = TableDesign.TableGrid; 
+                    table.Alignment = Alignment.center;
+
+                    table.Rows[0].Cells[0].Paragraphs[0].Append("№").Bold().Alignment = Alignment.center;
+                    table.Rows[0].Cells[1].Paragraphs[0].Append("Наименование").Bold();
+                    table.Rows[0].Cells[2].Paragraphs[0].Append("Кол-во").Bold().Alignment = Alignment.center;
+                    table.Rows[0].Cells[3].Paragraphs[0].Append("Цена").Bold().Alignment = Alignment.right;
+                    table.Rows[0].Cells[4].Paragraphs[0].Append("Сумма").Bold().Alignment = Alignment.right;
+
+                    for (int i = 0; i < dtItems.Rows.Count; i++)
+                    {
+                        table.Rows[i + 1].Cells[0].Paragraphs[0].Append((i + 1).ToString()).Alignment = Alignment.center;
+                        table.Rows[i + 1].Cells[1].Paragraphs[0].Append(dtItems.Rows[i]["title"].ToString());
+                        table.Rows[i + 1].Cells[2].Paragraphs[0].Append(dtItems.Rows[i]["quantity"].ToString()).Alignment = Alignment.center;
+                        table.Rows[i + 1].Cells[3].Paragraphs[0].Append(Convert.ToDecimal(dtItems.Rows[i]["unit_price"]).ToString("0.00")).Alignment = Alignment.right;
+                        table.Rows[i + 1].Cells[4].Paragraphs[0].Append(Convert.ToDecimal(dtItems.Rows[i]["item_total"]).ToString("0.00")).Alignment = Alignment.right;
+                    }
+
+                    int lastRow = rows - 1;
+                    table.Rows[lastRow].Cells[3].Paragraphs[0].Append("ИТОГО:").Bold().Alignment = Alignment.right;
+                    table.Rows[lastRow].Cells[4].Paragraphs[0].Append(totalSum.ToString("0.00")).Bold().Alignment = Alignment.right;
+
+                    document.InsertTable(table);
+
+                    var footer = document.InsertParagraph("\n\nПродавец: ____________________ / " + CurrentUser.FullName + " /\n\n" +
+                                                          "Спасибо за покупку! Ждем вас снова.");
+                    footer.Font("Times New Roman").FontSize(12);
+
+                    document.Save();
                 }
+
+                Process.Start(sfd.FileName);
+                MessageHelper.ShowInfo("Чек успешно сформирован!");
             }
             catch (Exception ex)
             {
