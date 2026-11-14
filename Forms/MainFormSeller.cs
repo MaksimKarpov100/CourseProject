@@ -15,6 +15,17 @@ namespace BoardGame_Store
             lblUserInfo.Text = CurrentUser.FullName + " (" + CurrentUser.Role + ")";
         }
 
+        private void MainFormSeller_Load(object sender, EventArgs e)
+        {
+            tabMain.SelectedTab = tabOrders;
+
+            if (ordersForm == null || ordersForm.IsDisposed)
+            {
+                ordersForm = new OrdersListForm();
+                LoadFormInTab(ordersForm, tabOrders);
+            }
+        }
+
         private void LoadFormInTab(Form form, TabPage page)
         {
             form.TopLevel = false;
@@ -23,14 +34,6 @@ namespace BoardGame_Store
 
             page.Controls.Add(form);
             form.Show();
-
-            foreach (Control c in form.Controls)
-            {
-                if (c.Name == "btnBack")
-                {
-                    c.Visible = false;
-                }
-            }
         }
 
         private void tabMain_SelectedIndexChanged(object sender, EventArgs e)
@@ -82,9 +85,9 @@ namespace BoardGame_Store
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            if (MessageHelper.AskConfirm("Вы уверены, что хотите выйти из системы?") == true)
+            if (MessageHelper.AskConfirm("Выйти из учетной записи?") == true)
             {
-                this.Close();
+                this.Close(); 
             }
         }
     }

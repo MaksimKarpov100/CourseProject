@@ -191,8 +191,19 @@ namespace BoardGame_Store
                     sellerForm.ShowDialog();
                 }
 
-                this.Close();
-                Application.Exit();
+                txtLogin.Clear();
+                txtPassword.Clear();
+                txtCaptcha.Clear();
+                lblError.Visible = false;
+
+                failedAttempts = 0;
+                pbCaptcha.Visible = false;
+                txtCaptcha.Visible = false;
+                lblCaptcha.Visible = false;
+                lblCaptchaHint.Visible = false;
+                lblTimer.Visible = false;
+
+                this.Show();
             }
             else
             {

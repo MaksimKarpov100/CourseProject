@@ -99,7 +99,7 @@
             this.txtPassword.Font = new System.Drawing.Font("Tahoma", 11F);
             this.txtPassword.Location = new System.Drawing.Point(140, 180);
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.PasswordChar = '*';
+            this.txtPassword.PasswordChar = '●';
             this.txtPassword.Size = new System.Drawing.Size(310, 25);
             this.txtPassword.TabIndex = 9;
             // 

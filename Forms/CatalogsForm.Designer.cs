@@ -122,7 +122,6 @@
             this.txtSearchCat.Name = "txtSearchCat";
             this.txtSearchCat.Size = new System.Drawing.Size(300, 24);
             this.txtSearchCat.TabIndex = 0;
-            this.txtSearchCat.Text = "Поиск...";
             this.txtSearchCat.TextChanged += new System.EventHandler(this.txtSearchCat_TextChanged);
             // 
             // cmbSortCat
@@ -246,7 +245,6 @@
             this.txtSearchCust.Name = "txtSearchCust";
             this.txtSearchCust.Size = new System.Drawing.Size(300, 24);
             this.txtSearchCust.TabIndex = 0;
-            this.txtSearchCust.Text = "Поиск...";
             this.txtSearchCust.TextChanged += new System.EventHandler(this.txtSearchCust_TextChanged);
             // 
             // cmbSortCust
@@ -351,7 +349,7 @@
             // 
             // CatalogsForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 700);
             this.Controls.Add(this.tabCatalogs);

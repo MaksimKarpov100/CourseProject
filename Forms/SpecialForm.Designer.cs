@@ -72,6 +72,8 @@
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 
             // ==================== КАРТОЧКА 1: ИМПОРТ/ЭКСПОРТ ====================
+            // ИСПРАВЛЕНИЕ: Привязываем к левому верхнему углу
+            this.panelImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)));
             this.panelImport.BackColor = System.Drawing.Color.White;
             this.panelImport.Controls.Add(this.lblImportTitle);
             this.panelImport.Controls.Add(this.clbTables);
@@ -195,6 +197,8 @@
             this.btnImportCSV.Click += new System.EventHandler(this.btnImportCSV_Click);
 
             // ==================== КАРТОЧКА 2: БЭКАП ====================
+            // ИСПРАВЛЕНИЕ: Привязываем к правому верхнему углу
+            this.panelBackup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelBackup.BackColor = System.Drawing.Color.White;
             this.panelBackup.Controls.Add(this.lblBackupTitle);
             this.panelBackup.Controls.Add(this.dgvBackups);
@@ -260,6 +264,9 @@
             this.btnRestore.Click += new System.EventHandler(this.btnRestore_Click);
 
             // ==================== КАРТОЧКА 3: ОТЧЕТЫ ====================
+            // ИСПРАВЛЕНИЕ: Привязываем к левому и правому краям, чтобы растягивалась
+            this.panelReports.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelReports.BackColor = System.Drawing.Color.White;
             this.panelReports.Controls.Add(this.lblReportTitle);
             this.panelReports.Controls.Add(this.lblFrom);
@@ -311,6 +318,8 @@
             this.dtpTo.Size = new System.Drawing.Size(150, 24);
             this.dtpTo.TabIndex = 3;
 
+            // Кнопку отчета прижимаем к правому краю внутри панели отчетов
+            this.btnExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExcel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.btnExcel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnExcel.FlatAppearance.BorderSize = 0;
@@ -327,6 +336,7 @@
             this.btnExcel.Click += new System.EventHandler(this.btnExcel_Click);
 
             // ==================== КАРТОЧКА 4: ЛОГ ====================
+            // Привязываем ко всем краям, чтобы растягивалась везде
             this.panelLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));

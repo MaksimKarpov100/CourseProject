@@ -22,13 +22,13 @@ namespace BoardGame_Store
 
         private void btnShowPassword_Click(object sender, EventArgs e)
         {
-            if (txtPassword.PasswordChar == '*')
+            if (txtPassword.PasswordChar == '●')
             {
                 txtPassword.PasswordChar = '\0';
             }
             else
             {
-                txtPassword.PasswordChar = '*';
+                txtPassword.PasswordChar = '●';
             }
         }
 

@@ -39,7 +39,7 @@
             this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(500, 50);
+            this.lblTitle.Size = new System.Drawing.Size(664, 50);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Добавление товара";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -50,7 +50,7 @@
             this.lblName.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblName.Location = new System.Drawing.Point(30, 70);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(100, 17);
+            this.lblName.Size = new System.Drawing.Size(108, 17);
             this.lblName.TabIndex = 1;
             this.lblName.Text = "Название игры:";
             // 
@@ -69,7 +69,7 @@
             this.lblPrice.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblPrice.Location = new System.Drawing.Point(30, 120);
             this.lblPrice.Name = "lblPrice";
-            this.lblPrice.Size = new System.Drawing.Size(39, 17);
+            this.lblPrice.Size = new System.Drawing.Size(45, 17);
             this.lblPrice.TabIndex = 3;
             this.lblPrice.Text = "Цена:";
             // 
@@ -88,7 +88,7 @@
             this.lblStock.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblStock.Location = new System.Drawing.Point(30, 170);
             this.lblStock.Name = "lblStock";
-            this.lblStock.Size = new System.Drawing.Size(115, 17);
+            this.lblStock.Size = new System.Drawing.Size(124, 17);
             this.lblStock.TabIndex = 5;
             this.lblStock.Text = "Кол-во на складе:";
             // 
@@ -107,7 +107,7 @@
             this.lblCategory.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblCategory.Location = new System.Drawing.Point(30, 220);
             this.lblCategory.Name = "lblCategory";
-            this.lblCategory.Size = new System.Drawing.Size(73, 17);
+            this.lblCategory.Size = new System.Drawing.Size(80, 17);
             this.lblCategory.TabIndex = 7;
             this.lblCategory.Text = "Категория:";
             // 
@@ -124,9 +124,9 @@
             // pbImage
             // 
             this.pbImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbImage.Location = new System.Drawing.Point(30, 270);
+            this.pbImage.Location = new System.Drawing.Point(475, 67);
             this.pbImage.Name = "pbImage";
-            this.pbImage.Size = new System.Drawing.Size(200, 200);
+            this.pbImage.Size = new System.Drawing.Size(177, 176);
             this.pbImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbImage.TabIndex = 9;
             this.pbImage.TabStop = false;
@@ -140,9 +140,9 @@
             this.btnLoadImage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoadImage.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnLoadImage.ForeColor = System.Drawing.Color.White;
-            this.btnLoadImage.Location = new System.Drawing.Point(250, 270);
+            this.btnLoadImage.Location = new System.Drawing.Point(475, 249);
             this.btnLoadImage.Name = "btnLoadImage";
-            this.btnLoadImage.Size = new System.Drawing.Size(200, 40);
+            this.btnLoadImage.Size = new System.Drawing.Size(177, 43);
             this.btnLoadImage.TabIndex = 10;
             this.btnLoadImage.Text = "Загрузить картинку";
             this.btnLoadImage.UseVisualStyleBackColor = false;
@@ -157,9 +157,9 @@
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Font = new System.Drawing.Font("Trebuchet MS", 11F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(30, 500);
+            this.btnSave.Location = new System.Drawing.Point(33, 260);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(200, 45);
+            this.btnSave.Size = new System.Drawing.Size(177, 45);
             this.btnSave.TabIndex = 11;
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = false;
@@ -174,9 +174,9 @@
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Trebuchet MS", 11F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(250, 500);
+            this.btnCancel.Location = new System.Drawing.Point(216, 260);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(200, 45);
+            this.btnCancel.Size = new System.Drawing.Size(177, 45);
             this.btnCancel.TabIndex = 12;
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = false;
@@ -184,10 +184,10 @@
             // 
             // GameEditForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(251)))), ((int)(((byte)(247)))));
-            this.ClientSize = new System.Drawing.Size(500, 570);
+            this.ClientSize = new System.Drawing.Size(664, 316);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnLoadImage);
