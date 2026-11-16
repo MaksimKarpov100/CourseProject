@@ -470,47 +470,44 @@ namespace BoardGame_Store
                 using (Process process = Process.Start(psi))
                 {
                     string output = process.StandardOutput.ReadLine();
-
-                    if (string.IsNullOrEmpty(output) == false && File.Exists(output) == true)
+                    if (!string.IsNullOrEmpty(output) && File.Exists(output))
                     {
                         return output;
                     }
                 }
             }
-            catch
-            {
+            catch { }
 
-            }
-
-            string[] searchFolders = new string[]
+            string[] commonPaths = new string[]
             {
-                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + "\\MySQL",
-                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + "\\MySQL",
-                "C:\\xampp\\mysql\\bin",
-                "C:\\OpenServer\\modules\\database\\MySQL"
+                @"C:\Program Files\MySQL\MySQL Server 8.4\bin\mysqldump.exe",
+                @"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqldump.exe",
+                @"C:\Program Files\MySQL\MySQL Server 5.7\bin\mysqldump.exe",
+                @"C:\Program Files (x86)\MySQL\MySQL Server 5.7\bin\mysqldump.exe",
+
+                @"C:\xampp\mysql\bin\mysqldump.exe",
+
+                @"C:\OpenServer\modules\database\MySQL-8.0\bin\mysqldump.exe",
+                @"C:\OpenServer\modules\database\MySQL-5.7\bin\mysqldump.exe",
+                @"C:\OpenServer\modules\database\MySQL-5.6\bin\mysqldump.exe",
+
+                @"C:\wamp64\bin\mysql\mysql8.0.31\bin\mysqldump.exe",
+                @"C:\wamp64\bin\mysql\mysql5.7.40\bin\mysqldump.exe",
+                @"C:\wamp\bin\mysql\mysql5.7.26\bin\mysqldump.exe",
+
+        
+                @"C:\MAMP\bin\mysql\bin\mysqldump.exe"
             };
 
-            foreach (string folder in searchFolders)
+            foreach (string path in commonPaths)
             {
-                if (Directory.Exists(folder) == true)
+                if (File.Exists(path))
                 {
-                    try
-                    {
-                        string[] foundFiles = Directory.GetFiles(folder, "mysqldump.exe", SearchOption.AllDirectories);
-
-                        if (foundFiles.Length > 0)
-                        {
-                            return foundFiles[0];
-                        }
-                    }
-                    catch
-                    {
-
-                    }
+                    return path;
                 }
             }
 
-            return null;
+            return null; 
         }
     }
 }
