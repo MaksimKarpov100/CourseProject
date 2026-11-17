@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Xceed.Words.NET;
 using Xceed.Document.NET;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace BoardGame_Store
 {
@@ -453,6 +455,7 @@ namespace BoardGame_Store
 
         private void btnReport_Click(object sender, EventArgs e)
         {
+            ExcelPackage.License.SetNonCommercialPersonal("Студент Курсового");
             try
             {
                 Dictionary<string, object> parameters = new Dictionary<string, object>();
@@ -468,33 +471,141 @@ namespace BoardGame_Store
                     return;
                 }
 
-                decimal totalSum = 0;
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    totalSum = totalSum + Convert.ToDecimal(row["total_amount"]);
-                }
-
-                StringBuilder csv = new StringBuilder();
-                csv.AppendLine("sep=;");
-                csv.AppendLine("Номер заказа;Клиент;Дата оформления;Сумма");
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    string line = row["order_id"] + ";" + row["full_name"] + ";" + Convert.ToDateTime(row["order_date"]).ToString("dd.MM.yyyy HH:mm") + ";" + Convert.ToDecimal(row["total_amount"]).ToString("0.00");
-                    csv.AppendLine(line);
-                }
-
-                csv.AppendLine(";;ИТОГО ЗА ПЕРИОД:;" + totalSum.ToString("0.00"));
-
                 SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "Excel документ (*.csv)|*.csv";
-                sfd.FileName = "Отчет_" + dtpDateFrom.Value.ToString("ddMMyyyy") + ".csv";
+                sfd.Filter = "Excel документ (*.xlsx)|*.xlsx";
+                sfd.FileName = "Отчет_о_продажах_" + dtpDateFrom.Value.ToString("ddMMyyyy") + ".xlsx";
 
-                if (sfd.ShowDialog() == DialogResult.OK)
+                if (sfd.ShowDialog() != DialogResult.OK)
                 {
-                    File.WriteAllText(sfd.FileName, csv.ToString(), Encoding.UTF8);
+                    return;
+                }
+
+                using (ExcelPackage package = new ExcelPackage())
+                {
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Отчет");
+
+                    worksheet.Column(1).Width = 12;
+                    worksheet.Column(2).Width = 35;
+                    worksheet.Column(3).Width = 25;
+                    worksheet.Column(4).Width = 15;
+
+                    worksheet.Cells["A1:D1"].Merge = true;
+                    worksheet.Cells["A1"].Value = "МАГАЗИН НАСТОЛЬНЫХ ИГР";
+                    worksheet.Cells["A1"].Style.Font.Name = "Arial";
+                    worksheet.Cells["A1"].Style.Font.Size = 14;
+                    worksheet.Cells["A1"].Style.Font.Bold = true;
+                    worksheet.Cells["A1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    worksheet.Cells["A2:D2"].Merge = true;
+                    worksheet.Cells["A2"].Value = "Отчет о продажах";
+                    worksheet.Cells["A2"].Style.Font.Name = "Arial";
+                    worksheet.Cells["A2"].Style.Font.Size = 18;
+                    worksheet.Cells["A2"].Style.Font.Bold = true;
+                    worksheet.Cells["A2"].Style.Font.Color.SetColor(System.Drawing.Color.DarkSlateGray);
+                    worksheet.Cells["A2"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    worksheet.Cells["A4:D4"].Merge = true;
+                    worksheet.Cells["A4"].Value = "Период: с " + dtpDateFrom.Value.ToShortDateString() + " по " + dtpDateTo.Value.ToShortDateString();
+                    worksheet.Cells["A4"].Style.Font.Name = "Arial";
+                    worksheet.Cells["A4"].Style.Font.Size = 12;
+                    worksheet.Cells["A4"].Style.Font.Italic = true;
+                    worksheet.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+
+                    worksheet.Cells["A6"].Value = "№ Заказа";
+                    worksheet.Cells["B6"].Value = "Клиент";
+                    worksheet.Cells["C6"].Value = "Дата оформления";
+                    worksheet.Cells["D6"].Value = "Сумма (руб.)";
+
+                    using (ExcelRange headerRange = worksheet.Cells["A6:D6"])
+                    {
+                        headerRange.Style.Font.Bold = true;
+                        headerRange.Style.Font.Name = "Arial";
+                        headerRange.Style.Font.Color.SetColor(System.Drawing.Color.White);
+                        headerRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        headerRange.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkSlateGray);
+                        headerRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        headerRange.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        headerRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        headerRange.Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                    }
+                    worksheet.Row(6).Height = 25;
+
+                    int row = 7;
+                    decimal totalSum = 0;
+
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        worksheet.Cells[row, 1].Value = r["order_id"].ToString();
+                        worksheet.Cells[row, 2].Value = r["full_name"].ToString();
+                        worksheet.Cells[row, 3].Value = Convert.ToDateTime(r["order_date"]).ToString("dd.MM.yyyy HH:mm");
+                        worksheet.Cells[row, 4].Value = Convert.ToDecimal(r["total_amount"]).ToString("0.00");
+
+                        totalSum += Convert.ToDecimal(r["total_amount"]);
+
+                        using (ExcelRange rowRange = worksheet.Cells[row, 1, row, 4])
+                        {
+                            rowRange.Style.Font.Name = "Arial";
+                            rowRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            rowRange.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                            rowRange.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            rowRange.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        }
+
+                        worksheet.Cells[row, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[row, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        worksheet.Cells[row, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[row, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+
+                        if (row % 2 == 0)
+                        {
+                            worksheet.Cells[row, 1, row, 4].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            worksheet.Cells[row, 1, row, 4].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.WhiteSmoke);
+                        }
+
+                        row++;
+                    }
+
+                    worksheet.Cells[row, 3].Value = "ИТОГО:";
+                    worksheet.Cells[row, 4].Value = totalSum.ToString("0.00");
+
+                    using (ExcelRange totalRange = worksheet.Cells[row, 1, row, 4])
+                    {
+                        totalRange.Style.Font.Bold = true;
+                        totalRange.Style.Font.Name = "Arial";
+                        totalRange.Style.Border.Top.Style = ExcelBorderStyle.Medium;
+                        totalRange.Style.Border.Bottom.Style = ExcelBorderStyle.Double;
+                    }
+                    worksheet.Cells[row, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                    worksheet.Cells[row, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+
+                    int footerRow = row + 3;
+
+                    worksheet.Cells[footerRow, 1].Value = "Отчет сформирован: " + CurrentUser.FullName;
+                    worksheet.Cells[footerRow, 1].Style.Font.Italic = true;
+                    worksheet.Cells[footerRow, 1].Style.Font.Size = 10;
+
+                    worksheet.Cells[footerRow + 1, 1].Value = "Дата формирования: " + DateTime.Now.ToString("dd.MM.yyyy HH:mm");
+                    worksheet.Cells[footerRow + 1, 1].Style.Font.Italic = true;
+                    worksheet.Cells[footerRow + 1, 1].Style.Font.Size = 10;
+
+                    worksheet.Cells[footerRow, 3].Value = "____________________";
+                    worksheet.Cells[footerRow, 3, footerRow, 4].Merge = true;
+                    worksheet.Cells[footerRow, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    worksheet.Cells[footerRow + 1, 3].Value = "(подпись директора)";
+                    worksheet.Cells[footerRow + 1, 3, footerRow + 1, 4].Merge = true;
+                    worksheet.Cells[footerRow + 1, 3].Style.Font.Size = 9;
+                    worksheet.Cells[footerRow + 1, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[footerRow + 1, 3].Style.Font.Color.SetColor(System.Drawing.Color.Gray);
+
+                    worksheet.PrinterSettings.FitToPage = true;
+                    worksheet.PrinterSettings.Orientation = eOrientation.Portrait;
+
+                    FileInfo fileInfo = new FileInfo(sfd.FileName);
+                    package.SaveAs(fileInfo);
+
                     Process.Start(sfd.FileName);
+                    MessageHelper.ShowInfo("Отчет успешно сформирован!");
                 }
             }
             catch (Exception ex)
