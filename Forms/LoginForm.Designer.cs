@@ -277,6 +277,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(242)))), ((int)(((byte)(245)))));
             this.ClientSize = new System.Drawing.Size(779, 477);
+            this.ControlBox = false;
             this.Controls.Add(this.pnlCard);
             this.Controls.Add(this.pbLogo);
             this.Font = new System.Drawing.Font("Tahoma", 10F);

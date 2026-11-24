@@ -92,7 +92,7 @@
             this.lblCompletionDate.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblCompletionDate.Location = new System.Drawing.Point(330, 50);
             this.lblCompletionDate.Name = "lblCompletionDate";
-            this.lblCompletionDate.Size = new System.Drawing.Size(122, 17);
+            this.lblCompletionDate.Size = new System.Drawing.Size(124, 17);
             this.lblCompletionDate.TabIndex = 8;
             this.lblCompletionDate.Text = "Дата завершения:";
             // 
@@ -111,7 +111,7 @@
             this.lblOrderDate.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblOrderDate.Location = new System.Drawing.Point(330, 15);
             this.lblOrderDate.Name = "lblOrderDate";
-            this.lblOrderDate.Size = new System.Drawing.Size(127, 17);
+            this.lblOrderDate.Size = new System.Drawing.Size(130, 17);
             this.lblOrderDate.TabIndex = 6;
             this.lblOrderDate.Text = "Дата оформления:";
             // 
@@ -121,7 +121,7 @@
             this.lblCustomer.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.lblCustomer.Location = new System.Drawing.Point(20, 15);
             this.lblCustomer.Name = "lblCustomer";
-            this.lblCustomer.Size = new System.Drawing.Size(63, 17);
+            this.lblCustomer.Size = new System.Drawing.Size(66, 17);
             this.lblCustomer.TabIndex = 0;
             this.lblCustomer.Text = "Клиент:";
             // 
@@ -140,7 +140,7 @@
             this.lblStatus.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblStatus.Location = new System.Drawing.Point(20, 85);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(97, 17);
+            this.lblStatus.Size = new System.Drawing.Size(104, 17);
             this.lblStatus.TabIndex = 2;
             this.lblStatus.Text = "Статус заказа:";
             // 
@@ -159,7 +159,7 @@
             this.lblAddress.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblAddress.Location = new System.Drawing.Point(330, 85);
             this.lblAddress.Name = "lblAddress";
-            this.lblAddress.Size = new System.Drawing.Size(111, 17);
+            this.lblAddress.Size = new System.Drawing.Size(115, 17);
             this.lblAddress.TabIndex = 4;
             this.lblAddress.Text = "Адрес доставки:";
             // 
@@ -175,8 +175,8 @@
             // 
             this.dgvOrderItems.AllowUserToAddRows = false;
             this.dgvOrderItems.AllowUserToDeleteRows = false;
-            this.dgvOrderItems.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dgvOrderItems.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvOrderItems.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvOrderItems.BackgroundColor = System.Drawing.Color.White;
@@ -194,7 +194,7 @@
             // 
             // panelCalc
             // 
-            this.panelCalc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.panelCalc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelCalc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
             this.panelCalc.Controls.Add(this.txtTotal);
@@ -225,7 +225,7 @@
             this.lblTotal.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.lblTotal.Location = new System.Drawing.Point(20, 215);
             this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(50, 17);
+            this.lblTotal.Size = new System.Drawing.Size(51, 17);
             this.lblTotal.TabIndex = 8;
             this.lblTotal.Text = "Итого";
             // 
@@ -263,7 +263,7 @@
             this.lblDiscountAmount.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblDiscountAmount.Location = new System.Drawing.Point(20, 90);
             this.lblDiscountAmount.Name = "lblDiscountAmount";
-            this.lblDiscountAmount.Size = new System.Drawing.Size(88, 17);
+            this.lblDiscountAmount.Size = new System.Drawing.Size(90, 17);
             this.lblDiscountAmount.TabIndex = 4;
             this.lblDiscountAmount.Text = "Скидка, руб.";
             // 
@@ -332,10 +332,11 @@
             // 
             // OrderEditForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.ClientSize = new System.Drawing.Size(800, 510);
+            this.ControlBox = false;
             this.Controls.Add(this.panelBottom);
             this.Controls.Add(this.panelCalc);
             this.Controls.Add(this.dgvOrderItems);

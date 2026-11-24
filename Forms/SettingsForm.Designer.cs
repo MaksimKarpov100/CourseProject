@@ -34,15 +34,13 @@
             this.txtImportPath = new System.Windows.Forms.TextBox();
             this.lblImportPath = new System.Windows.Forms.Label();
             this.lblImportTitle = new System.Windows.Forms.Label();
-            this.panelBottom = new System.Windows.Forms.Panel();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnImportSql = new System.Windows.Forms.Button();
             this.btnTest = new System.Windows.Forms.Button();
+            this.btnImportSql = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.panelConnection.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPort)).BeginInit();
             this.panelImport.SuspendLayout();
-            this.panelBottom.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblTitle
@@ -85,9 +83,9 @@
             this.btnShowPassword.FlatAppearance.BorderSize = 0;
             this.btnShowPassword.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnShowPassword.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnShowPassword.Location = new System.Drawing.Point(456, 173);
+            this.btnShowPassword.Location = new System.Drawing.Point(456, 180);
             this.btnShowPassword.Name = "btnShowPassword";
-            this.btnShowPassword.Size = new System.Drawing.Size(30, 35);
+            this.btnShowPassword.Size = new System.Drawing.Size(30, 27);
             this.btnShowPassword.TabIndex = 10;
             this.btnShowPassword.Text = "👁";
             this.btnShowPassword.UseVisualStyleBackColor = false;
@@ -165,7 +163,7 @@
             0,
             0});
             this.nudPort.Name = "nudPort";
-            this.nudPort.Size = new System.Drawing.Size(100, 25);
+            this.nudPort.Size = new System.Drawing.Size(310, 25);
             this.nudPort.TabIndex = 3;
             this.nudPort.Value = new decimal(new int[] {
             3306,
@@ -267,35 +265,39 @@
             this.lblImportTitle.TabIndex = 0;
             this.lblImportTitle.Text = "Восстановление базы данных";
             // 
-            // panelBottom
+            // btnTest
             // 
-            this.panelBottom.Controls.Add(this.btnCancel);
-            this.panelBottom.Controls.Add(this.btnSave);
-            this.panelBottom.Controls.Add(this.btnImportSql);
-            this.panelBottom.Controls.Add(this.btnTest);
-            this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelBottom.Location = new System.Drawing.Point(0, 414);
-            this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(550, 60);
-            this.panelBottom.TabIndex = 3;
+            this.btnTest.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnTest.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTest.FlatAppearance.BorderSize = 0;
+            this.btnTest.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+            this.btnTest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTest.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
+            this.btnTest.ForeColor = System.Drawing.Color.White;
+            this.btnTest.Location = new System.Drawing.Point(12, 408);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(268, 47);
+            this.btnTest.TabIndex = 0;
+            this.btnTest.Text = "Проверить соединение";
+            this.btnTest.UseVisualStyleBackColor = false;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
-            // btnCancel
+            // btnImportSql
             // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCancel.FlatAppearance.BorderSize = 0;
-            this.btnCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
-            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancel.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
-            this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(438, 7);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(100, 47);
-            this.btnCancel.TabIndex = 3;
-            this.btnCancel.Text = "Закрыть";
-            this.btnCancel.UseVisualStyleBackColor = false;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnImportSql.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnImportSql.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnImportSql.FlatAppearance.BorderSize = 0;
+            this.btnImportSql.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+            this.btnImportSql.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnImportSql.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
+            this.btnImportSql.ForeColor = System.Drawing.Color.White;
+            this.btnImportSql.Location = new System.Drawing.Point(12, 461);
+            this.btnImportSql.Name = "btnImportSql";
+            this.btnImportSql.Size = new System.Drawing.Size(268, 47);
+            this.btnImportSql.TabIndex = 1;
+            this.btnImportSql.Text = "Импортировать БД";
+            this.btnImportSql.UseVisualStyleBackColor = false;
+            this.btnImportSql.Click += new System.EventHandler(this.btnImportSql_Click);
             // 
             // btnSave
             // 
@@ -307,57 +309,45 @@
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(332, 7);
+            this.btnSave.Location = new System.Drawing.Point(286, 408);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(100, 47);
+            this.btnSave.Size = new System.Drawing.Size(252, 47);
             this.btnSave.TabIndex = 2;
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // btnImportSql
+            // btnCancel
             // 
-            this.btnImportSql.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnImportSql.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnImportSql.FlatAppearance.BorderSize = 0;
-            this.btnImportSql.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
-            this.btnImportSql.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnImportSql.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
-            this.btnImportSql.ForeColor = System.Drawing.Color.White;
-            this.btnImportSql.Location = new System.Drawing.Point(170, 7);
-            this.btnImportSql.Name = "btnImportSql";
-            this.btnImportSql.Size = new System.Drawing.Size(156, 47);
-            this.btnImportSql.TabIndex = 1;
-            this.btnImportSql.Text = "Импортировать БД";
-            this.btnImportSql.UseVisualStyleBackColor = false;
-            this.btnImportSql.Click += new System.EventHandler(this.btnImportSql_Click);
-            // 
-            // btnTest
-            // 
-            this.btnTest.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnTest.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnTest.FlatAppearance.BorderSize = 0;
-            this.btnTest.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
-            this.btnTest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTest.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
-            this.btnTest.ForeColor = System.Drawing.Color.White;
-            this.btnTest.Location = new System.Drawing.Point(3, 7);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(161, 47);
-            this.btnTest.TabIndex = 0;
-            this.btnTest.Text = "Проверить соединение";
-            this.btnTest.UseVisualStyleBackColor = false;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCancel.FlatAppearance.BorderSize = 0;
+            this.btnCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
+            this.btnCancel.ForeColor = System.Drawing.Color.White;
+            this.btnCancel.Location = new System.Drawing.Point(286, 461);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(252, 47);
+            this.btnCancel.TabIndex = 3;
+            this.btnCancel.Text = "Закрыть";
+            this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(550, 474);
-            this.Controls.Add(this.panelBottom);
+            this.ClientSize = new System.Drawing.Size(550, 515);
+            this.ControlBox = false;
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.panelImport);
+            this.Controls.Add(this.btnImportSql);
             this.Controls.Add(this.panelConnection);
+            this.Controls.Add(this.btnTest);
             this.Controls.Add(this.lblTitle);
             this.Font = new System.Drawing.Font("Tahoma", 10F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -372,7 +362,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPort)).EndInit();
             this.panelImport.ResumeLayout(false);
             this.panelImport.PerformLayout();
-            this.panelBottom.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -395,7 +384,6 @@
         private System.Windows.Forms.Label lblImportPath;
         private System.Windows.Forms.TextBox txtImportPath;
         private System.Windows.Forms.Button btnBrowseSql;
-        private System.Windows.Forms.Panel panelBottom;
         private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.Button btnImportSql;
         private System.Windows.Forms.Button btnSave;

@@ -48,7 +48,7 @@
             this.lblOld.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblOld.Location = new System.Drawing.Point(30, 60);
             this.lblOld.Name = "lblOld";
-            this.lblOld.Size = new System.Drawing.Size(109, 17);
+            this.lblOld.Size = new System.Drawing.Size(113, 17);
             this.lblOld.TabIndex = 1;
             this.lblOld.Text = "Старый пароль:";
             // 
@@ -80,7 +80,7 @@
             this.lblNew.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblNew.Location = new System.Drawing.Point(30, 125);
             this.lblNew.Name = "lblNew";
-            this.lblNew.Size = new System.Drawing.Size(104, 17);
+            this.lblNew.Size = new System.Drawing.Size(105, 17);
             this.lblNew.TabIndex = 4;
             this.lblNew.Text = "Новый пароль:";
             // 
@@ -112,7 +112,7 @@
             this.lblConfirm.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblConfirm.Location = new System.Drawing.Point(30, 190);
             this.lblConfirm.Name = "lblConfirm";
-            this.lblConfirm.Size = new System.Drawing.Size(95, 17);
+            this.lblConfirm.Size = new System.Drawing.Size(99, 17);
             this.lblConfirm.TabIndex = 7;
             this.lblConfirm.Text = "Подтвердите:";
             // 
@@ -174,10 +174,11 @@
             // 
             // ChangePasswordForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(350, 320);
+            this.ControlBox = false;
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnShowConfirm);

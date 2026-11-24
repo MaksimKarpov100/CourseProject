@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace BoardGame_Store
 {
     public partial class DiscountsForm : Form
     {
+        private float baseWidth = 600f;
+
         public DiscountsForm()
         {
             InitializeComponent();
@@ -34,9 +37,34 @@ namespace BoardGame_Store
             lblExample.Text = exampleText;
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void DiscountsForm_Resize(object sender, EventArgs e)
         {
-            this.Close();
+            float scale = this.Width / baseWidth;
+
+            if (scale < 0.9f) scale = 0.9f;
+            if (scale > 1.3f) scale = 1.3f;
+
+            Font newLabelFont = new Font("Tahoma", 9f * scale);
+            Font newHeaderFont = new Font("Trebuchet MS", 10f * scale, FontStyle.Bold);
+
+            lblSum1.Font = newLabelFont;
+            lblSum2.Font = newLabelFont;
+            lblSum3.Font = newLabelFont;
+
+            lblSeason1.Font = newLabelFont;
+            lblSeason2.Font = newLabelFont;
+
+            lblRule1.Font = newLabelFont;
+            lblRule2.Font = newLabelFont;
+            lblRule3.Font = newLabelFont;
+            lblRule4.Font = newLabelFont;
+
+            lblExample.Font = newLabelFont;
+
+            grpSum.Font = newHeaderFont;
+            grpSeason.Font = newHeaderFont;
+            grpRules.Font = newHeaderFont;
+            grpExample.Font = newHeaderFont;
         }
     }
 }

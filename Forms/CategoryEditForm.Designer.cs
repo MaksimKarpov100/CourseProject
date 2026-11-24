@@ -61,7 +61,7 @@
             this.lblDesc.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblDesc.Location = new System.Drawing.Point(30, 130);
             this.lblDesc.Name = "lblDesc";
-            this.lblDesc.Size = new System.Drawing.Size(75, 17);
+            this.lblDesc.Size = new System.Drawing.Size(76, 17);
             this.lblDesc.TabIndex = 3;
             this.lblDesc.Text = "Описание:";
             // 
@@ -111,10 +111,11 @@
             // 
             // CategoryEditForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(350, 310);
+            this.ControlBox = false;
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.txtDesc);

@@ -86,7 +86,7 @@
             // 
             // panelFilters
             // 
-            this.panelFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.panelFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelFilters.BackColor = System.Drawing.SystemColors.ControlLight;
             this.panelFilters.Controls.Add(this.lblOrderNumber);
@@ -111,7 +111,7 @@
             this.lblOrderNumber.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblOrderNumber.Location = new System.Drawing.Point(10, 10);
             this.lblOrderNumber.Name = "lblOrderNumber";
-            this.lblOrderNumber.Size = new System.Drawing.Size(96, 17);
+            this.lblOrderNumber.Size = new System.Drawing.Size(93, 17);
             this.lblOrderNumber.TabIndex = 0;
             this.lblOrderNumber.Text = "Номер заказа";
             // 
@@ -132,7 +132,7 @@
             this.lblDateFrom.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblDateFrom.Location = new System.Drawing.Point(220, 10);
             this.lblDateFrom.Name = "lblDateFrom";
-            this.lblDateFrom.Size = new System.Drawing.Size(73, 17);
+            this.lblDateFrom.Size = new System.Drawing.Size(75, 17);
             this.lblDateFrom.TabIndex = 2;
             this.lblDateFrom.Text = "Выбрать с";
             // 
@@ -152,7 +152,7 @@
             this.lblDateTo.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblDateTo.Location = new System.Drawing.Point(420, 10);
             this.lblDateTo.Name = "lblDateTo";
-            this.lblDateTo.Size = new System.Drawing.Size(25, 17);
+            this.lblDateTo.Size = new System.Drawing.Size(24, 17);
             this.lblDateTo.TabIndex = 4;
             this.lblDateTo.Text = "по";
             // 
@@ -172,7 +172,7 @@
             this.lblStatus.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblStatus.Location = new System.Drawing.Point(10, 45);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(94, 17);
+            this.lblStatus.Size = new System.Drawing.Size(99, 17);
             this.lblStatus.TabIndex = 6;
             this.lblStatus.Text = "Статус заказа";
             // 
@@ -198,7 +198,7 @@
             this.lblSort.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblSort.Location = new System.Drawing.Point(260, 45);
             this.lblSort.Name = "lblSort";
-            this.lblSort.Size = new System.Drawing.Size(114, 17);
+            this.lblSort.Size = new System.Drawing.Size(119, 17);
             this.lblSort.TabIndex = 8;
             this.lblSort.Text = "Сортировать по:";
             // 
@@ -239,8 +239,8 @@
             // 
             this.dgvOrders.AllowUserToAddRows = false;
             this.dgvOrders.AllowUserToDeleteRows = false;
-            this.dgvOrders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dgvOrders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvOrders.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvOrders.BackgroundColor = System.Drawing.Color.White;
@@ -264,13 +264,13 @@
             this.lblCount.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblCount.Location = new System.Drawing.Point(12, 400);
             this.lblCount.Name = "lblCount";
-            this.lblCount.Size = new System.Drawing.Size(151, 17);
+            this.lblCount.Size = new System.Drawing.Size(157, 17);
             this.lblCount.TabIndex = 3;
             this.lblCount.Text = "Количество записей: 0";
             // 
             // panelPagination
             // 
-            this.panelPagination.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.panelPagination.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPagination.Controls.Add(this.btnFirst);
             this.panelPagination.Controls.Add(this.btnPrev);
@@ -324,7 +324,7 @@
             this.lblPageInfo.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblPageInfo.Location = new System.Drawing.Point(130, 10);
             this.lblPageInfo.Name = "lblPageInfo";
-            this.lblPageInfo.Size = new System.Drawing.Size(112, 17);
+            this.lblPageInfo.Size = new System.Drawing.Size(113, 17);
             this.lblPageInfo.TabIndex = 2;
             this.lblPageInfo.Text = "Страница 1 из 1";
             // 
@@ -368,7 +368,7 @@
             this.lblPageSize.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblPageSize.Location = new System.Drawing.Point(400, 10);
             this.lblPageSize.Name = "lblPageSize";
-            this.lblPageSize.Size = new System.Drawing.Size(64, 17);
+            this.lblPageSize.Size = new System.Drawing.Size(65, 17);
             this.lblPageSize.TabIndex = 5;
             this.lblPageSize.Text = "Записей:";
             // 
@@ -394,7 +394,7 @@
             this.lblComposition.Font = new System.Drawing.Font("Trebuchet MS", 11F, System.Drawing.FontStyle.Bold);
             this.lblComposition.Location = new System.Drawing.Point(12, 465);
             this.lblComposition.Name = "lblComposition";
-            this.lblComposition.Size = new System.Drawing.Size(110, 20);
+            this.lblComposition.Size = new System.Drawing.Size(109, 20);
             this.lblComposition.TabIndex = 5;
             this.lblComposition.Text = "Состав заказа";
             // 
@@ -402,7 +402,7 @@
             // 
             this.dgvContent.AllowUserToAddRows = false;
             this.dgvContent.AllowUserToDeleteRows = false;
-            this.dgvContent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.dgvContent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvContent.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvContent.BackgroundColor = System.Drawing.Color.White;
@@ -442,7 +442,7 @@
             this.lblDiscount.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblDiscount.Location = new System.Drawing.Point(10, 10);
             this.lblDiscount.Name = "lblDiscount";
-            this.lblDiscount.Size = new System.Drawing.Size(74, 17);
+            this.lblDiscount.Size = new System.Drawing.Size(76, 17);
             this.lblDiscount.TabIndex = 0;
             this.lblDiscount.Text = "Скидка, %";
             // 
@@ -481,7 +481,7 @@
             this.lblDiscountAmount.Font = new System.Drawing.Font("Tahoma", 10F);
             this.lblDiscountAmount.Location = new System.Drawing.Point(10, 70);
             this.lblDiscountAmount.Name = "lblDiscountAmount";
-            this.lblDiscountAmount.Size = new System.Drawing.Size(88, 17);
+            this.lblDiscountAmount.Size = new System.Drawing.Size(90, 17);
             this.lblDiscountAmount.TabIndex = 4;
             this.lblDiscountAmount.Text = "Скидка, руб.";
             // 
@@ -519,7 +519,7 @@
             this.lblTotal.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.lblTotal.Location = new System.Drawing.Point(10, 125);
             this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(50, 17);
+            this.lblTotal.Size = new System.Drawing.Size(51, 17);
             this.lblTotal.TabIndex = 8;
             this.lblTotal.Text = "Итого";
             // 
@@ -534,7 +534,7 @@
             // 
             // panelButtons
             // 
-            this.panelButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.panelButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelButtons.Controls.Add(this.btnAdd);
             this.panelButtons.Controls.Add(this.btnEdit);
@@ -652,7 +652,7 @@
             this.lblLegNew.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblLegNew.Location = new System.Drawing.Point(650, 15);
             this.lblLegNew.Name = "lblLegNew";
-            this.lblLegNew.Size = new System.Drawing.Size(46, 14);
+            this.lblLegNew.Size = new System.Drawing.Size(43, 14);
             this.lblLegNew.TabIndex = 7;
             this.lblLegNew.Text = "Новый";
             // 
@@ -671,7 +671,7 @@
             this.lblLegReady.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblLegReady.Location = new System.Drawing.Point(720, 15);
             this.lblLegReady.Name = "lblLegReady";
-            this.lblLegReady.Size = new System.Drawing.Size(38, 14);
+            this.lblLegReady.Size = new System.Drawing.Size(39, 14);
             this.lblLegReady.TabIndex = 9;
             this.lblLegReady.Text = "Готов";
             // 
@@ -690,16 +690,17 @@
             this.lblLegCancel.Font = new System.Drawing.Font("Tahoma", 9F);
             this.lblLegCancel.Location = new System.Drawing.Point(790, 15);
             this.lblLegCancel.Name = "lblLegCancel";
-            this.lblLegCancel.Size = new System.Drawing.Size(56, 14);
+            this.lblLegCancel.Size = new System.Drawing.Size(58, 14);
             this.lblLegCancel.TabIndex = 11;
             this.lblLegCancel.Text = "Отменен";
             // 
             // OrdersListForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1000, 720);
+            this.ControlBox = false;
             this.Controls.Add(this.panelButtons);
             this.Controls.Add(this.panelCalc);
             this.Controls.Add(this.dgvContent);

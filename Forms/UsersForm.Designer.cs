@@ -195,7 +195,7 @@
             this.panelPagination.Controls.Add(this.cmbPageSize);
             this.panelPagination.Location = new System.Drawing.Point(12, 632);
             this.panelPagination.Name = "panelPagination";
-            this.panelPagination.Size = new System.Drawing.Size(876, 40);
+            this.panelPagination.Size = new System.Drawing.Size(876, 44);
             this.panelPagination.TabIndex = 4;
             // 
             // btnFirst
@@ -207,7 +207,7 @@
             this.btnFirst.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnFirst.Font = new System.Drawing.Font("Trebuchet MS", 9F, System.Drawing.FontStyle.Bold);
             this.btnFirst.ForeColor = System.Drawing.Color.White;
-            this.btnFirst.Location = new System.Drawing.Point(0, 5);
+            this.btnFirst.Location = new System.Drawing.Point(9, 7);
             this.btnFirst.Name = "btnFirst";
             this.btnFirst.Size = new System.Drawing.Size(50, 30);
             this.btnFirst.TabIndex = 0;
@@ -224,7 +224,7 @@
             this.btnPrev.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPrev.Font = new System.Drawing.Font("Trebuchet MS", 9F, System.Drawing.FontStyle.Bold);
             this.btnPrev.ForeColor = System.Drawing.Color.White;
-            this.btnPrev.Location = new System.Drawing.Point(60, 5);
+            this.btnPrev.Location = new System.Drawing.Point(69, 7);
             this.btnPrev.Name = "btnPrev";
             this.btnPrev.Size = new System.Drawing.Size(50, 30);
             this.btnPrev.TabIndex = 1;
@@ -236,7 +236,7 @@
             // 
             this.lblPageInfo.AutoSize = true;
             this.lblPageInfo.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.lblPageInfo.Location = new System.Drawing.Point(130, 10);
+            this.lblPageInfo.Location = new System.Drawing.Point(139, 12);
             this.lblPageInfo.Name = "lblPageInfo";
             this.lblPageInfo.Size = new System.Drawing.Size(113, 17);
             this.lblPageInfo.TabIndex = 2;
@@ -251,7 +251,7 @@
             this.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNext.Font = new System.Drawing.Font("Trebuchet MS", 9F, System.Drawing.FontStyle.Bold);
             this.btnNext.ForeColor = System.Drawing.Color.White;
-            this.btnNext.Location = new System.Drawing.Point(265, 4);
+            this.btnNext.Location = new System.Drawing.Point(274, 6);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(50, 30);
             this.btnNext.TabIndex = 3;
@@ -268,7 +268,7 @@
             this.btnLast.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLast.Font = new System.Drawing.Font("Trebuchet MS", 9F, System.Drawing.FontStyle.Bold);
             this.btnLast.ForeColor = System.Drawing.Color.White;
-            this.btnLast.Location = new System.Drawing.Point(321, 5);
+            this.btnLast.Location = new System.Drawing.Point(330, 7);
             this.btnLast.Name = "btnLast";
             this.btnLast.Size = new System.Drawing.Size(50, 30);
             this.btnLast.TabIndex = 4;
@@ -280,7 +280,7 @@
             // 
             this.lblPageSize.AutoSize = true;
             this.lblPageSize.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.lblPageSize.Location = new System.Drawing.Point(400, 10);
+            this.lblPageSize.Location = new System.Drawing.Point(409, 12);
             this.lblPageSize.Name = "lblPageSize";
             this.lblPageSize.Size = new System.Drawing.Size(65, 17);
             this.lblPageSize.TabIndex = 5;
@@ -294,7 +294,7 @@
             "10",
             "25",
             "50"});
-            this.cmbPageSize.Location = new System.Drawing.Point(470, 7);
+            this.cmbPageSize.Location = new System.Drawing.Point(479, 9);
             this.cmbPageSize.Name = "cmbPageSize";
             this.cmbPageSize.Size = new System.Drawing.Size(60, 24);
             this.cmbPageSize.TabIndex = 6;
@@ -444,6 +444,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(900, 747);
+            this.ControlBox = false;
             this.Controls.Add(this.panelButtons);
             this.Controls.Add(this.panelPagination);
             this.Controls.Add(this.lblCount);

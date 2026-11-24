@@ -418,6 +418,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(900, 610);
+            this.ControlBox = false;
             this.Controls.Add(this.dgvOrderItems);
             this.Controls.Add(this.panelTotals);
             this.Controls.Add(this.panelBottom);
