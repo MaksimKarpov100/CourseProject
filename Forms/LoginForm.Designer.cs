@@ -60,7 +60,7 @@
             this.pnlCard.Controls.Add(this.lblTitle);
             this.pnlCard.Location = new System.Drawing.Point(355, 0);
             this.pnlCard.Name = "pnlCard";
-            this.pnlCard.Size = new System.Drawing.Size(423, 477);
+            this.pnlCard.Size = new System.Drawing.Size(493, 523);
             this.pnlCard.TabIndex = 0;
             // 
             // btnExitApp
@@ -69,9 +69,9 @@
             this.btnExitApp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExitApp.Font = new System.Drawing.Font("Tahoma", 10F);
             this.btnExitApp.ForeColor = System.Drawing.Color.Gray;
-            this.btnExitApp.Location = new System.Drawing.Point(136, 426);
+            this.btnExitApp.Location = new System.Drawing.Point(80, 441);
             this.btnExitApp.Name = "btnExitApp";
-            this.btnExitApp.Size = new System.Drawing.Size(122, 39);
+            this.btnExitApp.Size = new System.Drawing.Size(332, 39);
             this.btnExitApp.TabIndex = 16;
             this.btnExitApp.Text = "Выйти";
             this.btnExitApp.UseVisualStyleBackColor = true;
@@ -85,7 +85,7 @@
             this.btnSettings.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSettings.FlatAppearance.BorderSize = 0;
             this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSettings.Location = new System.Drawing.Point(372, 6);
+            this.btnSettings.Location = new System.Drawing.Point(431, 12);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new System.Drawing.Size(40, 40);
             this.btnSettings.TabIndex = 15;
@@ -100,9 +100,9 @@
             this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogin.Font = new System.Drawing.Font("Trebuchet MS", 14F, System.Drawing.FontStyle.Bold);
             this.btnLogin.ForeColor = System.Drawing.Color.White;
-            this.btnLogin.Location = new System.Drawing.Point(37, 370);
+            this.btnLogin.Location = new System.Drawing.Point(80, 385);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(328, 50);
+            this.btnLogin.Size = new System.Drawing.Size(332, 50);
             this.btnLogin.TabIndex = 14;
             this.btnLogin.Text = "ВОЙТИ";
             this.btnLogin.UseVisualStyleBackColor = false;
@@ -112,7 +112,7 @@
             // 
             this.lblError.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(48, 320);
+            this.lblError.Location = new System.Drawing.Point(95, 335);
             this.lblError.Name = "lblError";
             this.lblError.Size = new System.Drawing.Size(305, 20);
             this.lblError.TabIndex = 17;
@@ -124,7 +124,7 @@
             this.lblTimer.AutoSize = true;
             this.lblTimer.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             this.lblTimer.ForeColor = System.Drawing.Color.Red;
-            this.lblTimer.Location = new System.Drawing.Point(29, 255);
+            this.lblTimer.Location = new System.Drawing.Point(76, 270);
             this.lblTimer.Name = "lblTimer";
             this.lblTimer.Size = new System.Drawing.Size(55, 19);
             this.lblTimer.TabIndex = 12;
@@ -136,7 +136,7 @@
             this.lblCaptchaHint.AutoSize = true;
             this.lblCaptchaHint.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Italic);
             this.lblCaptchaHint.ForeColor = System.Drawing.Color.Gray;
-            this.lblCaptchaHint.Location = new System.Drawing.Point(216, 307);
+            this.lblCaptchaHint.Location = new System.Drawing.Point(263, 322);
             this.lblCaptchaHint.Name = "lblCaptchaHint";
             this.lblCaptchaHint.Size = new System.Drawing.Size(156, 13);
             this.lblCaptchaHint.TabIndex = 11;
@@ -148,7 +148,7 @@
             this.txtCaptcha.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.txtCaptcha.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtCaptcha.Font = new System.Drawing.Font("Tahoma", 14F);
-            this.txtCaptcha.Location = new System.Drawing.Point(33, 279);
+            this.txtCaptcha.Location = new System.Drawing.Point(80, 294);
             this.txtCaptcha.Name = "txtCaptcha";
             this.txtCaptcha.Size = new System.Drawing.Size(176, 23);
             this.txtCaptcha.TabIndex = 10;
@@ -159,7 +159,7 @@
             // 
             this.pbCaptcha.BackColor = System.Drawing.Color.White;
             this.pbCaptcha.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbCaptcha.Location = new System.Drawing.Point(215, 234);
+            this.pbCaptcha.Location = new System.Drawing.Point(262, 249);
             this.pbCaptcha.Name = "pbCaptcha";
             this.pbCaptcha.Size = new System.Drawing.Size(150, 70);
             this.pbCaptcha.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -173,7 +173,7 @@
             this.lblCaptcha.AutoSize = true;
             this.lblCaptcha.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.lblCaptcha.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblCaptcha.Location = new System.Drawing.Point(33, 204);
+            this.lblCaptcha.Location = new System.Drawing.Point(80, 219);
             this.lblCaptcha.Name = "lblCaptcha";
             this.lblCaptcha.Size = new System.Drawing.Size(189, 17);
             this.lblCaptcha.TabIndex = 8;
@@ -185,7 +185,7 @@
             this.btnShowPassword.FlatAppearance.BorderSize = 0;
             this.btnShowPassword.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnShowPassword.Font = new System.Drawing.Font("Tahoma", 14F);
-            this.btnShowPassword.Location = new System.Drawing.Point(344, 162);
+            this.btnShowPassword.Location = new System.Drawing.Point(391, 177);
             this.btnShowPassword.Name = "btnShowPassword";
             this.btnShowPassword.Size = new System.Drawing.Size(30, 30);
             this.btnShowPassword.TabIndex = 7;
@@ -198,7 +198,7 @@
             this.txtPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtPassword.Font = new System.Drawing.Font("Tahoma", 14F);
-            this.txtPassword.Location = new System.Drawing.Point(33, 167);
+            this.txtPassword.Location = new System.Drawing.Point(80, 182);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '●';
             this.txtPassword.Size = new System.Drawing.Size(305, 23);
@@ -210,7 +210,7 @@
             this.lblPassword.AutoSize = true;
             this.lblPassword.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             this.lblPassword.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblPassword.Location = new System.Drawing.Point(33, 137);
+            this.lblPassword.Location = new System.Drawing.Point(80, 152);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(95, 19);
             this.lblPassword.TabIndex = 5;
@@ -221,7 +221,7 @@
             this.txtLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.txtLogin.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtLogin.Font = new System.Drawing.Font("Tahoma", 14F);
-            this.txtLogin.Location = new System.Drawing.Point(33, 100);
+            this.txtLogin.Location = new System.Drawing.Point(80, 115);
             this.txtLogin.Name = "txtLogin";
             this.txtLogin.Size = new System.Drawing.Size(305, 23);
             this.txtLogin.TabIndex = 4;
@@ -232,7 +232,7 @@
             this.lblLogin.AutoSize = true;
             this.lblLogin.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             this.lblLogin.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblLogin.Location = new System.Drawing.Point(33, 70);
+            this.lblLogin.Location = new System.Drawing.Point(80, 85);
             this.lblLogin.Name = "lblLogin";
             this.lblLogin.Size = new System.Drawing.Size(84, 19);
             this.lblLogin.TabIndex = 3;
@@ -266,7 +266,7 @@
             this.pbLogo.Image = global::BoardGame_Store.Properties.Resources.images;
             this.pbLogo.Location = new System.Drawing.Point(0, 0);
             this.pbLogo.Name = "pbLogo";
-            this.pbLogo.Size = new System.Drawing.Size(357, 477);
+            this.pbLogo.Size = new System.Drawing.Size(357, 523);
             this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbLogo.TabIndex = 1;
             this.pbLogo.TabStop = false;
@@ -276,7 +276,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(242)))), ((int)(((byte)(245)))));
-            this.ClientSize = new System.Drawing.Size(779, 477);
+            this.ClientSize = new System.Drawing.Size(838, 523);
             this.ControlBox = false;
             this.Controls.Add(this.pnlCard);
             this.Controls.Add(this.pbLogo);

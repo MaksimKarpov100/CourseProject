@@ -13,6 +13,14 @@ namespace BoardGame_Store
         {
             InitializeComponent();
             lblUserInfo.Text = CurrentUser.FullName + " (" + CurrentUser.Role + ")";
+
+            tabMain.SelectedTab = tabOrders;
+
+            if (ordersForm == null || ordersForm.IsDisposed)
+            {
+                ordersForm = new OrdersListForm();
+                LoadFormInTab(ordersForm, tabOrders);
+            }
         }
 
         private void MainFormSeller_Load(object sender, EventArgs e)

@@ -79,7 +79,7 @@
             this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(1000, 40);
+            this.lblTitle.Size = new System.Drawing.Size(1124, 40);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Учёт заказов";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -102,7 +102,7 @@
             this.panelFilters.Controls.Add(this.btnReset);
             this.panelFilters.Location = new System.Drawing.Point(12, 45);
             this.panelFilters.Name = "panelFilters";
-            this.panelFilters.Size = new System.Drawing.Size(976, 75);
+            this.panelFilters.Size = new System.Drawing.Size(1100, 75);
             this.panelFilters.TabIndex = 1;
             // 
             // lblOrderNumber
@@ -227,7 +227,7 @@
             this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReset.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
             this.btnReset.ForeColor = System.Drawing.Color.White;
-            this.btnReset.Location = new System.Drawing.Point(886, 20);
+            this.btnReset.Location = new System.Drawing.Point(1010, 20);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(80, 40);
             this.btnReset.TabIndex = 10;
@@ -252,7 +252,7 @@
             this.dgvOrders.ReadOnly = true;
             this.dgvOrders.RowHeadersVisible = false;
             this.dgvOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvOrders.Size = new System.Drawing.Size(976, 260);
+            this.dgvOrders.Size = new System.Drawing.Size(1100, 395);
             this.dgvOrders.TabIndex = 2;
             this.dgvOrders.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvOrders_CellFormatting);
             this.dgvOrders.SelectionChanged += new System.EventHandler(this.dgvOrders_SelectionChanged);
@@ -262,7 +262,7 @@
             this.lblCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCount.AutoSize = true;
             this.lblCount.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.lblCount.Location = new System.Drawing.Point(12, 400);
+            this.lblCount.Location = new System.Drawing.Point(12, 535);
             this.lblCount.Name = "lblCount";
             this.lblCount.Size = new System.Drawing.Size(157, 17);
             this.lblCount.TabIndex = 3;
@@ -279,9 +279,9 @@
             this.panelPagination.Controls.Add(this.btnLast);
             this.panelPagination.Controls.Add(this.lblPageSize);
             this.panelPagination.Controls.Add(this.cmbPageSize);
-            this.panelPagination.Location = new System.Drawing.Point(12, 420);
+            this.panelPagination.Location = new System.Drawing.Point(12, 555);
             this.panelPagination.Name = "panelPagination";
-            this.panelPagination.Size = new System.Drawing.Size(976, 40);
+            this.panelPagination.Size = new System.Drawing.Size(1100, 40);
             this.panelPagination.TabIndex = 4;
             // 
             // btnFirst
@@ -392,7 +392,7 @@
             this.lblComposition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblComposition.AutoSize = true;
             this.lblComposition.Font = new System.Drawing.Font("Trebuchet MS", 11F, System.Drawing.FontStyle.Bold);
-            this.lblComposition.Location = new System.Drawing.Point(12, 465);
+            this.lblComposition.Location = new System.Drawing.Point(12, 600);
             this.lblComposition.Name = "lblComposition";
             this.lblComposition.Size = new System.Drawing.Size(109, 20);
             this.lblComposition.TabIndex = 5;
@@ -409,12 +409,12 @@
             this.dgvContent.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvContent.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvContent.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.dgvContent.Location = new System.Drawing.Point(12, 490);
+            this.dgvContent.Location = new System.Drawing.Point(12, 625);
             this.dgvContent.Name = "dgvContent";
             this.dgvContent.ReadOnly = true;
             this.dgvContent.RowHeadersVisible = false;
             this.dgvContent.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvContent.Size = new System.Drawing.Size(700, 150);
+            this.dgvContent.Size = new System.Drawing.Size(824, 150);
             this.dgvContent.TabIndex = 6;
             // 
             // panelCalc
@@ -431,7 +431,7 @@
             this.panelCalc.Controls.Add(this.txtSumWith);
             this.panelCalc.Controls.Add(this.lblTotal);
             this.panelCalc.Controls.Add(this.txtTotal);
-            this.panelCalc.Location = new System.Drawing.Point(733, 490);
+            this.panelCalc.Location = new System.Drawing.Point(857, 625);
             this.panelCalc.Name = "panelCalc";
             this.panelCalc.Size = new System.Drawing.Size(255, 150);
             this.panelCalc.TabIndex = 7;
@@ -547,9 +547,9 @@
             this.panelButtons.Controls.Add(this.lblLegReady);
             this.panelButtons.Controls.Add(this.pnlLegCancel);
             this.panelButtons.Controls.Add(this.lblLegCancel);
-            this.panelButtons.Location = new System.Drawing.Point(12, 660);
+            this.panelButtons.Location = new System.Drawing.Point(12, 795);
             this.panelButtons.Name = "panelButtons";
-            this.panelButtons.Size = new System.Drawing.Size(976, 45);
+            this.panelButtons.Size = new System.Drawing.Size(1100, 45);
             this.panelButtons.TabIndex = 8;
             // 
             // btnAdd
@@ -699,7 +699,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1000, 720);
+            this.ClientSize = new System.Drawing.Size(1124, 855);
             this.ControlBox = false;
             this.Controls.Add(this.panelButtons);
             this.Controls.Add(this.panelCalc);

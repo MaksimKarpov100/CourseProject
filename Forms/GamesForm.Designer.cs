@@ -57,7 +57,7 @@
             this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(1000, 40);
+            this.lblTitle.Size = new System.Drawing.Size(1138, 40);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Управление товарами";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -75,7 +75,7 @@
             this.panelFilters.Controls.Add(this.cmbSort);
             this.panelFilters.Location = new System.Drawing.Point(15, 45);
             this.panelFilters.Name = "panelFilters";
-            this.panelFilters.Size = new System.Drawing.Size(970, 50);
+            this.panelFilters.Size = new System.Drawing.Size(1108, 50);
             this.panelFilters.TabIndex = 2;
             // 
             // lblSearch
@@ -161,7 +161,7 @@
             this.dgvGames.RowHeadersVisible = false;
             this.dgvGames.RowTemplate.Height = 50;
             this.dgvGames.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvGames.Size = new System.Drawing.Size(970, 530);
+            this.dgvGames.Size = new System.Drawing.Size(1108, 596);
             this.dgvGames.TabIndex = 3;
             this.dgvGames.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGames_CellDoubleClick);
             this.dgvGames.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvGames_CellFormatting);
@@ -172,7 +172,7 @@
             this.lblCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCount.AutoSize = true;
             this.lblCount.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.lblCount.Location = new System.Drawing.Point(15, 650);
+            this.lblCount.Location = new System.Drawing.Point(15, 716);
             this.lblCount.Name = "lblCount";
             this.lblCount.Size = new System.Drawing.Size(157, 17);
             this.lblCount.TabIndex = 4;
@@ -189,9 +189,9 @@
             this.panelPagination.Controls.Add(this.btnLast);
             this.panelPagination.Controls.Add(this.lblPageSize);
             this.panelPagination.Controls.Add(this.cmbPageSize);
-            this.panelPagination.Location = new System.Drawing.Point(15, 670);
+            this.panelPagination.Location = new System.Drawing.Point(15, 736);
             this.panelPagination.Name = "panelPagination";
-            this.panelPagination.Size = new System.Drawing.Size(970, 40);
+            this.panelPagination.Size = new System.Drawing.Size(1108, 40);
             this.panelPagination.TabIndex = 5;
             // 
             // btnFirst
@@ -310,9 +310,9 @@
             this.panelButtons.Controls.Add(this.lblLegendYellow);
             this.panelButtons.Controls.Add(this.pnlLegendRed);
             this.panelButtons.Controls.Add(this.lblLegendRed);
-            this.panelButtons.Location = new System.Drawing.Point(15, 720);
+            this.panelButtons.Location = new System.Drawing.Point(15, 786);
             this.panelButtons.Name = "panelButtons";
-            this.panelButtons.Size = new System.Drawing.Size(970, 45);
+            this.panelButtons.Size = new System.Drawing.Size(1108, 45);
             this.panelButtons.TabIndex = 9;
             // 
             // btnAdd
@@ -428,7 +428,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1000, 780);
+            this.ClientSize = new System.Drawing.Size(1138, 846);
             this.ControlBox = false;
             this.Controls.Add(this.panelButtons);
             this.Controls.Add(this.panelPagination);

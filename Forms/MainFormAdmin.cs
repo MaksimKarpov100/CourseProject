@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks; // Добавлено для фонового запуска
 using System.Windows.Forms;
 
 namespace BoardGame_Store
@@ -12,6 +15,11 @@ namespace BoardGame_Store
         private DiscountsForm discountsForm;
         private SpecialForm specialForm;
 
+        private Timer inactivityTimer;
+        private int inactivitySeconds = 0;
+        private const int TimeoutLimit = 300;
+        private bool isLoggingOut = false;
+
         public MainFormAdmin()
         {
             InitializeComponent();
@@ -23,6 +31,98 @@ namespace BoardGame_Store
             {
                 ordersForm = new OrdersListForm();
                 LoadFormInTab(ordersForm, tabOrders);
+            }
+
+            SetupInactivityTimer();
+
+            Task.Run(() => MakeAutoBackup());
+        }
+
+        private void MakeAutoBackup()
+        {
+            try
+            {
+                string backupFolder = Path.Combine(Application.StartupPath, "Backups");
+                if (!Directory.Exists(backupFolder)) Directory.CreateDirectory(backupFolder);
+
+                string fileName = "auto_backup_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".sql";
+                string filePath = Path.Combine(backupFolder, fileName);
+
+                string mysqldump = "";
+                this.Invoke(new Action(() => {
+                    using (SpecialForm dummyForm = new SpecialForm())
+                    {
+                        mysqldump = dummyForm.FindMysqldumpPath();
+                    }
+                }));
+
+                if (string.IsNullOrEmpty(mysqldump)) return;
+
+                string args = $"-u {DbConfig.User} ";
+                if (!string.IsNullOrEmpty(DbConfig.Password)) args += $"-p{DbConfig.Password} ";
+                args += $"--databases {DbConfig.Database} --result-file=\"{filePath}\"";
+
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = mysqldump,
+                    Arguments = args,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                using (Process process = Process.Start(psi))
+                {
+                    process.WaitForExit();
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void SetupInactivityTimer()
+        {
+            inactivityTimer = new Timer();
+            inactivityTimer.Interval = 1000;
+            inactivityTimer.Tick += InactivityTimer_Tick;
+            inactivityTimer.Start();
+
+            this.MouseMove += ResetInactivity;
+            this.KeyDown += ResetInactivity;
+            this.MouseClick += ResetInactivity;
+            this.KeyPress += ResetInactivity;
+        }
+
+        private void ResetInactivity(object sender, EventArgs e)
+        {
+            inactivitySeconds = 0;
+        }
+
+        private void InactivityTimer_Tick(object sender, EventArgs e)
+        {
+            inactivitySeconds++;
+
+            if (inactivitySeconds >= TimeoutLimit)
+            {
+                inactivityTimer.Stop();
+
+                MessageBox.Show("Сеанс завершен из-за неактивности (5 минут бездействия).",
+                                "Автоматический выход",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+
+                isLoggingOut = true; 
+                this.Close();
+            }
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            if (MessageHelper.AskConfirm("Вы уверены, что хотите выйти из системы?") == true)
+            {
+                isLoggingOut = true;
+                this.Close();
             }
         }
 
@@ -37,10 +137,7 @@ namespace BoardGame_Store
 
             foreach (Control c in form.Controls)
             {
-                if (c.Name == "btnBack")
-                {
-                    c.Visible = false;
-                }
+                if (c.Name == "btnBack") c.Visible = false;
             }
         }
 
@@ -119,12 +216,5 @@ namespace BoardGame_Store
             }
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            if (MessageHelper.AskConfirm("Вы уверены, что хотите выйти из системы?") == true)
-            {
-                this.Close();
-            }
-        }
     }
 }

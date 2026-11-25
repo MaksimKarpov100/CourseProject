@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Diagnostics;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Drawing;
@@ -321,9 +322,9 @@ namespace BoardGame_Store
                     ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Отчет");
 
                     worksheet.Column(1).Width = 12;
-                    worksheet.Column(2).Width = 35; 
-                    worksheet.Column(3).Width = 25; 
-                    worksheet.Column(4).Width = 15; 
+                    worksheet.Column(2).Width = 35;
+                    worksheet.Column(3).Width = 25;
+                    worksheet.Column(4).Width = 15;
 
                     worksheet.Cells["A1:D1"].Merge = true;
                     worksheet.Cells["A1"].Value = "МАГАЗИН НАСТОЛЬНЫХ ИГР";
@@ -356,7 +357,7 @@ namespace BoardGame_Store
                     {
                         headerRange.Style.Font.Bold = true;
                         headerRange.Style.Font.Name = "Arial";
-                        headerRange.Style.Font.Color.SetColor(System.Drawing.Color.White); 
+                        headerRange.Style.Font.Color.SetColor(System.Drawing.Color.White);
                         headerRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
                         headerRange.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkSlateGray);
                         headerRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -364,7 +365,7 @@ namespace BoardGame_Store
                         headerRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
                         headerRange.Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
                     }
-                    worksheet.Row(6).Height = 25; 
+                    worksheet.Row(6).Height = 25;
 
                     int row = 7;
                     decimal totalSum = 0;
@@ -456,8 +457,15 @@ namespace BoardGame_Store
             txtLog.AppendText(logLine);
         }
 
-        private string FindMysqldumpPath()
+        public string FindMysqldumpPath()
         {
+            string configPath = Path.Combine(Application.StartupPath, "mysqldump_path.txt");
+            if (File.Exists(configPath))
+            {
+                string savedPath = File.ReadAllText(configPath).Trim();
+                if (File.Exists(savedPath)) return savedPath;
+            }
+
             try
             {
                 ProcessStartInfo psi = new ProcessStartInfo();
@@ -480,34 +488,39 @@ namespace BoardGame_Store
 
             string[] commonPaths = new string[]
             {
-                @"C:\Program Files\MySQL\MySQL Server 8.4\bin\mysqldump.exe",
-                @"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqldump.exe",
-                @"C:\Program Files\MySQL\MySQL Server 5.7\bin\mysqldump.exe",
-                @"C:\Program Files (x86)\MySQL\MySQL Server 5.7\bin\mysqldump.exe",
-
-                @"C:\xampp\mysql\bin\mysqldump.exe",
-
-                @"C:\OpenServer\modules\database\MySQL-8.0\bin\mysqldump.exe",
-                @"C:\OpenServer\modules\database\MySQL-5.7\bin\mysqldump.exe",
-                @"C:\OpenServer\modules\database\MySQL-5.6\bin\mysqldump.exe",
-
-                @"C:\wamp64\bin\mysql\mysql8.0.31\bin\mysqldump.exe",
-                @"C:\wamp64\bin\mysql\mysql5.7.40\bin\mysqldump.exe",
-                @"C:\wamp\bin\mysql\mysql5.7.26\bin\mysqldump.exe",
-
-        
-                @"C:\MAMP\bin\mysql\bin\mysqldump.exe"
+                     @"C:\OSPanel\modules\database\MySQL-8.0-Win10\bin\mysqldump.exe",
+                     @"C:\xampp\mysql\bin\mysqldump.exe",
+                     @"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqldump.exe",
+                     @"C:\Program Files\MySQL\MySQL Server 5.7\bin\mysqldump.exe"
             };
 
             foreach (string path in commonPaths)
             {
-                if (File.Exists(path))
+                if (File.Exists(path)) return path;
+            }
+
+            DialogResult result = MessageBox.Show(
+                "Программа не смогла автоматически найти утилиту 'mysqldump.exe'.\n\n" +
+                "Нажмите ОК, чтобы указать путь к ней вручную (обычно она лежит в папке bin вашего MySQL/XAMPP/OSPanel).",
+                "Поиск mysqldump.exe",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Warning);
+
+            if (result == DialogResult.OK)
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Filter = "mysqldump.exe|mysqldump.exe";
+                ofd.Title = "Выберите файл mysqldump.exe";
+
+                if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    return path;
+                    File.WriteAllText(configPath, ofd.FileName);
+                    return ofd.FileName;
                 }
             }
 
-            return null; 
+            return null;
         }
     }
 }
+    

@@ -124,7 +124,7 @@
             this.Controls.Add(this.lblName);
             this.Controls.Add(this.lblTitle);
             this.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;

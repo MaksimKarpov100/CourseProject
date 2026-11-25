@@ -143,28 +143,34 @@ namespace BoardGame_Store
                     dt.Columns.Add("Image", typeof(Image));
                 }
 
+                Image defaultImage = Properties.Resources.picture;
+
                 foreach (DataRow row in dt.Rows)
                 {
+                    Image loadedImage = null;
+
                     if (row["image_data"] != DBNull.Value)
                     {
                         byte[] imgBytes = (byte[])row["image_data"];
-                        using (MemoryStream ms = new MemoryStream(imgBytes))
+                        if (imgBytes.Length > 0)
                         {
-                            row["Image"] = Image.FromStream(ms);
+                            try
+                            {
+                                using (MemoryStream ms = new MemoryStream(imgBytes))
+                                {
+                                    loadedImage = Image.FromStream(ms);
+                                }
+                            }
+                            catch
+                            {
+                                loadedImage = null;
+                            }
                         }
                     }
-                    else
-                    {
-                        try
-                        {
-                            row["Image"] = Image.FromFile("Resources/picture.png");
-                        }
-                        catch
-                        {
-                            row["Image"] = null;
-                        }
-                    }
+
+                    row["Image"] = loadedImage ?? defaultImage;
                 }
+
 
                 dgvGames.DataSource = dt;
 

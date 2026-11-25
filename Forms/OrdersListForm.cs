@@ -391,7 +391,7 @@ namespace BoardGame_Store
 
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.Filter = "Документ Word (*.docx)|*.docx";
-                sfd.FileName = "Чек_Заказ_" + selectedOrderId + ".docx";
+                sfd.FileName = "Чек_Заказ_" + selectedOrderId + ".doc";
 
                 if (sfd.ShowDialog() != DialogResult.OK) return;
 
@@ -409,11 +409,11 @@ namespace BoardGame_Store
                                                         "Дата оформления: " + orderDate + "\n\n");
                     info.Font("Times New Roman").FontSize(12);
 
-                    int rows = dtItems.Rows.Count + 2; 
+                    int rows = dtItems.Rows.Count + 2;
                     int cols = 5;
                     var table = document.AddTable(rows, cols);
 
-                    table.Design = TableDesign.TableGrid; 
+                    table.Design = TableDesign.TableGrid;
                     table.Alignment = Alignment.center;
 
                     table.Rows[0].Cells[0].Paragraphs[0].Append("№").Bold().Alignment = Alignment.center;
@@ -475,19 +475,16 @@ namespace BoardGame_Store
                 sfd.Filter = "Excel документ (*.xlsx)|*.xlsx";
                 sfd.FileName = "Отчет_о_продажах_" + dtpDateFrom.Value.ToString("ddMMyyyy") + ".xlsx";
 
-                if (sfd.ShowDialog() != DialogResult.OK)
-                {
-                    return;
-                }
+                if (sfd.ShowDialog() != DialogResult.OK) return;
 
                 using (ExcelPackage package = new ExcelPackage())
                 {
                     ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Отчет");
 
                     worksheet.Column(1).Width = 12;
-                    worksheet.Column(2).Width = 35;
-                    worksheet.Column(3).Width = 25;
-                    worksheet.Column(4).Width = 15;
+                    worksheet.Column(2).Width = 40;
+                    worksheet.Column(3).Width = 22;
+                    worksheet.Column(4).Width = 18;
 
                     worksheet.Cells["A1:D1"].Merge = true;
                     worksheet.Cells["A1"].Value = "МАГАЗИН НАСТОЛЬНЫХ ИГР";
@@ -527,20 +524,20 @@ namespace BoardGame_Store
                         headerRange.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                         headerRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
                         headerRange.Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                        headerRange.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        headerRange.Style.Border.Right.Style = ExcelBorderStyle.Thin;
                     }
                     worksheet.Row(6).Height = 25;
 
                     int row = 7;
-                    decimal totalSum = 0;
-
                     foreach (DataRow r in dt.Rows)
                     {
-                        worksheet.Cells[row, 1].Value = r["order_id"].ToString();
+                        worksheet.Cells[row, 1].Value = Convert.ToInt32(r["order_id"]);
                         worksheet.Cells[row, 2].Value = r["full_name"].ToString();
                         worksheet.Cells[row, 3].Value = Convert.ToDateTime(r["order_date"]).ToString("dd.MM.yyyy HH:mm");
-                        worksheet.Cells[row, 4].Value = Convert.ToDecimal(r["total_amount"]).ToString("0.00");
 
-                        totalSum += Convert.ToDecimal(r["total_amount"]);
+                        worksheet.Cells[row, 4].Value = Convert.ToDecimal(r["total_amount"]);
+                        worksheet.Cells[row, 4].Style.Numberformat.Format = "#,##0.00"; 
 
                         using (ExcelRange rowRange = worksheet.Cells[row, 1, row, 4])
                         {
@@ -559,14 +556,15 @@ namespace BoardGame_Store
                         if (row % 2 == 0)
                         {
                             worksheet.Cells[row, 1, row, 4].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                            worksheet.Cells[row, 1, row, 4].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.WhiteSmoke);
+                            worksheet.Cells[row, 1, row, 4].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(245, 245, 245)); 
                         }
 
                         row++;
                     }
 
                     worksheet.Cells[row, 3].Value = "ИТОГО:";
-                    worksheet.Cells[row, 4].Value = totalSum.ToString("0.00");
+                    worksheet.Cells[row, 4].Formula = $"SUM(D7:D{row - 1})";
+                    worksheet.Cells[row, 4].Style.Numberformat.Format = "#,##0.00";
 
                     using (ExcelRange totalRange = worksheet.Cells[row, 1, row, 4])
                     {
@@ -574,6 +572,8 @@ namespace BoardGame_Store
                         totalRange.Style.Font.Name = "Arial";
                         totalRange.Style.Border.Top.Style = ExcelBorderStyle.Medium;
                         totalRange.Style.Border.Bottom.Style = ExcelBorderStyle.Double;
+                        totalRange.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        totalRange.Style.Border.Right.Style = ExcelBorderStyle.Thin;
                     }
                     worksheet.Cells[row, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
                     worksheet.Cells[row, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
@@ -583,10 +583,12 @@ namespace BoardGame_Store
                     worksheet.Cells[footerRow, 1].Value = "Отчет сформирован: " + CurrentUser.FullName;
                     worksheet.Cells[footerRow, 1].Style.Font.Italic = true;
                     worksheet.Cells[footerRow, 1].Style.Font.Size = 10;
+                    worksheet.Cells[footerRow, 1, footerRow, 2].Merge = true; // Объединяем для красоты
 
                     worksheet.Cells[footerRow + 1, 1].Value = "Дата формирования: " + DateTime.Now.ToString("dd.MM.yyyy HH:mm");
                     worksheet.Cells[footerRow + 1, 1].Style.Font.Italic = true;
                     worksheet.Cells[footerRow + 1, 1].Style.Font.Size = 10;
+                    worksheet.Cells[footerRow + 1, 1, footerRow + 1, 2].Merge = true;
 
                     worksheet.Cells[footerRow, 3].Value = "____________________";
                     worksheet.Cells[footerRow, 3, footerRow, 4].Merge = true;
@@ -599,7 +601,9 @@ namespace BoardGame_Store
                     worksheet.Cells[footerRow + 1, 3].Style.Font.Color.SetColor(System.Drawing.Color.Gray);
 
                     worksheet.PrinterSettings.FitToPage = true;
-                    worksheet.PrinterSettings.Orientation = eOrientation.Portrait;
+                    worksheet.PrinterSettings.Orientation = eOrientation.Landscape;
+                    worksheet.PrinterSettings.FitToWidth = 1;
+                    worksheet.PrinterSettings.FitToHeight = 0;
 
                     FileInfo fileInfo = new FileInfo(sfd.FileName);
                     package.SaveAs(fileInfo);
