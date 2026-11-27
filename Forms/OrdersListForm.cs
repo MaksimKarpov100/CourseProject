@@ -109,10 +109,10 @@ namespace BoardGame_Store
                     currentPage = totalPages;
                 }
 
-                string orderBy = " ORDER BY o.order_id DESC ";
+                string orderBy = " ORDER BY o.order_id ASC ";
                 if (cmbSort.SelectedIndex == 1)
                 {
-                    orderBy = " ORDER BY o.order_date DESC ";
+                    orderBy = " ORDER BY o.order_date ASC ";
                 }
                 else if (cmbSort.SelectedIndex == 2)
                 {
@@ -120,7 +120,7 @@ namespace BoardGame_Store
                 }
                 else if (cmbSort.SelectedIndex == 3)
                 {
-                    orderBy = " ORDER BY o.total_amount DESC ";
+                    orderBy = " ORDER BY o.total_amount ASC ";
                 }
 
                 string sqlData = "SELECT o.order_id AS 'Номер', c.full_name AS 'Клиент', o.order_date AS 'Дата', " +

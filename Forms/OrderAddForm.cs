@@ -13,7 +13,7 @@ namespace BoardGame_Store
         public OrderAddForm()
         {
             InitializeComponent();
-            nudDiscount.Enabled = false; 
+            nudDiscount.Enabled = false;
         }
 
         private void OrderAddForm_Load(object sender, EventArgs e)
@@ -21,6 +21,8 @@ namespace BoardGame_Store
             SetupCartGrid();
             LoadCustomers();
             LoadGames();
+
+            dtpOrderDate.MinDate = DateTime.Today;
             dtpOrderDate.Value = DateTime.Now;
         }
 
@@ -120,9 +122,15 @@ namespace BoardGame_Store
                 return;
             }
 
+            decimal price = 0;
+            if (!decimal.TryParse(txtPrice.Text, out price) || price <= 0)
+            {
+                MessageHelper.ShowWarning("Некорректная цена товара. Обратитесь к администратору.");
+                return;
+            }
+
             int gameId = Convert.ToInt32(cmbGame.SelectedValue);
             int addQty = (int)nudQuantity.Value;
-            decimal price = Convert.ToDecimal(txtPrice.Text);
 
             if (addQty <= 0)
             {
@@ -177,7 +185,7 @@ namespace BoardGame_Store
             }
 
             CalculateTotal();
-            nudQuantity.Value = 1; 
+            nudQuantity.Value = 1;
         }
 
         private int GetStockQuantity(int gameId)
@@ -308,6 +316,12 @@ namespace BoardGame_Store
                 return;
             }
 
+            if (dtpOrderDate.Value.Date < DateTime.Today)
+            {
+                MessageHelper.ShowWarning("Нельзя оформить заказ задним числом! Выберите сегодняшнюю или будущую дату.");
+                return;
+            }
+
             int customerId = Convert.ToInt32(cmbCustomer.SelectedValue);
             int userId = CurrentUser.UserId;
             DateTime orderDate = dtpOrderDate.Value;
@@ -357,11 +371,17 @@ namespace BoardGame_Store
                         cmdItem.Parameters.AddWithValue("@price", price);
                         cmdItem.ExecuteNonQuery();
 
-                        string sqlStock = "UPDATE board_games SET stock_quantity = stock_quantity - @qty WHERE game_id = @gid";
+                        string sqlStock = "UPDATE board_games SET stock_quantity = stock_quantity - @qty WHERE game_id = @gid AND stock_quantity >= @qty";
                         MySqlCommand cmdStock = new MySqlCommand(sqlStock, conn, transaction);
                         cmdStock.Parameters.AddWithValue("@qty", qty);
                         cmdStock.Parameters.AddWithValue("@gid", gameId);
-                        cmdStock.ExecuteNonQuery();
+
+                        int rowsAffected = cmdStock.ExecuteNonQuery();
+
+                        if (rowsAffected == 0)
+                        {
+                            throw new Exception($"Недостаточно товара '{row.Cells["Название"].Value}' на складе для завершения заказа.");
+                        }
                     }
 
                     transaction.Commit();

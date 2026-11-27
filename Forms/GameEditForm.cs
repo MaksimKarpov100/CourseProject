@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
-using System.Drawing.Imaging; 
+using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace BoardGame_Store
     public partial class GameEditForm : Form
     {
         private int gameId = 0;
-        private byte[] imageBytes = null; 
+        private byte[] imageBytes = null;
 
         public GameEditForm()
         {
@@ -69,10 +69,12 @@ namespace BoardGame_Store
                         {
                             pbImage.Image = Image.FromStream(ms);
                         }
+                        btnLoadImage.Text = "Заменить";
                     }
                     else
                     {
                         try { pbImage.Image = Image.FromFile("Resources/picture.png"); } catch { }
+                        btnLoadImage.Text = "Загрузить картинку"; 
                     }
                 }
             }
@@ -104,28 +106,23 @@ namespace BoardGame_Store
                 {
                     FileInfo fileInfo = new FileInfo(ofd.FileName);
 
-                    long hardLimitMb = 15; 
-                    long thresholdMb = 5; 
-
-                    long hardLimitBytes = hardLimitMb * 1024 * 1024;
-                    long thresholdBytes = thresholdMb * 1024 * 1024;
-
-                    if (fileInfo.Length > hardLimitBytes)
+                    long maxFileSizeBytes = 5 * 1024 * 1024;
+                    if (fileInfo.Length > maxFileSizeBytes)
                     {
-                        MessageHelper.ShowWarning($"Файл слишком большой ({fileInfo.Length / 1024 / 1024} МБ). Максимально допустимый размер — {hardLimitMb} МБ.");
+                        MessageHelper.ShowWarning($"Файл слишком большой ({fileInfo.Length / 1024 / 1024} МБ). Максимально допустимый размер — 5 МБ!");
                         return;
                     }
 
-                    string newFileName = Guid.NewGuid().ToString() + ".jpg";
+                    string uniqueFileName = Guid.NewGuid().ToString() + ".jpg";
 
-                    if (fileInfo.Length >= thresholdBytes)
+                    using (Image originalImage = Image.FromFile(ofd.FileName))
                     {
-                        using (Image originalImage = Image.FromFile(ofd.FileName))
-                        {
-                            long targetSizeBytes = 2 * 1024 * 1024; 
-                            int maxWidth = 800;
-                            int maxHeight = 800;
+                        int maxWidth = 800;
+                        int maxHeight = 800;
 
+                        if (originalImage.Width > maxWidth || originalImage.Height > maxHeight)
+                        {
+                            long targetSizeBytes = 2 * 1024 * 1024;
                             imageBytes = CompressImage(originalImage, maxWidth, maxHeight, targetSizeBytes);
 
                             using (MemoryStream ms = new MemoryStream(imageBytes))
@@ -134,19 +131,22 @@ namespace BoardGame_Store
                             }
 
                             long newSizeKb = imageBytes.Length / 1024;
-                            MessageHelper.ShowInfo($"Изображение было сжато (исходный файл был больше {thresholdMb} МБ).\n" +
-                                                   $"Автоматическое имя: {newFileName}\n" +
+                            MessageHelper.ShowInfo($"Разрешение изображения было слишком большим.\n" +
+                                                   $"Оно автоматически сжато до 800x800.\n" +
+                                                   $"Уникальное имя: {uniqueFileName}\n" +
                                                    $"Вес: {fileInfo.Length / 1024} КБ -> {newSizeKb} КБ.");
                         }
-                    }
-                    else
-                    {
-                        imageBytes = File.ReadAllBytes(ofd.FileName);
-                        using (MemoryStream ms = new MemoryStream(imageBytes))
+                        else
                         {
-                            pbImage.Image = Image.FromStream(ms);
+                            imageBytes = File.ReadAllBytes(ofd.FileName);
+                            using (MemoryStream ms = new MemoryStream(imageBytes))
+                            {
+                                pbImage.Image = Image.FromStream(ms);
+                            }
+                            MessageHelper.ShowInfo($"Изображение успешно загружено.\nУникальное имя: {uniqueFileName}");
                         }
-                        MessageHelper.ShowInfo($"Изображение успешно загружено.\nАвтоматическое имя: {newFileName}");
+
+                        btnLoadImage.Text = "Заменить"; 
                     }
                 }
                 catch (OutOfMemoryException)
@@ -158,6 +158,18 @@ namespace BoardGame_Store
                     MessageHelper.ShowError("Ошибка загрузки картинки: " + ex.Message);
                 }
             }
+        }
+
+        private void btnDeleteImage_Click(object sender, EventArgs e)
+        {
+            imageBytes = null;
+            pbImage.Image = null;
+
+            try { pbImage.Image = Image.FromFile("Resources/picture.png"); } catch { }
+
+            btnLoadImage.Text = "Загрузить картинку"; 
+
+            MessageHelper.ShowInfo("Изображение удалено. Не забудьте нажать 'Сохранить', чтобы применить изменения в БД.");
         }
 
         private void btnSave_Click(object sender, EventArgs e)

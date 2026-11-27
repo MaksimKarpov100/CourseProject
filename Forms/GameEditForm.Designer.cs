@@ -27,6 +27,7 @@
             this.cmbCategory = new System.Windows.Forms.ComboBox();
             this.pbImage = new System.Windows.Forms.PictureBox();
             this.btnLoadImage = new System.Windows.Forms.Button();
+            this.btnDeleteImage = new System.Windows.Forms.Button(); 
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).BeginInit();
@@ -148,6 +149,23 @@
             this.btnLoadImage.UseVisualStyleBackColor = false;
             this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
             // 
+            // btnDeleteImage
+            // 
+            this.btnDeleteImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnDeleteImage.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDeleteImage.FlatAppearance.BorderSize = 0;
+            this.btnDeleteImage.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.btnDeleteImage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDeleteImage.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold);
+            this.btnDeleteImage.ForeColor = System.Drawing.Color.White;
+            this.btnDeleteImage.Location = new System.Drawing.Point(475, 298);
+            this.btnDeleteImage.Name = "btnDeleteImage";
+            this.btnDeleteImage.Size = new System.Drawing.Size(177, 35);
+            this.btnDeleteImage.TabIndex = 11;
+            this.btnDeleteImage.Text = "Удалить картинку";
+            this.btnDeleteImage.UseVisualStyleBackColor = false;
+            this.btnDeleteImage.Click += new System.EventHandler(this.btnDeleteImage_Click);
+            // 
             // btnSave
             // 
             this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -157,10 +175,10 @@
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Font = new System.Drawing.Font("Trebuchet MS", 11F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(33, 260);
+            this.btnSave.Location = new System.Drawing.Point(33, 310); 
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(177, 45);
-            this.btnSave.TabIndex = 11;
+            this.btnSave.TabIndex = 12;
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -174,10 +192,10 @@
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Trebuchet MS", 11F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(216, 260);
+            this.btnCancel.Location = new System.Drawing.Point(216, 310); 
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(177, 45);
-            this.btnCancel.TabIndex = 12;
+            this.btnCancel.TabIndex = 13;
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -187,9 +205,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(251)))), ((int)(((byte)(247)))));
-            this.ClientSize = new System.Drawing.Size(676, 347);
+            this.ClientSize = new System.Drawing.Size(676, 390); 
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.btnDeleteImage); 
             this.Controls.Add(this.btnLoadImage);
             this.Controls.Add(this.pbImage);
             this.Controls.Add(this.cmbCategory);
@@ -227,6 +246,7 @@
         private System.Windows.Forms.ComboBox cmbCategory;
         private System.Windows.Forms.PictureBox pbImage;
         private System.Windows.Forms.Button btnLoadImage;
+        private System.Windows.Forms.Button btnDeleteImage; 
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
     }
