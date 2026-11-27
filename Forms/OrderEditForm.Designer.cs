@@ -81,7 +81,7 @@
             // 
             this.dtpCompletionDate.Font = new System.Drawing.Font("Tahoma", 10F);
             this.dtpCompletionDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpCompletionDate.Location = new System.Drawing.Point(463, 50);
+            this.dtpCompletionDate.Location = new System.Drawing.Point(662, 43);
             this.dtpCompletionDate.Name = "dtpCompletionDate";
             this.dtpCompletionDate.Size = new System.Drawing.Size(130, 24);
             this.dtpCompletionDate.TabIndex = 9;
@@ -90,7 +90,7 @@
             // 
             this.lblCompletionDate.AutoSize = true;
             this.lblCompletionDate.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.lblCompletionDate.Location = new System.Drawing.Point(330, 50);
+            this.lblCompletionDate.Location = new System.Drawing.Point(532, 49);
             this.lblCompletionDate.Name = "lblCompletionDate";
             this.lblCompletionDate.Size = new System.Drawing.Size(124, 17);
             this.lblCompletionDate.TabIndex = 8;
@@ -100,7 +100,7 @@
             // 
             this.dtpOrderDate.Font = new System.Drawing.Font("Tahoma", 10F);
             this.dtpOrderDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpOrderDate.Location = new System.Drawing.Point(463, 15);
+            this.dtpOrderDate.Location = new System.Drawing.Point(662, 8);
             this.dtpOrderDate.Name = "dtpOrderDate";
             this.dtpOrderDate.Size = new System.Drawing.Size(130, 24);
             this.dtpOrderDate.TabIndex = 7;
@@ -109,7 +109,7 @@
             // 
             this.lblOrderDate.AutoSize = true;
             this.lblOrderDate.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.lblOrderDate.Location = new System.Drawing.Point(330, 15);
+            this.lblOrderDate.Location = new System.Drawing.Point(529, 14);
             this.lblOrderDate.Name = "lblOrderDate";
             this.lblOrderDate.Size = new System.Drawing.Size(130, 17);
             this.lblOrderDate.TabIndex = 6;
@@ -119,7 +119,7 @@
             // 
             this.lblCustomer.AutoSize = true;
             this.lblCustomer.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
-            this.lblCustomer.Location = new System.Drawing.Point(20, 15);
+            this.lblCustomer.Location = new System.Drawing.Point(8, 15);
             this.lblCustomer.Name = "lblCustomer";
             this.lblCustomer.Size = new System.Drawing.Size(66, 17);
             this.lblCustomer.TabIndex = 0;
@@ -129,7 +129,7 @@
             // 
             this.lblCustomerName.AutoSize = true;
             this.lblCustomerName.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.lblCustomerName.Location = new System.Drawing.Point(80, 15);
+            this.lblCustomerName.Location = new System.Drawing.Point(112, 15);
             this.lblCustomerName.Name = "lblCustomerName";
             this.lblCustomerName.Size = new System.Drawing.Size(0, 17);
             this.lblCustomerName.TabIndex = 1;
@@ -138,7 +138,7 @@
             // 
             this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.lblStatus.Location = new System.Drawing.Point(20, 85);
+            this.lblStatus.Location = new System.Drawing.Point(8, 41);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(104, 17);
             this.lblStatus.TabIndex = 2;
@@ -148,7 +148,7 @@
             // 
             this.cmbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbStatus.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.cmbStatus.Location = new System.Drawing.Point(120, 82);
+            this.cmbStatus.Location = new System.Drawing.Point(141, 38);
             this.cmbStatus.Name = "cmbStatus";
             this.cmbStatus.Size = new System.Drawing.Size(180, 24);
             this.cmbStatus.TabIndex = 3;
@@ -157,7 +157,7 @@
             // 
             this.lblAddress.AutoSize = true;
             this.lblAddress.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.lblAddress.Location = new System.Drawing.Point(330, 85);
+            this.lblAddress.Location = new System.Drawing.Point(8, 80);
             this.lblAddress.Name = "lblAddress";
             this.lblAddress.Size = new System.Drawing.Size(115, 17);
             this.lblAddress.TabIndex = 4;
@@ -166,9 +166,9 @@
             // txtAddress
             // 
             this.txtAddress.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.txtAddress.Location = new System.Drawing.Point(463, 81);
+            this.txtAddress.Location = new System.Drawing.Point(141, 76);
             this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(300, 24);
+            this.txtAddress.Size = new System.Drawing.Size(650, 24);
             this.txtAddress.TabIndex = 5;
             // 
             // dgvOrderItems
